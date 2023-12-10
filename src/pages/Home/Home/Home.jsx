@@ -6,7 +6,7 @@ import Sideber from "../Sideber/Sideber";
 const Home = () => {
     return (  
         <div>
-            <SectionHelmet title={'Free Time | Feed'}/>
+            <SectionHelmet title={'Free Time | Feeds'}/>
              <div className="flex">
                 <div className="w-[30%] bg-[#f0f2f5] border-r-2 min-h-screen fixed overflow-y-scroll">
                     {/* sideber */}
