@@ -6,6 +6,14 @@ import CommentsModal from "../CommentsModal/CommentsModal";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { useState } from "react";
 // import useAuth from "../../hooks/useAuth";
+import {
+  EmailShareButton,
+  FacebookShareButton,
+  TelegramShareButton,
+  TwitterIcon,
+ 
+} from "react-share";
+import FeedsShareModal from "../../Components/FeedsShareModal/FeedsShareModal";
 
 const Feed = ({ feed }) => {
   const { name, article, time, likes, comments, _id } = feed;
@@ -51,9 +59,7 @@ const Feed = ({ feed }) => {
       </button>
         }
          <CommentsModal comments={comments}/>
-        <button className="flex items-center gap-1 text-xl">
-          Share <IoIosShareAlt />
-        </button>
+        <FeedsShareModal/>
       </div>
     </div>
   );

@@ -3,11 +3,12 @@ import Main from "../Main/Main";
 import Home from "../pages/Home/Home/Home";
 import Registration from "../Authentication/Registration";
 import Login from "../Authentication/Login";
+import PrivateRoute from "../Private/PrivateRoute";
 
 const Routers = createBrowserRouter([
         {
             path: '/',
-            element: <Main/>,
+            element: <PrivateRoute><Main/></PrivateRoute>,
             children: [
                 {
                     path: '/',
