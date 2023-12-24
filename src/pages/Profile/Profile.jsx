@@ -9,14 +9,17 @@ import { CiCalendarDate } from "react-icons/ci";
 import { GiSelfLove } from "react-icons/gi";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import { useState } from "react";
+import Navber from "../../shared/Navber/Navber";
 
 const Profile = () => {
   const { user } = useAuth();
   const tabsList = ["Your Feeds", "Your Reels", "Your Videos"]
   const [currentTab, setCurrentTab] = useState("Your Feeds")
   return (
-    <section className="max-w-5xl mx-auto">
+    <section className="">
       <SectionHelmet title={`${user?.displayName} - Profile`} />
+      <Navber/>
+      <div className="max-w-5xl mx-auto">
       <div className="relative">
         <div className=" h-[400px]">
           <img
@@ -73,6 +76,7 @@ const Profile = () => {
             </TabPanel>
         </Tabs>
         </div>
+      </div>
       </div>
     </section>
   );

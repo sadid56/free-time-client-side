@@ -14,12 +14,13 @@ const Routers = createBrowserRouter([
                 {
                     path: '/',
                     element: <Home/>
-                },
-                {
-                    path: '/profile',
-                    element: <Profile/>
                 }
-            ]
+                
+            ],
+        },
+        {
+            path:'/profile',
+            element: <PrivateRoute><Profile/></PrivateRoute>
         },
         {
             path: '/registration',
