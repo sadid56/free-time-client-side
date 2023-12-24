@@ -37,7 +37,7 @@ const Feed = ({ feed }) => {
   //     href: feedUrl,
   //   });
   // };
-
+// console.log(comments);
   const shareHandler = async () => {
     const feedUrl = `${window.location.origin}/feeds/${_id}`; 
     if ("share" in navigator) {
@@ -65,6 +65,7 @@ const Feed = ({ feed }) => {
         </div>
       </div>
       <h5 className="font-medium my-5">{article}</h5>
+      <p>{comments.map(comment => <p>{comment?.comment}</p>)}</p>
 
       {/* react  */}
       <div className="flex justify-between px-10 my-5 border-2 p-2 rounded-md">
@@ -76,7 +77,7 @@ const Feed = ({ feed }) => {
         <AiOutlineLike /> {likeCount}
       </button>
         }
-         <CommentsModal comments={comments}/>
+         <CommentsModal comments={comments} id={_id}/>
         {/* <FeedsShareModal/> */}
         <button onClick={shareHandler} className="flex items-center gap-1 text-xl"><IoIosShareAlt /> Share</button>
       </div>

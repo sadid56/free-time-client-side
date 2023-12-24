@@ -4,79 +4,124 @@ import coverImg from "../../assets/images/cover.jpeg";
 import { FaLink, FaUserEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { MdOutlineEmail } from "react-icons/md";
-import { IoIosSchool, IoMdHome } from "react-icons/io";
+import { IoIosSchool,IoMdHome } from "react-icons/io";
 import { CiCalendarDate } from "react-icons/ci";
 import { GiSelfLove } from "react-icons/gi";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import { useState } from "react";
 import Navber from "../../shared/Navber/Navber";
+import CreateProfileModal from "../../Components/CreateProfileModal/CreateProfileModal";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const Profile = () => {
   const { user } = useAuth();
-  const tabsList = ["Your Feeds", "Your Reels", "Your Videos"]
-  const [currentTab, setCurrentTab] = useState("Your Feeds")
+  const tabsList = ["Your Feeds", "Your Reels", "Your Videos"];
+  const axiosPublic = useAxiosPublic()
+  const [currentTab, setCurrentTab] = useState("Your Feeds");
+  const {data: profiles = [], refetch} = useQuery({
+    queryKey: ["profile"],
+    queryFn: async()=>{
+        const res = await axiosPublic.get(`/profiles?email=${user?.email}`)
+        return res.data
+    }
+  })
+  console.log(profiles.cover);
   return (
     <section className="">
       <SectionHelmet title={`${user?.displayName} - Profile`} />
-      <Navber/>
+      <Navber />
       <div className="max-w-5xl mx-auto">
-      <div className="relative">
-        <div className=" h-[400px]">
-          <img
-            className="w-full object-cover h-[400px] rounded-md"
-            src={coverImg}
-            alt=""
-          />
-        </div>
-        <div className="avatar absolute -bottom-4 left-10">
-          <div className="w-36 rounded-full ring ring-pink-500 ring-offset-base-100 ring-offset-2">
-            <img src={user?.photoURL} />
+        <div className="relative">
+          <div className=" h-[400px]">
+            {
+              profiles?.map(profile => <img key={profile?._id}
+                className="w-full object-cover h-[400px] rounded-md"
+                src={profile?.cover ? profile?.cover : coverImg}
+                alt=""
+              />)
+            }
+          </div>
+          <div className="avatar absolute -bottom-4 left-10">
+            <div className="w-36 rounded-full ring ring-pink-500 ring-offset-base-100 ring-offset-2">
+              <img src={user?.photoURL} />
+            </div>
+          </div>
+          <div className="flex justify-between items-end px-5 ml-[200px] mt-5">
+            <div>
+              <h2 className="text-4xl  font-bold">{user?.displayName}</h2>
+              <p className="text-gray-500 font-medium">{user?.email}</p>
+            </div>
+            <div className="flex items-center gap-5">
+              <CreateProfileModal refetch={refetch}/>
+              <button className="text-xl flex items-center gap-2 text-white bg-pink-500 py-2 px-4 rounded-md hover:bg-pink-700 transform-all duration-300">
+                <FaUserEdit /> Edit Profile
+              </button>
+            </div>
           </div>
         </div>
-        <div className="flex justify-between items-end px-5 ml-[200px] mt-5">
-          <div>
-            <h2 className="text-4xl  font-bold">{user?.displayName}</h2>
-            <p className="text-gray-500 font-medium">{user?.email}</p>
-          </div>
-          <div>
-            <button className="text-xl flex items-center gap-2 text-white bg-pink-500 py-2 px-4 rounded-md hover:bg-pink-700 transform-all duration-300">
-            <FaUserEdit /> Edit Profile
-            </button>
-          </div>
-        </div>
-      </div>
-      <div className="grid gap-5 grid-cols-3 mt-10">
-        {/* bio */}
-        <div className="space-y-3">
-        <textarea className="textarea textarea-secondary w-full h-[100px] overflow-y-scroll"  placeholder="Bio"></textarea>
-        <p className="text-gray-600 font-medium flex items-center gap-1"><MdOutlineEmail /> {user?.email}</p>
-        <p className="text-gray-600 font-medium flex items-center gap-1"><IoIosSchool /> Work At - School</p>
-        <p className="text-gray-600 font-medium flex items-center gap-1"><IoMdHome /> Home - Bogura</p>
-        <p className="text-gray-600 font-medium flex items-center gap-1"><IoIosSchool /> School - Jamunna</p>
-        <p className="text-gray-600 font-medium flex items-center gap-1"><GiSelfLove /> Relation - Single</p>
-        <p className="text-gray-600 font-medium flex items-center gap-1"><CiCalendarDate /> Joined - 12-3-03-2023</p>
-        <Link target="_blank" className="text-gray-600 font-medium flex items-center gap-1 link link-hover" ><FaLink /> Link</Link>
-        </div>
-        {/* content */}
-        <div className="col-span-2">
-        <Tabs>
-            <TabList className="flex flex-wrap justify-center items-center gap-5 cursor-pointer text-xl font-medium ">
-                {
-                    tabsList.map(tab => <Tab onClick={()=> setCurrentTab(tab)} className={`bg-gray-300 rounded-md py-2 px-4 outline-none ${currentTab === tab ? "text-pink-500" : undefined}`} key={tab}>{tab}</Tab>)
-                }
-            </TabList>
-            <TabPanel>
+        <div className="grid gap-5 grid-cols-3 mt-10">
+          {/* bio */}
+          {
+           profiles === undefined ?  <p>nai vai</p> :  profiles?.map(profile => <div key={profile?._id} className="space-y-3">
+           <h1 className="text-xl font-semibold text-slate-950">Bio</h1>
+           <p className="h-[100px] flex items-center justify-center border shadow rounded-md bg-gray-200 text-slate-900 font-medium overflow-y-scroll w-full">{profile?.bio ? profile?.bio : ""}</p>
+           <p className="text-gray-600 font-medium flex items-center gap-1">
+             <MdOutlineEmail /> {user?.email}
+           </p>
+           <p className="text-gray-600 font-medium flex items-center gap-1">
+             <IoIosSchool /> Work At - {profile?.work ? profile?.work : "?"}
+           </p>
+           <p className="text-gray-600 font-medium flex items-center gap-1">
+             <IoMdHome /> Home - {profile?.home ? profile?.home : "?"}
+           </p>
+           <p className="text-gray-600 font-medium flex items-center gap-1">
+             <IoIosSchool />Institute - {profile?.institute || "?"}
+           </p>
+           <p className="text-gray-600 font-medium flex items-center gap-1">
+             <GiSelfLove /> Relation - {profile?.relation || "?"}
+           </p>
+           <p className="text-gray-600 font-medium flex items-center gap-1">
+             <GiSelfLove /> Date Of Birth - {profile?.date_of_birth || "?"}
+           </p>
+           <p className="text-gray-600 font-medium flex items-center gap-1">
+             <CiCalendarDate /> Joined - 12-3-03-2023
+           </p>
+           <Link
+             target="_blank"
+             to={`${profile?.social || ""}`}
+             className="text-gray-600 font-medium flex items-center gap-1 link link-hover">
+             <FaLink /> {profile?.social || "?"}
+           </Link>
+         </div>) 
+          }
+          {/* content */}
+          <div className="col-span-2">
+            <Tabs>
+              <TabList className="flex flex-wrap justify-center items-center gap-5 cursor-pointer text-xl font-medium ">
+                {tabsList.map((tab) => (
+                  <Tab
+                    onClick={() => setCurrentTab(tab)}
+                    className={`bg-gray-300 rounded-md py-2 px-4 outline-none ${
+                      currentTab === tab ? "text-pink-500" : undefined
+                    }`}
+                    key={tab}>
+                    {tab}
+                  </Tab>
+                ))}
+              </TabList>
+              <TabPanel>
                 <p>no feed available</p>
-            </TabPanel>
-            <TabPanel>
+              </TabPanel>
+              <TabPanel>
                 <p>no reels available</p>
-            </TabPanel>
-            <TabPanel>
+              </TabPanel>
+              <TabPanel>
                 <p>no video available</p>
-            </TabPanel>
-        </Tabs>
+              </TabPanel>
+            </Tabs>
+          </div>
         </div>
-      </div>
       </div>
     </section>
   );

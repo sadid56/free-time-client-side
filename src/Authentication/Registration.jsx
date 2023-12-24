@@ -24,7 +24,7 @@ const Registration = () => {
         const user = await createUser(data?.email, data?.password);
         console.log(user.user);
       }
-      const name = data?.firstName + data?.lastName;
+      const name = data?.firstName + " " + data?.lastName;
       const fileImage = data?.image[0];
       const formData = new FormData();
       formData.append("image", fileImage);
