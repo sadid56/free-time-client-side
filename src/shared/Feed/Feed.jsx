@@ -1,19 +1,14 @@
 /* eslint-disable react/prop-types */
 import { AiOutlineLike } from "react-icons/ai";
 import { BiSolidLike } from "react-icons/bi";
-import { IoIosShareAlt } from "react-icons/io";
 import CommentsModal from "../CommentsModal/CommentsModal";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { useState } from "react";
 // import useAuth from "../../hooks/useAuth";
-import {
-  EmailShareButton,
-  FacebookShareButton,
-  TelegramShareButton,
-  TwitterIcon,
- 
-} from "react-share";
-import FeedsShareModal from "../../Components/FeedsShareModal/FeedsShareModal";
+
+// import FeedsShareModal from "../../Components/FeedsShareModal/FeedsShareModal";
+import toast from "react-hot-toast";
+import { IoIosShareAlt } from "react-icons/io";
 
 const Feed = ({ feed }) => {
   const { name, article, time, likes, comments, _id } = feed;
@@ -31,6 +26,29 @@ const Feed = ({ feed }) => {
         }catch(err){
           console.log('post error-->', err);
         }
+  }
+
+  // const shareOnFacebook = () => {
+  //   const feedUrl = `${window.location.origin}/feeds/${_id}`; // Change this URL based on your actual URL structure
+
+  //   // Open Facebook Share Dialog
+  //   window.FB.ui({
+  //     method: "share",
+  //     href: feedUrl,
+  //   });
+  // };
+
+  const shareHandler = async () => {
+    const feedUrl = `${window.location.origin}/feeds/${_id}`; 
+    if ("share" in navigator) {
+      await navigator.share({
+        title: "Share",
+        text: "Share this url",
+        url: feedUrl
+      })
+    } else {
+      toast.error("Share not supported by your browser")
+    }
   }
 
   return (
@@ -59,7 +77,8 @@ const Feed = ({ feed }) => {
       </button>
         }
          <CommentsModal comments={comments}/>
-        <FeedsShareModal/>
+        {/* <FeedsShareModal/> */}
+        <button onClick={shareHandler} className="flex items-center gap-1 text-xl"><IoIosShareAlt /> Share</button>
       </div>
     </div>
   );
