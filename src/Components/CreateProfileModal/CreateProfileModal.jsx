@@ -6,7 +6,7 @@ import useAxiosPublic from "../../hooks/useAxiosPublic";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
 
-const CreateProfileModal = ({refetch}) => {
+const CreateProfileModal = ({refetch,profiles}) => {
     const { register, handleSubmit, setValue, watch, reset } = useForm();
     const axiosPublic = useAxiosPublic()
     const {user} = useAuth()
@@ -50,13 +50,20 @@ const CreateProfileModal = ({refetch}) => {
     const relationStatus = watch("relation")
   return (
     <div>
-      <button
+      {
+        profiles.length === 0 ? <button
         className="text-xl flex items-center gap-2 text-white bg-pink-500 py-2 px-4 rounded-md hover:bg-pink-700 transform-all duration-300"
         onClick={() =>
           document.getElementById("Create_profile_modal").showModal()
         }>
         <IoMdCreate /> Create Profile
-      </button>
+      </button> :
+      <button
+      className="text-xl flex items-center gap-2 text-white bg-pink-500 py-2 px-4 btn btn-disabled"
+     >
+      <IoMdCreate /> Create Profile
+    </button>
+      }
       <dialog id="Create_profile_modal" className="modal">
         <div className="modal-box w-11/12 max-w-5xl">
           <div>
