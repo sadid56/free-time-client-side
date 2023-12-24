@@ -24,10 +24,10 @@ const Feed = ({ feed }) => {
 
   const handleLike = async()=>{
         try{
-          const res = await axiosPublic.post(`/feeds/likes/${_id}`)
+          await axiosPublic.post(`/feeds/likes/${_id}`)
           setLiked(true)
           setLikeCount((prevLikeCount) => prevLikeCount + 1);
-          console.log(res.data);
+          // console.log(res.data);
         }catch(err){
           console.log('post error-->', err);
         }
@@ -51,7 +51,7 @@ const Feed = ({ feed }) => {
       {/* react  */}
       <div className="flex justify-between px-10 my-5 border-2 p-2 rounded-md">
         {
-          liked ? <button className="flex items-center gap-1 text-xl">
+          liked ? <button className="flex items-center text-pink-500 gap-1 text-xl">
           <BiSolidLike /> {likeCount}
         </button> :
         <button onClick={handleLike} className="flex items-center gap-1 text-xl">

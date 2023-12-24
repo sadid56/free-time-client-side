@@ -4,11 +4,23 @@ import { MdOndemandVideo } from "react-icons/md";
 import { SiYoutubeshorts } from "react-icons/si";
 import { FaRegNewspaper } from "react-icons/fa";
 import "./sidebar.css";
+import useAuth from "../../../hooks/useAuth";
 
 const Sideber = () => {
+  const { user } = useAuth();
   return (
     <div>
       <ul id="sid" className="space-y-5 pl-5 text-xl pt-6">
+        <li>
+          <div className="flex items-center gap-2">
+            <div className="avatar online">
+              <div className="w-10 ring-2 ring-pink-500 rounded-full">
+                <img src={user && user?.photoURL} />
+              </div>
+            </div>
+            <h2 className="text-xl font-semibold">{user && user?.displayName}</h2>
+          </div>
+        </li>
         <li>
           <NavLink to="/" className="flex items-center gap-1">
             <FaRegNewspaper /> Feeds

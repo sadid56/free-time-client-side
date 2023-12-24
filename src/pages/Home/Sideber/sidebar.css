@@ -1,3 +1,15 @@
 #sid a.active{
-    color: blue;
+    color: hotpink;
+}
+
+#sid li {
+    border-bottom: 5px solid transparent;
+    transition: background 0.1s ease-in-out; 
+}
+
+#sid li:hover {
+    background: rgb(227, 225, 225);
+    border-radius: 8px;
+    cursor: pointer;
+    border-bottom-color: rgb(227, 225, 225); 
 }

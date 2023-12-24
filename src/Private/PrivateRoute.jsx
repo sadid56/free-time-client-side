@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Navigate, useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import Loading from "../Components/Loading/Loading";
 
 
 const PrivateRoute = ({children}) => {
@@ -8,7 +9,7 @@ const PrivateRoute = ({children}) => {
     const location = useLocation()
     
  if(loading){
-    return <h3 className="text-center mt-10">Loading...</h3>
+    return <Loading/>
  }
 
 if(user){

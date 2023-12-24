@@ -49,11 +49,10 @@ const Navber = () => {
       </ul>
       <div className="dropdown dropdown-end">
         <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-          <div className="w-10 rounded-full">
-            <img
-              alt="Tailwind CSS Navbar component"
-              src={user && user?.photoURL}
-            />
+          <div className="avatar">
+            <div className="w-10 rounded-full">
+              <img src={user && user?.photoURL} />
+            </div>
           </div>
         </label>
         <ul
