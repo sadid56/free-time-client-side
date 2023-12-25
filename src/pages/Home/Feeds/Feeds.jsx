@@ -6,7 +6,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 const Feeds = () => {
   const axiosSecure = useAxiosSecure();
 
-  const { data: news = [] } = useQuery({
+  const { data: news = [], refetch } = useQuery({
     queryKey: ["feeds"],
     queryFn: async () => {
       const res = await axiosSecure.get("/feeds");
@@ -16,9 +16,10 @@ const Feeds = () => {
 
   return (
     <div>
+      <div></div>
       <div className="grid grid-cols-1 gap-2">
         {news.map((feed) => (
-          <Feed key={feed.id} feed={feed}></Feed>
+          <Feed key={feed.id} feed={feed} refetch={refetch}></Feed>
         ))}
       </div>
     </div>

@@ -10,7 +10,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { IoIosShareAlt } from "react-icons/io";
 
-const Feed = ({ feed }) => {
+const Feed = ({ feed , refetch}) => {
   const { name, article, time, likes, comments, _id } = feed;
   const axiosPublic = useAxiosPublic()
   const [liked, setLiked] = useState(false)
@@ -65,7 +65,6 @@ const Feed = ({ feed }) => {
         </div>
       </div>
       <h5 className="font-medium my-5">{article}</h5>
-      <p>{comments.map(comment => <p>{comment?.comment}</p>)}</p>
 
       {/* react  */}
       <div className="flex justify-between px-10 my-5 border-2 p-2 rounded-md">
@@ -77,7 +76,7 @@ const Feed = ({ feed }) => {
         <AiOutlineLike /> {likeCount}
       </button>
         }
-         <CommentsModal comments={comments} id={_id}/>
+         <CommentsModal comments={comments} id={_id} refetch={refetch}/>
         {/* <FeedsShareModal/> */}
         <button onClick={shareHandler} className="flex items-center gap-1 text-xl"><IoIosShareAlt /> Share</button>
       </div>

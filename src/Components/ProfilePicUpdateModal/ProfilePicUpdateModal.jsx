@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { IoCameraOutline } from "react-icons/io5";
