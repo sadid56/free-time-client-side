@@ -44,7 +44,7 @@ const CommentsModal = ({ comments, id, refetch }) => {
       <button
         className="font-medium flex items-center gap-1"
         onClick={openModal}>
-        <MdInsertComment /> Comment {comments.length}
+        <MdInsertComment /> Comment {comments?.length}
       </button>
       {isModalOpen && (
         <dialog open={isModalOpen} className="modal">
@@ -57,7 +57,7 @@ const CommentsModal = ({ comments, id, refetch }) => {
               </form>
             </div>
             <div className="space-y-3">
-              {comments.map((comment, index) => (
+              {comments?.map((comment, index) => (
                 <div className="space-y-3 border p-3 rounded-md" key={index}>
                   <div className="flex items-center gap-2">
                     <div className="avatar">

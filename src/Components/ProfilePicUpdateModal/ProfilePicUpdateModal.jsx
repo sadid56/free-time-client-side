@@ -4,12 +4,15 @@ import { useForm } from "react-hook-form";
 import { IoCameraOutline } from "react-icons/io5";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
+import { useState } from "react";
 
 const ProfilePicUpdateModal = ({ refetch }) => {
   const { register, handleSubmit, reset } = useForm();
   const { profileUpdate, user } = useAuth();
+  const [loading, setLoading] = useState(false)
   const onSubmit = async (data) => {
     try {
+      setLoading(true)
       const fileImage = data?.file[0];
       const formData = new FormData();
       formData.append("image", fileImage);
@@ -26,6 +29,7 @@ const ProfilePicUpdateModal = ({ refetch }) => {
         const modal = document.getElementById("profile_pic_update");
         modal.close();
         refetch();
+        setLoading(false)
       }
     } catch (err) {
       console.log("profile pic update err--->", err);
@@ -64,8 +68,8 @@ const ProfilePicUpdateModal = ({ refetch }) => {
               </div>
               <button
                 type="submit"
-                className="text-xl w-full gap-2 text-white bg-pink-500 py-2 px-4 rounded-md hover:bg-pink-700 transform-all duration-300 mt-5">
-                Update Now
+                className="text-xl flex items-center justify-center w-full gap-2 text-white bg-pink-500 py-2 px-4 rounded-md hover:bg-pink-700 transform-all duration-300 mt-5">
+                Update Now {loading && <span className="loading loading-spinner text-white"></span>}
               </button>
             </form>
           </div>

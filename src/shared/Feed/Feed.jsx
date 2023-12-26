@@ -11,10 +11,9 @@ import toast from "react-hot-toast";
 import { IoIosShareAlt } from "react-icons/io";
 
 const Feed = ({ feed , refetch}) => {
-  const { name, article, time, likes, comments, _id } = feed;
+  const { name, article, time, likes, comments, _id, auther_image, image } = feed;
   const axiosPublic = useAxiosPublic()
   const [liked, setLiked] = useState(false)
-  // const {user}= useAuth()
   const [likeCount, setLikeCount] = useState(likes); 
 
   const handleLike = async()=>{
@@ -27,17 +26,6 @@ const Feed = ({ feed , refetch}) => {
           console.log('post error-->', err);
         }
   }
-
-  // const shareOnFacebook = () => {
-  //   const feedUrl = `${window.location.origin}/feeds/${_id}`; // Change this URL based on your actual URL structure
-
-  //   // Open Facebook Share Dialog
-  //   window.FB.ui({
-  //     method: "share",
-  //     href: feedUrl,
-  //   });
-  // };
-// console.log(comments);
   const shareHandler = async () => {
     const feedUrl = `${window.location.origin}/feeds/${_id}`; 
     if ("share" in navigator) {
@@ -56,7 +44,7 @@ const Feed = ({ feed , refetch}) => {
       <div className="flex items-center gap-2">
         <div className="avatar">
           <div className="w-10 rounded-full">
-            <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+            <img src={auther_image} />
           </div>
         </div>
         <div>
@@ -66,8 +54,12 @@ const Feed = ({ feed , refetch}) => {
       </div>
       <h5 className="font-medium my-5">{article}</h5>
 
+      <div>
+        <img src={image} className="object-cover h-[450px] w-full" alt="" />
+      </div>
+
       {/* react  */}
-      <div className="flex justify-between px-10 my-5 border-2 p-2 rounded-md">
+      <div className="flex justify-between px-10 my-2 border-2 p-2 rounded-md">
         {
           liked ? <button className="flex items-center text-pink-500 gap-1 text-xl">
           <BiSolidLike /> {likeCount}

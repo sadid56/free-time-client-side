@@ -4,12 +4,15 @@ import { FaCamera } from "react-icons/fa";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { useState } from "react";
 
 const CoverPhotoEditModal = ({profile, refetch}) => {
   const { register, handleSubmit, reset } = useForm();
   const axiosPublic = useAxiosPublic();
+  const [loading, setLoading] = useState(false)
   const onSubmit = async (data) => {
     try {
+      setLoading(true)
       const fileImage = data?.file[0];
       const formData = new FormData();
       formData.append("image", fileImage);
@@ -30,6 +33,7 @@ const CoverPhotoEditModal = ({profile, refetch}) => {
           const modal = document.getElementById("cover_photoUpdate");
           modal.close();
           refetch();
+          setLoading(false)
         }
       }
     } catch (err) {
@@ -67,7 +71,7 @@ const CoverPhotoEditModal = ({profile, refetch}) => {
                   className="file-input file-input-bordered file-input-secondary w-full h-[100px]"
                 />
               </div>
-              <button type="submit" className="text-xl w-full gap-2 text-white bg-pink-500 py-2 px-4 rounded-md hover:bg-pink-700 transform-all duration-300 mt-5">Update Now</button>
+              <button type="submit" className="text-xl flex items-center  justify-center w-full gap-2 text-white bg-pink-500 py-2 px-4 rounded-md hover:bg-pink-700 transform-all duration-300 mt-5">Update Now {loading && <span className="loading loading-spinner text-white"></span>}</button>
             </form>
           </div>
         </div>

@@ -13,13 +13,14 @@ const Feeds = () => {
       return res.data;
     },
   });
+  
 
   return (
     <div>
       <div></div>
       <div className="grid grid-cols-1 gap-2">
         {news.map((feed) => (
-          <Feed key={feed.id} feed={feed} refetch={refetch}></Feed>
+          <Feed key={feed._id} feed={feed} refetch={refetch}></Feed>
         ))}
       </div>
     </div>

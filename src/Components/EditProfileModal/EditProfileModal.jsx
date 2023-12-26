@@ -4,12 +4,15 @@ import { FaUserEdit } from "react-icons/fa";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
+import { useState } from "react";
+import { MdClose } from "react-icons/md";
 
 const EditProfileModal = ({ refetch, profile }) => {
   const { register, handleSubmit, setValue, watch, reset } = useForm();
   const axiosPublic = useAxiosPublic();
   const { user } = useAuth();
-//   console.log(profile);
+  const [loading, setLoading] = useState(false);
+  //   console.log(profile);
   const onSubmit = async (data) => {
     // console.log(data);
     try {
@@ -24,18 +27,19 @@ const EditProfileModal = ({ refetch, profile }) => {
         social: data?.social,
         email: user?.email,
       };
-
+      setLoading(true);
       const res = await axiosPublic.patch(
         `/profiles/${profile?._id}`,
         profileInfo
       );
-    //   console.log(res.data);
+      //   console.log(res.data);
       if (res.data?.acknowledged) {
         toast.success("Profile Update Successfully !");
         reset();
         const modal = document.getElementById("Edit_profile_modal_id");
         modal.close();
         refetch();
+        setLoading(false);
       }
     } catch (err) {
       console.log("profile create err--->", err);
@@ -56,6 +60,12 @@ const EditProfileModal = ({ refetch, profile }) => {
 
       <dialog id="Edit_profile_modal_id" className="modal">
         <div className="modal-box w-11/12 max-w-5xl">
+        <div className="modal-action absolute right-0 top-0">
+            <form method="dialog">
+              {/* if there is a button, it will close the modal */}
+              <button className="btn btn-circle text-xl bg-slate-800 text-white"><MdClose/></button>
+            </form>
+          </div>
           <div>
             <form onSubmit={handleSubmit(onSubmit)} className="card-body">
               <div className="grid grid-cols-2 gap-5">
@@ -162,15 +172,12 @@ const EditProfileModal = ({ refetch, profile }) => {
               </div>
               <button
                 type="submit"
-                className="text-xl w-full gap-2 text-white bg-pink-500 py-2 px-4 rounded-md hover:bg-pink-700 transform-all duration-300 mt-5">
-                Submit
+                className="text-xl flex justify-center items-center w-full gap-2 text-white bg-pink-500 py-2 px-4 rounded-md hover:bg-pink-700 transform-all duration-300 mt-5">
+                Submit{" "}
+                {loading && (
+                  <span className="loading loading-spinner text-white"></span>
+                )}
               </button>
-            </form>
-          </div>
-          <div className="modal-action">
-            <form method="dialog">
-              {/* if there is a button, it will close the modal */}
-              <button className="btn">Close</button>
             </form>
           </div>
         </div>

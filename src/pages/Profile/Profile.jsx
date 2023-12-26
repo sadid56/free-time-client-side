@@ -7,8 +7,6 @@ import { MdOutlineEmail } from "react-icons/md";
 import { IoIosSchool, IoMdHome } from "react-icons/io";
 import { CiCalendarDate } from "react-icons/ci";
 import { GiSelfLove } from "react-icons/gi";
-import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
-import { useState } from "react";
 import Navber from "../../shared/Navber/Navber";
 import CreateProfileModal from "../../Components/CreateProfileModal/CreateProfileModal";
 import { useQuery } from "@tanstack/react-query";
@@ -16,12 +14,11 @@ import useAxiosPublic from "../../hooks/useAxiosPublic";
 import EditProfileModal from "../../Components/EditProfileModal/EditProfileModal";
 import CoverPhotoEditModal from "../../Components/CoverPhotoEditModal/CoverPhotoEditModal";
 import ProfilePicUpdateModal from "../../Components/ProfilePicUpdateModal/ProfilePicUpdateModal";
+import ProfilePostTabs from "../../Components/ProfilePostTabs/ProfilePostTabs";
 
 const Profile = () => {
   const { user } = useAuth();
-  const tabsList = ["Your Feeds", "Your Reels", "Your Videos"];
   const axiosPublic = useAxiosPublic();
-  const [currentTab, setCurrentTab] = useState("Your Feeds");
   const { data: profiles = [], refetch } = useQuery({
     queryKey: ["profile"],
     queryFn: async () => {
@@ -113,29 +110,7 @@ const Profile = () => {
           )}
           {/* content */}
           <div className="col-span-2">
-            <Tabs>
-              <TabList className="flex flex-wrap justify-center items-center gap-5 cursor-pointer text-xl font-medium ">
-                {tabsList.map((tab) => (
-                  <Tab
-                    onClick={() => setCurrentTab(tab)}
-                    className={`bg-gray-300 rounded-md py-2 px-4 outline-none ${
-                      currentTab === tab ? "text-pink-500" : undefined
-                    }`}
-                    key={tab}>
-                    {tab}
-                  </Tab>
-                ))}
-              </TabList>
-              <TabPanel>
-                <p>no feed available</p>
-              </TabPanel>
-              <TabPanel>
-                <p>no reels available</p>
-              </TabPanel>
-              <TabPanel>
-                <p>no video available</p>
-              </TabPanel>
-            </Tabs>
+            <ProfilePostTabs/>
           </div>
         </div>
       </div>
