@@ -42,7 +42,7 @@ const Registration = () => {
       Swal.fire({
         icon: "error",
         title: "Account create error 👇",
-        text: err,
+        text: err.message,
       });
     }
   };

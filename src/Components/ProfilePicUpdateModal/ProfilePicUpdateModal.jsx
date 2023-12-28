@@ -23,7 +23,7 @@ const ProfilePicUpdateModal = ({ refetch }) => {
       // console.log(imageData)
       if (imageData?.success) {
         await profileUpdate(user?.displayName, imageData?.data?.display_url);
-
+        user.reload()
         toast.success("Profile Pic Update Success !");
         reset();
         const modal = document.getElementById("profile_pic_update");
