@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
@@ -18,6 +19,13 @@ const ProfilePostTabs = () => {
       return res.data;
     },
   });
+  // const { data: profileVideos = [], refetch:videoReferch } = useQuery({
+  //   queryKey: ["videos"],
+  //   queryFn: async () => {
+  //     const res = await axiosSecure.get(`/videos?email=${user?.email}`);
+  //     return res.data;
+  //   },
+  // });
 
   return (
     <Tabs>
@@ -42,7 +50,9 @@ const ProfilePostTabs = () => {
         <p>no reels available</p>
       </TabPanel>
       <TabPanel>
-        <p>no video available</p>
+      {/* {profileVideos.map((videos) => (
+          <ProfileVideo key={videos?._id} videos={videos} refetch={videoReferch} />
+        ))} */}
       </TabPanel>
     </Tabs>
   );

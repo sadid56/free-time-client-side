@@ -19,19 +19,19 @@ const AddVideoModal = ({ refetch }) => {
       const fileImage = data?.video[0];
       const formData = new FormData();
       formData.append("file", fileImage);
-      formData.append('upload_preset', 'video_presed');
+      formData.append("upload_preset", "video_presed");
       const { data: imageData } = await axios.post(
-        'https://api.cloudinary.com/v1_1/dvphwrb7p/video/upload',
+        "https://api.cloudinary.com/v1_1/dvphwrb7p/video/upload",
         formData
       );
-        // console.log(imageData);
+      // console.log(imageData);
       //   console.log(res.data);
 
       const postInfo = {
         name: user?.displayName,
         auther_image: user?.photoURL,
         email: user?.email,
-        caption: data?.caption,
+        title: data?.title,
         video: imageData?.secure_url,
         time: new Date(),
         likes: 0,
@@ -44,7 +44,7 @@ const AddVideoModal = ({ refetch }) => {
         reset();
         const modal = document.getElementById("video_modal_id");
         modal.close();
-        refetch()
+        refetch();
         setLoading(false);
       }
     } catch (err) {
@@ -56,7 +56,8 @@ const AddVideoModal = ({ refetch }) => {
       <button
         className="btn text-xl bg-gray-100 rounded-full "
         onClick={() => document.getElementById("video_modal_id").showModal()}>
-        <MdOutlineVideoSettings />Add Video
+        <MdOutlineVideoSettings />
+        Add Video
       </button>
       <dialog id="video_modal_id" className="modal">
         <div className="modal-box">
@@ -70,11 +71,12 @@ const AddVideoModal = ({ refetch }) => {
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Video Caption</span>
+                  <span className="label-text">Video title</span>
                 </label>
                 <textarea
                   type="text"
-                  {...register("caption")}
+                  required
+                  {...register("title")}
                   className="textarea textarea-secondary w-full"
                 />
               </div>
@@ -92,9 +94,9 @@ const AddVideoModal = ({ refetch }) => {
               </div>
               {loading ? (
                 <button className="text-xl btn btn-disabled flex items-center justify-center w-full gap-2 text-black bg-pink-500 py-2 px-4 rounded-md hover:bg-pink-700 transform-all duration-300 mt-5">
-                  Post Now
+                  Pending
                   {loading && (
-                    <span className="loading loading-spinner text-black"></span>
+                    <span className="loading loading-dots loading-md"></span>
                   )}
                 </button>
               ) : (
@@ -102,7 +104,6 @@ const AddVideoModal = ({ refetch }) => {
                   type="submit"
                   className="text-xl flex items-center justify-center w-full gap-2 text-white bg-pink-500 py-2 px-4 rounded-md hover:bg-pink-700 transform-all duration-300 mt-5">
                   Post Now
-                 
                 </button>
               )}
             </form>

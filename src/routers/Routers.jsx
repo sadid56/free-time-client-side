@@ -5,8 +5,7 @@ import Registration from "../Authentication/Registration";
 import Login from "../Authentication/Login";
 import PrivateRoute from "../Private/PrivateRoute";
 import Profile from "../pages/Profile/Profile";
-import Videos from "../pages/Home/VIdeos/Videos";
-
+import Videos from "../pages/Videos/Videos";
 const Routers = createBrowserRouter([
         {
             path: '/',
