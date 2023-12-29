@@ -7,7 +7,7 @@ import SectionHelmet from "../../shared/SectionHelmet/SectionHelmet";
 
 const Reels = () => {
     const axiosSecure = useAxiosSecure()
-    const {data: reels = []} = useQuery({
+    const {data: reels = [], refetch} = useQuery({
         queryKey: ['feels'],
         queryFn: async()=>{
                 const res = await axiosSecure.get("/reels")
@@ -19,12 +19,14 @@ const Reels = () => {
         <div>
             <Navber/>
             <SectionHelmet title={"Free Time | Reels"}/>
-           <div>
            <div className=" w-[30%] space-y-3 mx-auto h-screen">
-                {
-                    reels.map(reel => <Reel key={reel._id} reel={reel}/>)
-                }
-           </div>
+           {
+            reels?.length === 0 ? <p className="text-red-500 text-center font-semibold mt-10">No Reels Available !</p> : <div>
+            {
+                reels.map(reel => <Reel key={reel._id} reel={reel} refetch={refetch}/>)
+            }
+       </div>
+           }
            </div>
         </div>
     );

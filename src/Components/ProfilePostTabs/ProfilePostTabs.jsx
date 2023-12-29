@@ -6,6 +6,7 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
 import Posts from "./Posts";
 import ProfileVideo from "./ProfileVideo";
+import ProfileReel from "./ProfileReels.";
 
 const ProfilePostTabs = () => {
   const [currentTab, setCurrentTab] = useState("Your Feeds");
@@ -24,6 +25,13 @@ const ProfilePostTabs = () => {
     queryKey: ["videos"],
     queryFn: async () => {
       const res = await axiosSecure.get(`/videos?email=${user?.email}`);
+      return res.data;
+    },
+  });
+  const { data: profileReels = [], refetch:reelsReferch } = useQuery({
+    queryKey: ["reels"],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/reels?email=${user?.email}`);
       return res.data;
     },
   });
@@ -52,7 +60,15 @@ const ProfilePostTabs = () => {
       }
       </TabPanel>
       <TabPanel>
-        <p>no reels available</p>
+      <div className="grid grid-cols-2 gap-3">
+      {
+        profileReels?.length === 0 ? <p className="text-red-600 text text-center mt-5">No Reel Added !</p> : <>
+        {profileReels.map((reels) => (
+          <ProfileReel key={reels?._id} reel={reels} refetch={reelsReferch} />
+        ))}
+        </>
+      }
+      </div>
       </TabPanel>
       <TabPanel>
       {

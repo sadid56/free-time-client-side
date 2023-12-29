@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
-import { MdInsertComment } from "react-icons/md";
 import { useState } from "react"; // Import useState
 import { IoMdSend } from "react-icons/io";
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { FaRegCommentDots } from "react-icons/fa";
 // import EmojiPicker from "emoji-picker-react";
 
 const ReelComment = ({ comments, id, refetch }) => {
@@ -31,7 +31,7 @@ const ReelComment = ({ comments, id, refetch }) => {
     };
 
     try {
-      await axiosPublic.post(`/feeds/comment/${id}`, commentInfo);
+      await axiosPublic.post(`/reels/comment/${id}`, commentInfo);
       reset();
       refetch();
     } catch (err) {
@@ -42,13 +42,13 @@ const ReelComment = ({ comments, id, refetch }) => {
   return (
     <div>
       <button
-        className="font-medium flex items-center gap-1"
+        className="font-medium flex flex-col items-center"
         onClick={openModal}>
-        <MdInsertComment /> {comments?.length}
+        <FaRegCommentDots /> {comments?.length}
       </button>
       {isModalOpen && (
         <dialog open={isModalOpen} className="modal">
-          <div className="modal-box w-11/12 max-w-3xl relative">
+          <div className="modal-box w-11/12 max-w-xl relative border shadow-2xl">
             <div className="modal-action">
               <form method="dialog" className="absolute right-0 top-0">
                 <button onClick={closeModal} className="btn btn-circle text-xl">
@@ -70,7 +70,7 @@ const ReelComment = ({ comments, id, refetch }) => {
                   <p className="font-medium">{comment?.date?.slice(0, 10)}</p>
                     </div>
                   </div>
-                  <p className="bg-gray-200 text-slate-900 font-medium w-fit rounded-md py-3 px-5">
+                  <p className="bg-[#f6f1f1]  border text-slate-900 font-medium w-fit rounded-md py-3 px-5">
                     {comment?.comment}
                   </p>
                 </div>
