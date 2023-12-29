@@ -6,6 +6,7 @@ import Login from "../Authentication/Login";
 import PrivateRoute from "../Private/PrivateRoute";
 import Profile from "../pages/Profile/Profile";
 import Videos from "../pages/Videos/Videos";
+import Reels from "../pages/Reels/Reels";
 const Routers = createBrowserRouter([
         {
             path: '/',
@@ -25,6 +26,10 @@ const Routers = createBrowserRouter([
         {
             path:'/profile',
             element: <PrivateRoute><Profile/></PrivateRoute>
+        },
+        {
+         path: '/reels',
+         element: <PrivateRoute><Reels/></PrivateRoute>
         },
         {
             path: '/registration',

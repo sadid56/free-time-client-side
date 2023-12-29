@@ -31,7 +31,7 @@ const Sideber = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/shorts" className="flex items-center gap-1">
+          <NavLink to="/reels" className="flex items-center gap-1">
             <SiYoutubeshorts /> Short
           </NavLink>
         </li>

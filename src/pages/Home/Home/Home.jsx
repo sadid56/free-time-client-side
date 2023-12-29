@@ -6,7 +6,6 @@ const Home = () => {
     <div>
       <SectionHelmet title={"Free Time | Feeds"} />
       <Feeds/>
-      
     </div>
   );
 };

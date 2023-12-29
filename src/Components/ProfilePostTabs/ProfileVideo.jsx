@@ -1,26 +1,30 @@
 /* eslint-disable react/prop-types */
 import { AiOutlineLike } from "react-icons/ai";
 import { BiSolidLike } from "react-icons/bi";
-import { IoIosShareAlt } from "react-icons/io";
-import { HiDotsVertical } from "react-icons/hi";
-import toast from "react-hot-toast";
-import { useState } from "react";
+// import CommentsModal from "../CommentsModal/CommentsModal";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
-import { MdClose, MdDelete } from "react-icons/md";
-import UpdatePostModal from "./UpdatePostModal";
-import Swal from "sweetalert2";
-import PostCommentModal from "../../shared/VideoCommentModal/VideoCommentsModal";
+import { useState } from "react";
+// import useAuth from "../../hooks/useAuth";
 
-const Posts = ({ post, refetch }) => {
-  const { name, article, time, likes, comments, _id, auther_image, image } =
-    post;
-  const [likeCount, setLikeCount] = useState(likes);
+// import FeedsShareModal from "../../Components/FeedsShareModal/FeedsShareModal";
+import toast from "react-hot-toast";
+import { MdClose, MdDelete } from "react-icons/md";
+import { HiDotsVertical } from "react-icons/hi";
+import ReactPlayer from "react-player";
+import CommentsModal from "../../shared/CommentsModal/CommentsModal";
+import { CiShare2 } from "react-icons/ci"
+import Swal from "sweetalert2";
+
+const ProfileVideo = ({ videos, refetch }) => {
+  const { name, title, time, likes, comments, _id, auther_image, video } =
+    videos;
   const axiosPublic = useAxiosPublic();
   const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(likes);
   const [isToggle, setIsToggle] = useState(false);
   const handleLike = async () => {
     try {
-      await axiosPublic.post(`/feeds/likes/${_id}`);
+      await axiosPublic.post(`/videos/likes/${_id}`);
       setLiked(true);
       setLikeCount((prevLikeCount) => prevLikeCount + 1);
       // console.log(res.data);
@@ -29,7 +33,7 @@ const Posts = ({ post, refetch }) => {
     }
   };
   const shareHandler = async () => {
-    const feedUrl = `${window.location.origin}/feeds/${_id}`;
+    const feedUrl = `${window.location.origin}/videos/${_id}`;
     if ("share" in navigator) {
       await navigator.share({
         title: "Share",
@@ -40,7 +44,7 @@ const Posts = ({ post, refetch }) => {
       toast.error("Share not supported by your browser");
     }
   };
-
+  
   const handleDelete = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -52,11 +56,11 @@ const Posts = ({ post, refetch }) => {
       confirmButtonText: "Yes",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const res = await axiosPublic.delete(`/feeds/${_id}`);
+        const res = await axiosPublic.delete(`/videos/${_id}`);
         if (res.data.acknowledged) {
           Swal.fire({
             title: "Deleted!",
-            text: "Your post has been deleted !",
+            text: "Your video has been deleted !",
             icon: "success",
           });
           refetch()
@@ -64,8 +68,10 @@ const Posts = ({ post, refetch }) => {
       }
     });
   };
+
   return (
     <div className="p-5 border rounded-md">
+      
       <div className="flex justify-between items-center gap-2 relative">
         <div className="flex items-center gap-2">
           <div className="avatar">
@@ -92,21 +98,25 @@ const Posts = ({ post, refetch }) => {
             className="text-xl text-white bg-slate-500 px-4 py-2 rounded-md hover:bg-slate-600 transform-all duration-300">
             <MdDelete />
           </button>
-          <UpdatePostModal
-            post={post}
-            setIsToggle={setIsToggle}
-            refetch={refetch}
-          />
+          
+         
         </div>
       </div>
-      <h5 className="font-medium my-5">{article}</h5>
+      <h5 className="font-medium my-5">{title}</h5>
 
       <div>
-        <img src={image} className="object-cover h-[450px] w-full" alt="" />
+        <ReactPlayer
+          controls
+          // playing={true}
+          volume={"#357"}
+          url={video}
+          width="100%"
+          height="100%"
+        />
       </div>
 
       {/* react  */}
-      <div className="flex justify-between px-10 my-2 border-2 p-2 rounded-md">
+      <div className="flex justify-between mt-5 px-16 border-2 p-2 rounded-md">
         {liked ? (
           <button className="flex items-center text-pink-500 gap-1 text-xl">
             <BiSolidLike /> {likeCount}
@@ -118,16 +128,15 @@ const Posts = ({ post, refetch }) => {
             <AiOutlineLike /> {likeCount}
           </button>
         )}
-        <PostCommentModal comments={comments} id={_id} refetch={refetch} />
-        {/* <FeedsShareModal/> */}
+        <CommentsModal comments={comments} id={_id} refetch={refetch} />
         <button
-          onClick={shareHandler}
-          className="flex items-center gap-1 text-xl">
-          <IoIosShareAlt /> Share
-        </button>
+            onClick={shareHandler}
+            className="text-xl flex   gap-1 items-center">
+            <CiShare2 /> Share
+          </button>
       </div>
     </div>
   );
 };
 
-export default Posts;
+export default ProfileVideo;

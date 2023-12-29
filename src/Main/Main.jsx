@@ -15,6 +15,10 @@ const Main = () => {
           {/* main content */}
           <Outlet />
         </div>
+        {/* comment cos */}
+        <div>
+          
+        </div>
       </div>
         </div>
      );

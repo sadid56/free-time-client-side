@@ -7,7 +7,7 @@ import useAuth from "../../hooks/useAuth";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 // import EmojiPicker from "emoji-picker-react";
 
-const CommentsModal = ({ comments, id, refetch }) => {
+const ReelComment = ({ comments, id, refetch }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { register, handleSubmit, reset } = useForm();
   const axiosPublic = useAxiosPublic();
@@ -31,7 +31,7 @@ const CommentsModal = ({ comments, id, refetch }) => {
     };
 
     try {
-      await axiosPublic.post(`/videos/comment/${id}`, commentInfo);
+      await axiosPublic.post(`/feeds/comment/${id}`, commentInfo);
       reset();
       refetch();
     } catch (err) {
@@ -44,7 +44,7 @@ const CommentsModal = ({ comments, id, refetch }) => {
       <button
         className="font-medium flex items-center gap-1"
         onClick={openModal}>
-        <MdInsertComment /> Comment {comments?.length}
+        <MdInsertComment /> {comments?.length}
       </button>
       {isModalOpen && (
         <dialog open={isModalOpen} className="modal">
@@ -100,4 +100,4 @@ const CommentsModal = ({ comments, id, refetch }) => {
   );
 };
 
-export default CommentsModal;
+export default ReelComment;

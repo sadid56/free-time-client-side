@@ -5,6 +5,7 @@ import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
 import Posts from "./Posts";
+import ProfileVideo from "./ProfileVideo";
 
 const ProfilePostTabs = () => {
   const [currentTab, setCurrentTab] = useState("Your Feeds");
@@ -19,13 +20,13 @@ const ProfilePostTabs = () => {
       return res.data;
     },
   });
-  // const { data: profileVideos = [], refetch:videoReferch } = useQuery({
-  //   queryKey: ["videos"],
-  //   queryFn: async () => {
-  //     const res = await axiosSecure.get(`/videos?email=${user?.email}`);
-  //     return res.data;
-  //   },
-  // });
+  const { data: profileVideos = [], refetch:videoReferch } = useQuery({
+    queryKey: ["videos"],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/videos?email=${user?.email}`);
+      return res.data;
+    },
+  });
 
   return (
     <Tabs>
@@ -42,17 +43,25 @@ const ProfilePostTabs = () => {
         ))}
       </TabList>
       <TabPanel className={"mx-20 mt-5"}>
-        {profilePosts.map((posts) => (
-          <Posts key={posts?._id} post={posts} refetch={refetch} />
+      {
+        profilePosts?.length === 0 ? <p className="text-red-600 text text-center mt-5">No Post Added !</p> : <>
+        {profilePosts.map((post) => (
+          <Posts key={post?._id} post={post} refetch={refetch} />
         ))}
+        </>
+      }
       </TabPanel>
       <TabPanel>
         <p>no reels available</p>
       </TabPanel>
       <TabPanel>
-      {/* {profileVideos.map((videos) => (
+      {
+        profileVideos?.length === 0 ? <p className="text-red-600 text text-center mt-5">No Video Added !</p> : <>
+        {profileVideos.map((videos) => (
           <ProfileVideo key={videos?._id} videos={videos} refetch={videoReferch} />
-        ))} */}
+        ))}
+        </>
+      }
       </TabPanel>
     </Tabs>
   );

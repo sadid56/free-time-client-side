@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import { AiOutlineLike } from "react-icons/ai";
 import { BiSolidLike } from "react-icons/bi";
-import CommentsModal from "../CommentsModal/CommentsModal";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { useState } from "react";
 // import useAuth from "../../hooks/useAuth";
@@ -11,6 +10,7 @@ import toast from "react-hot-toast";
 import { IoIosShareAlt } from "react-icons/io";
 import { MdClose } from "react-icons/md";
 import { HiDotsVertical } from "react-icons/hi";
+import PostCommentModal from "../VideoCommentModal/VideoCommentsModal";
 
 const Feed = ({ feed , refetch}) => {
   const { name, article, time, likes, comments, _id, auther_image, image } = feed;
@@ -83,8 +83,8 @@ const Feed = ({ feed , refetch}) => {
         <AiOutlineLike /> {likeCount}
       </button>
         }
-         <CommentsModal comments={comments} id={_id} refetch={refetch}/>
-        
+         {/* <CommentsModal comments={comments} id={_id} refetch={refetch}/> */}
+        <PostCommentModal comments={comments} refetch={refetch} id={_id}/>
       </div>
     </div>
   );

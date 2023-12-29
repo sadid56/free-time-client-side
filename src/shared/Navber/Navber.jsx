@@ -43,7 +43,7 @@ const Navber = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/" className="text-2xl">
+          <NavLink to="/reels" className="text-2xl">
             <SiYoutubeshorts />
           </NavLink>
         </li>

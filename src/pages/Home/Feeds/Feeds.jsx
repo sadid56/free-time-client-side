@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
 import AddPostModal from "../../../Components/AddPostModal/AddPostModal";
-import { TbTableShortcut } from "react-icons/tb";
+import AddReelsModal from "../../../Components/AddReelsModal/AddReelsModal";
 import AddVideoModal from "../../../Components/AddVideoModal/AddVideoModal";
 
 const Feeds = () => {
@@ -32,15 +32,17 @@ const Feeds = () => {
         <hr />
         <div className="flex items-center gap-5 justify-between">
         <AddPostModal refetch={refetch}/>
-              <button className="btn text-xl  bg-gray-100 rounded-full"><TbTableShortcut />Add Reels</button>
+             <AddReelsModal/>
               <AddVideoModal refetch={refetch}/>
         </div>
       </div>
-      <div className="grid grid-cols-1 gap-2">
+      {
+        news?.length === 0 ? <p className="text-center text-red-600 font-medium mt-20">No Post !</p> : <div className="grid grid-cols-1 gap-2">
         {news.map((feed) => (
           <Feed key={feed._id} feed={feed} refetch={refetch}></Feed>
         ))}
       </div>
+      }
     </div>
   );
 };
