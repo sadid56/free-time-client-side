@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import './navber.css'
+import { Link, NavLink } from "react-router-dom";
 import { FiAlignJustify, FiX } from "react-icons/fi";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
 import { FaHome } from "react-icons/fa";
 import { SiYoutubeshorts } from "react-icons/si";
-import { MdPersonalVideo } from "react-icons/md";
+import { MdNotifications, MdPersonalVideo } from "react-icons/md";
+import logo  from '../../assets/icon/logo.png'
 
 const Navber = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,8 +24,8 @@ const Navber = () => {
       });
   };
   return (
-    <div className="flex justify-between sticky top-0 z-10 bg-white items-center px-0 md:px-5 py-4 shadow-lg">
-      <h3 className="text-3xl font-bold hidden md:block">Free Time</h3>
+    <nav id="toNap" className="flex justify-between sticky top-0 z-10 py-2 px-4 bg-white items-center px-0  shadow-lg">
+       <img src={logo} className="w-16" alt="" />
       <button onClick={() => setIsOpen(!isOpen)} className="md:hidden pl-5">
         {!isOpen ? (
           <FiAlignJustify className="text-2xl" />
@@ -52,6 +54,11 @@ const Navber = () => {
           <MdPersonalVideo />
           </NavLink>
         </li>
+        <li>
+          <NavLink className="text-2xl">
+          <MdNotifications />
+          </NavLink>
+        </li>
         
       </ul>
       <div className="dropdown dropdown-end">
@@ -64,12 +71,11 @@ const Navber = () => {
         </label>
         <ul
           tabIndex={0}
-          className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+          className="mt-3 z-[1] p-2 menu menu-sm dropdown-content bg-base-100 rounded-box w-52 space-y-3 border shadow-md">
           <li>
-            <a className="justify-between">
+            <Link to={"/profile"} className="justify-between">
               Profile
-              <span className="badge">New</span>
-            </a>
+            </Link>
           </li>
           <li>
             <a>Settings</a>
@@ -79,7 +85,7 @@ const Navber = () => {
           </button>
         </ul>
       </div>
-    </div>
+    </nav>
   );
 };
 

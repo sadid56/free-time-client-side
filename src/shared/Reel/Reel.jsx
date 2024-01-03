@@ -6,12 +6,14 @@ import ReelComment from "../../Components/ReelsCommant/ReelComme";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { useInView } from "react-intersection-observer";
 
 const Reel = ({ reel, refetch }) => {
   const { name, title, time, auther_image, reels, _id, comments, likes } = reel;
   const [likeCount, setLikeCount] = useState(likes);
   const [liked, setLiked] = useState(false);
   const axiosPublic = useAxiosPublic();
+  const [ref, inView, entry] = useInView();
   // console.log(reel);
   const shareHandler = async () => {
     const feedUrl = `${window.location.origin}/reels/${_id}`;
@@ -35,8 +37,10 @@ const Reel = ({ reel, refetch }) => {
       console.log("post error-->", err);
     }
   };
+  console.log(inView);
+  console.log(entry);
   return (
-    <div className="border rounded-md shadow-md p-1">
+    <div ref={ref} className="border rounded-md shadow-md p-1 ">
       <div className="relative">
         <div className="flex items-center gap-2 absolute  p-3 bg-[rgba(0,0,0,0.5)] w-full">
           <div className="avatar right-1">
@@ -48,15 +52,17 @@ const Reel = ({ reel, refetch }) => {
             <h3 className="text-2xl text-white font-bold">{name}</h3>
           </div>
         </div>
-        <ReactPlayer
+       <div>
+       <ReactPlayer
           controls
-          // playing={true}
-          volume={"#357"}
+          playing={inView}
+          volume={0.5}
           url={reels}
           width="100%"
-          height="100%"
+          height="50%"
         />
-        <div className="flex flex-col py-5 px-3 space-y-10 text-xl bg-slate-200 rounded-full w-fit absolute bottom-32 right-3">
+       </div>
+        <div className="hidden flex-col py-5 px-3 space-y-10 text-xl bg-slate-200 rounded-full w-fit absolute bottom-32 -right-14">
           {liked ? (
             <button className="flex flex-col items-center text-pink-500 gap-1 text-xl">
               <FaRegHeart /> {likeCount}

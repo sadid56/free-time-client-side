@@ -13,7 +13,7 @@ import { HiDotsVertical } from "react-icons/hi";
 import PostCommentModal from "../VideoCommentModal/VideoCommentsModal";
 
 const Feed = ({ feed , refetch}) => {
-  const { name, article, time, likes, comments, _id, auther_image, image } = feed;
+  const { name, article, time, likes, comments, _id, auther_image, image, feelings } = feed;
   const axiosPublic = useAxiosPublic()
   const [liked, setLiked] = useState(false)
   const [likeCount, setLikeCount] = useState(likes); 
@@ -51,7 +51,7 @@ const Feed = ({ feed , refetch}) => {
             </div>
           </div>
           <div>
-            <h3 className="text-xl font-medium">{name}</h3>
+            <h3 className="text-xl font-medium flex items-center gap-3">{name} <span className="text-[16px] font-normal text-gray-400">{feelings ? <p>Feelings with <span className="font-medium text-gray-950">{feelings}</span></p> : ""}</span></h3> 
             <p className="text-sm text-gray-500">{time?.slice(0, 10)}</p>
           </div>
         </div>
@@ -70,7 +70,9 @@ const Feed = ({ feed , refetch}) => {
       <h5 className="font-medium my-5">{article}</h5>
 
       <div>
-        <img src={image} className="object-cover h-[450px] w-full" alt="" />
+       {
+        image ?  <img src={image} className="object-cover h-[450px] w-full rounded-md" alt="" /> : ""
+       }
       </div>
 
       {/* react  */}

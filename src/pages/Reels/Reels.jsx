@@ -19,7 +19,7 @@ const Reels = () => {
         <div>
             <Navber/>
             <SectionHelmet title={"Free Time | Reels"}/>
-           <div className=" w-[30%] space-y-3 mx-auto h-screen">
+           <div className=" md:w-[30%] space-y-5 mx-auto">
            {
             reels?.length === 0 ? <p className="text-red-500 text-center font-semibold mt-10">No Reels Available !</p> : <div>
             {

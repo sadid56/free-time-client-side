@@ -12,6 +12,7 @@ import { IoIosShareAlt } from "react-icons/io";
 import { MdClose } from "react-icons/md";
 import { HiDotsVertical } from "react-icons/hi";
 import ReactPlayer from "react-player";
+import { useInView } from "react-intersection-observer";
 
 const Video = ({ videos, refetch }) => {
   const { name, title, time, likes, comments, _id, auther_image, video } =
@@ -20,6 +21,8 @@ const Video = ({ videos, refetch }) => {
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes);
   const [isToggle, setIsToggle] = useState(false);
+  const [ref, inView] = useInView();
+  console.log(inView);
   const handleLike = async () => {
     try {
       await axiosPublic.post(`/videos/likes/${_id}`);
@@ -44,7 +47,7 @@ const Video = ({ videos, refetch }) => {
   };
 
   return (
-    <div className="p-5 border rounded-md">
+    <div ref={ref} className="p-5 border rounded-md">
       
       <div className="flex justify-between items-center gap-2 relative">
         <div className="flex items-center gap-2">
@@ -76,11 +79,11 @@ const Video = ({ videos, refetch }) => {
       </div>
       <h5 className="font-medium my-5">{title}</h5>
 
-      <div>
+      <div className="w-full h-full">
         <ReactPlayer
           controls
-          // playing={true}
-          volume={"#357"}
+          playing={inView}
+          volume={0.5}
           url={video}
           width="100%"
           height="100%"

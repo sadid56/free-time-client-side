@@ -1,23 +1,14 @@
 /* eslint-disable react/prop-types */
-import { AiOutlineLike } from "react-icons/ai";
-import { BiSolidLike } from "react-icons/bi";
-// import CommentsModal from "../CommentsModal/CommentsModal";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { useState } from "react";
-// import useAuth from "../../hooks/useAuth";
-
-// import FeedsShareModal from "../../Components/FeedsShareModal/FeedsShareModal";
 import toast from "react-hot-toast";
 import { MdClose, MdDelete } from "react-icons/md";
 import { HiDotsVertical } from "react-icons/hi";
 import ReactPlayer from "react-player";
-import CommentsModal from "../../shared/CommentsModal/CommentsModal";
-import { CiShare2 } from "react-icons/ci"
 import Swal from "sweetalert2";
 import { FaRegHeart } from "react-icons/fa";
 import ReelComment from "../ReelsCommant/ReelComme";
 import { IoIosShareAlt } from "react-icons/io";
-
 const ProfileReel = ({ reel, refetch }) => {
   const { name, title, time, likes, comments, _id, auther_image, reels } = reel;
   const axiosPublic = useAxiosPublic();

@@ -1,54 +1,92 @@
+/* eslint-disable react/no-unknown-property */
 /* eslint-disable react/prop-types */
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
-import { MdArticle } from "react-icons/md";
+import { MdArticle, MdOutlineCloudUpload } from "react-icons/md";
 import axios from "axios";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 import { useState } from "react";
 
 const AddPostModal = ({ refetch }) => {
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, setValue, watch } = useForm();
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [loading, setLoading] = useState(false);
+  // const [selectedFileName, setSelectedFileName] = useState("");
   const onSubmit = async (data) => {
     // console.log(data);
     try {
-      setLoading(true);
+      // setLoading(true);
       const fileImage = data?.image[0];
-      const formData = new FormData();
-      formData.append("image", fileImage);
-      const { data: imageData } = await axios.post(
-        "https://api.imgbb.com/1/upload?key=ee9960786c60a08168b8606c5d54ae38",
-        formData
-      );
-
-      //   console.log(res.data);
-      const postInfo = {
-        name: user?.displayName,
-        auther_image: user?.photoURL,
-        email: user?.email,
-        article: data?.article || "",
-        image: imageData?.data?.display_url || "",
-        time: new Date(),
-        likes: 0,
-        comments: [],
-      };
-
-      const response = await axiosSecure.post("/feeds", postInfo);
-      if (response?.data?.acknowledged) {
-        toast.success("Your post successfull !");
-        reset();
-        const modal = document.getElementById("post_modal_id");
-        modal.close();
-        refetch()
+      console.log(fileImage);
+      if (fileImage) {
+        const formData = new FormData();
+        formData.append("image", fileImage);
+        const { data: imageData } = await axios.post(
+          "https://api.imgbb.com/1/upload?key=ee9960786c60a08168b8606c5d54ae38",
+          formData
+        );
+        const postInfo = {
+          name: user?.displayName,
+          auther_image: user?.photoURL,
+          email: user?.email,
+          article: data?.article,
+          image: imageData?.data?.display_url,
+          time: new Date(),
+          likes: 0,
+          comments: [],
+          feelings: data?.feelings
+        };
+        const response = await axiosSecure.post("/feeds", postInfo);
+        if (response?.data?.acknowledged) {
+          toast.success("Your post successfull !");
+          reset();
+          const modal = document.getElementById("post_modal_id");
+          modal.close();
+          refetch();
+          setLoading(false);
+        }
+      } else if (data?.article) {
+        const postInfo = {
+          name: user?.displayName,
+          auther_image: user?.photoURL,
+          email: user?.email,
+          article: data?.article,
+          image: "",
+          time: new Date(),
+          likes: 0,
+          comments: [],
+          feelings: data?.feelings
+        };
+        const response = await axiosSecure.post("/feeds", postInfo);
+        if (response?.data?.acknowledged) {
+          toast.success("Your post successfull !");
+          reset();
+          const modal = document.getElementById("post_modal_id");
+          modal.close();
+          refetch();
+          setLoading(false);
+        }
+      }
+      else{
+        toast.error("error")
         setLoading(false);
       }
+
+      //   console.log(res.data);
     } catch (err) {
       console.log("post err-->", err);
     }
   };
+  // const handleFileChange = (event) => {
+  //   const selectedFile = event.target.files[0];
+  //   if (selectedFile) {
+  //     setSelectedFileName(selectedFile.name);
+  //   }
+  // };
+
+  const selectFeelings = watch("feelings");
   return (
     <div>
       <button
@@ -61,34 +99,79 @@ const AddPostModal = ({ refetch }) => {
         <div className="modal-box">
           <form method="dialog">
             {/* if there is a button in form, it will close the modal */}
-            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            <button className="btn btn-sm btn-circle text-xl btn-ghost absolute right-2 top-2">
               ✕
             </button>
           </form>
           <div>
+          <div className="divider">Create Post</div>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Share Your Feeling...😊</span>
+                  <span className="label-text text-gray-500">Article</span>
                 </label>
                 <textarea
                   type="text"
+                  placeholder="Share your article..."
                   {...register("article")}
-                  className="textarea textarea-secondary w-full"
+                  className="textarea border border-[#0F2167] focus:border-[#0F2167] w-full"
                 />
               </div>
-              <div className="form-control">
+              <div className="form-control w-full">
                 <label className="label">
-                  <span className="label-text">Share your photo</span>
+                  <span className="label-text text-gray-500">Feelings</span>
                 </label>
-                <input
-                  type="file"
-                  {...register("image")}
-                  className="file-input file-input-bordered file-input-secondary w-full h-[100px]"
-                />
+                <select
+                  {...register("feelings")}
+                  value={selectFeelings}
+                  onChange={(e) => setValue("feelings", e.target.value)}
+                  className="select select-bordered w-full">
+                  <option value="">None</option>
+                  <option value="Happy 😊">Happy 😊</option>
+                  <option value="Loved 😘">Loved 😘</option>
+                  <option value="Thankful 😊">Thankful 😊</option>
+                  <option value="Normal 🙂">Normal 🙂</option>
+                  <option value="Proud 🥰">Proud 🥰</option>
+                  <option value="Angry 😡">Angry 😡</option>
+                  <option value="Sleep 😴">Sleep 😴</option>
+                  <option value="Hungry 😩">Hungry 😩</option>
+                  <option value="Sorry 🙃">Sorry 🙃</option>
+                  <option value="Missing 😭">Missing 😭</option>
+                  <option value="Crazy 😁">Crazy 😁</option>
+                  <option value="Sick 😣">Sick 😣</option>
+                  <option value="Sad 🥲">Sad 🥲</option>
+                </select>
               </div>
+              <div className="flex items-center justify-center w-full mt-5">
+                <label
+                  for="dropzone-file"
+                  className="flex flex-col items-center justify-center w-full h-36 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800  hover:bg-gray-100  ">
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <MdOutlineCloudUpload className="text-4xl text-gray-500" />
+                    <p className=" text-sm text-gray-500 dark:text-gray-400">
+                      <span className="font-semibold">Click to upload</span>{" "}
+                      Photo
+                    </p>
+                    {/* <p className="font-medium text-gray-500">
+                      {selectedFileName}
+                    </p> */}
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      SVG, PNG, JPG
+                    </p>
+                  </div>
+                  <input
+                    accept="image/svg+xml,image/png,image/jpeg"
+                    id="dropzone-file"
+                    type="file"
+                    name="image"
+                    className="hidden"
+                    {...register("image")}
+                  />
+                </label>
+              </div>
+
               {loading ? (
-                <button className="text-xl btn btn-disabled flex items-center justify-center w-full gap-2 text-black bg-pink-500 py-2 px-4 rounded-md hover:bg-pink-700 transform-all duration-300 mt-5">
+                <button className="text-xl btn btn-disabled flex items-center justify-center w-full gap-2 text-black bg-[#0F2167] py-2 px-4 rounded-md mt-5">
                   Post Now
                   {loading && (
                     <span className="loading loading-spinner text-black"></span>
@@ -97,7 +180,7 @@ const AddPostModal = ({ refetch }) => {
               ) : (
                 <button
                   type="submit"
-                  className="text-xl flex items-center justify-center w-full gap-2 text-white bg-pink-500 py-2 px-4 rounded-md hover:bg-pink-700 transform-all duration-300 mt-5">
+                  className="text-xl flex items-center justify-center w-full gap-2 text-white bg-[#0F2167] py-2 px-4 rounded-md hover:bg-[#131a39] transform-all duration-300 mt-5">
                   Post Now
                   {loading && (
                     <span className="loading loading-spinner text-white"></span>
