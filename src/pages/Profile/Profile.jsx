@@ -49,7 +49,7 @@ const Profile = () => {
             <div className="w-36 rounded-full ring ring-pink-500 ring-offset-base-100 ring-offset-2">
               <img src={user?.photoURL} />
             </div>
-            <ProfilePicUpdateModal refetch={refetch}/>
+            <ProfilePicUpdateModal/>
           </div>
           <div className="flex justify-between items-end px-5 ml-[200px] mt-5">
             <div>

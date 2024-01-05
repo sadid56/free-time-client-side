@@ -2,7 +2,7 @@
 
 /* eslint-disable react/prop-types */
 import { useForm } from "react-hook-form";
-import { MdUpdate } from "react-icons/md";
+import { MdOutlineCloudUpload, MdUpdate } from "react-icons/md";
 import axios from "axios";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
@@ -64,28 +64,44 @@ const UpdatePostModal = ({ setIsToggle, post, refetch }) => {
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Share Your Feeling...😊</span>
+                  <span className="label-text text-gray-500">Article</span>
                 </label>
                 <textarea
                   type="text"
                   defaultValue={article}
                   {...register("article")}
-                  className="textarea textarea-secondary w-full"
+                  className="py-3 px-2 outline-none border text-gray-500  border-[#0F2167] text-sm rounded-lg  focus:border-blue-500 block p-2.5 dark:placeholder-gray-400 w-fullv"
                 />
               </div>
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Share your photo</span>
+              <div className="flex items-center justify-center w-full mt-5">
+                <label
+                  className="flex flex-col items-center justify-center w-full h-36 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800  hover:bg-gray-100  ">
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <MdOutlineCloudUpload className="text-4xl text-gray-500" />
+                    <p className=" text-sm text-gray-500 dark:text-gray-400">
+                      <span className="font-semibold">Click to upload</span>{" "}
+                      Photo
+                    </p>
+                    {/* <p className="font-medium text-gray-500">
+                      {selectedFileName}
+                    </p> */}
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      SVG, PNG, JPG
+                    </p>
+                  </div>
+                  <input
+                    accept="image/svg+xml,image/png,image/jpeg"
+                    id="dropzone-file"
+                    type="file"
+                    name="image"
+                    className="hidden"
+                    {...register("image")}
+                  />
                 </label>
-                <input
-                  type="file"
-                  {...register("image")}
-                  className="file-input file-input-bordered file-input-secondary w-full h-[100px]"
-                />
               </div>
               <button
                 type="submit"
-                className="text-xl flex items-center justify-center w-full gap-2 text-white bg-pink-500 py-2 px-4 rounded-md hover:bg-pink-700 transform-all duration-300 mt-5">
+                className="text-xl flex items-center justify-center w-full gap-2 text-white bg-[#0F2167] py-2 px-4 rounded-md hover:bg-[#0b122b] transform-all duration-300 mt-5">
                 Update Now
                 {loading && (
                   <span className="loading loading-spinner text-white"></span>

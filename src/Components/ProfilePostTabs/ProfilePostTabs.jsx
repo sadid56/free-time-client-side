@@ -43,14 +43,14 @@ const ProfilePostTabs = () => {
           <Tab
             onClick={() => setCurrentTab(tab)}
             className={`bg-gray-300 rounded-md py-2 px-4 outline-none ${
-              currentTab === tab ? "text-pink-500" : undefined
+              currentTab === tab ? "text-[#40aff4]" : undefined
             }`}
             key={tab}>
             {tab}
           </Tab>
         ))}
       </TabList>
-      <TabPanel className={"mx-20 mt-5"}>
+      <TabPanel className={"mx-20 mt-5 space-y-2"}>
       {
         profilePosts?.length === 0 ? <p className="text-red-600 text text-center mt-5">No Post Added !</p> : <>
         {profilePosts.map((post) => (

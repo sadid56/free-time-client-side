@@ -26,7 +26,7 @@ const SocialLogin = () => {
     <div>
       {/* You can open the modal using document.getElementById('ID').showModal() method */}
       <button
-        className="text-xl font-medium text-black py-1 px-4 w-full border border-pink-500 rounded-md hover:text-white hover:bg-pink-500 transition-all duration-300"
+        className="text-xl font-medium text-black py-1 px-4 w-full border border-pink-500 rounded-md hover:text-white hover:bg-[#0F2167] transition-all duration-300"
         onClick={() =>
           document.getElementById("SocialLogin_modal").showModal()
         }>

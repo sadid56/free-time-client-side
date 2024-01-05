@@ -51,7 +51,7 @@ const EditProfileModal = ({ refetch, profile }) => {
   return (
     <div>
       <button
-        className="text-xl flex items-center gap-2 text-white bg-pink-500 py-2 px-4 rounded-md hover:bg-pink-700 transform-all duration-300"
+        className="text-xl flex items-center gap-2 text-white bg-[#0F2167] py-2 px-4 rounded-md hover:bg-[#0d132e] transform-all duration-300"
         onClick={() =>
           document.getElementById("Edit_profile_modal_id").showModal()
         }>
@@ -69,18 +69,6 @@ const EditProfileModal = ({ refetch, profile }) => {
           <div>
             <form onSubmit={handleSubmit(onSubmit)} className="card-body">
               <div className="grid grid-cols-2 gap-5">
-                {/* <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">Cover Photo</span>
-                  </label>
-                  <input
-                    type="file"
-                    required
-                    {...register("file")}
-                    placeholder="Type here"
-                    className="file-input file-input-bordered file-input-secondary w-full"
-                  />
-                </div> */}
                 <div className="form-control">
                   <label className="label">
                     <span className="label-text">Bio</span>
@@ -90,7 +78,7 @@ const EditProfileModal = ({ refetch, profile }) => {
                     {...register("bio")}
                     defaultValue={profile?.bio}
                     placeholder="Bio length 30"
-                    className="input input-bordered input-secondary w-full"
+                    className="py-3 px-2 outline-none border text-gray-500  border-[#0F2167] text-sm rounded-lg  focus:border-blue-500 block p-2.5 dark:placeholder-gray-400 w-full"
                   />
                 </div>
                 <div className="form-control">
@@ -102,7 +90,7 @@ const EditProfileModal = ({ refetch, profile }) => {
                     {...register("work")}
                     defaultValue={profile?.work}
                     placeholder="Your Work name"
-                    className="input input-bordered input-secondary w-full"
+                    className="py-3 px-2 outline-none border text-gray-500  border-[#0F2167] text-sm rounded-lg  focus:border-blue-500 block p-2.5 dark:placeholder-gray-400 w-full"
                   />
                 </div>
                 <div className="form-control">
@@ -114,7 +102,7 @@ const EditProfileModal = ({ refetch, profile }) => {
                     {...register("home")}
                     defaultValue={profile?.home}
                     placeholder="Your Home"
-                    className="input input-bordered input-secondary w-full"
+                    className="py-3 px-2 outline-none border text-gray-500  border-[#0F2167] text-sm rounded-lg  focus:border-blue-500 block p-2.5 dark:placeholder-gray-400 w-full"
                   />
                 </div>
                 <div className="form-control">
@@ -126,7 +114,7 @@ const EditProfileModal = ({ refetch, profile }) => {
                     {...register("institute")}
                     defaultValue={profile?.institute}
                     placeholder="Your Institute"
-                    className="input input-bordered input-secondary w-full"
+                    className="py-3 px-2 outline-none border text-gray-500  border-[#0F2167] text-sm rounded-lg  focus:border-blue-500 block p-2.5 dark:placeholder-gray-400 w-full"
                   />
                 </div>
                 <div className="form-control">
@@ -154,7 +142,7 @@ const EditProfileModal = ({ refetch, profile }) => {
                     type="date"
                     {...register("birthDay")}
                     defaultValue={profile?.date_of_birth}
-                    className="input input-bordered input-secondary w-full"
+                    className="py-3 px-2 outline-none border text-gray-500  border-[#0F2167] text-sm rounded-lg  focus:border-blue-500 block p-2.5 dark:placeholder-gray-400 w-full"
                   />
                 </div>
                 <div className="form-control">
@@ -166,13 +154,13 @@ const EditProfileModal = ({ refetch, profile }) => {
                     {...register("social")}
                     defaultValue={profile?.social}
                     placeholder="Any Social Link"
-                    className="input input-bordered input-secondary w-full"
+                    className="py-3 px-2 outline-none border text-gray-500  border-[#0F2167] text-sm rounded-lg  focus:border-blue-500 block p-2.5 dark:placeholder-gray-400 w-full"
                   />
                 </div>
               </div>
               <button
                 type="submit"
-                className="text-xl flex justify-center items-center w-full gap-2 text-white bg-pink-500 py-2 px-4 rounded-md hover:bg-pink-700 transform-all duration-300 mt-5">
+                className="text-xl flex justify-center items-center w-full gap-2 text-white bg-[#0F2167] py-2 px-4 rounded-md hover:bg-[#06144d] transform-all duration-300 mt-5">
                 Submit{" "}
                 {loading && (
                   <span className="loading loading-spinner text-white"></span>

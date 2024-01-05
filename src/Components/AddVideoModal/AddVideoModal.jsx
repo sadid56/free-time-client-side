@@ -93,7 +93,7 @@ const AddVideoModal = ({ refetch }) => {
                 />
               </div>
               {loading ? (
-                <button className="text-xl btn btn-disabled flex items-center justify-center w-full gap-2 text-black bg-pink-500 py-2 px-4 rounded-md hover:bg-pink-700 transform-all duration-300 mt-5">
+                <button className="text-xl btn btn-disabled flex items-center justify-center w-full gap-2 text-black bg-[#0F2167] py-2 px-4 rounded-md hover:bg-pink-700 transform-all duration-300 mt-5">
                   Pending
                   {loading && (
                     <span className="loading loading-dots loading-md"></span>
@@ -102,7 +102,7 @@ const AddVideoModal = ({ refetch }) => {
               ) : (
                 <button
                   type="submit"
-                  className="text-xl flex items-center justify-center w-full gap-2 text-white bg-pink-500 py-2 px-4 rounded-md hover:bg-pink-700 transform-all duration-300 mt-5">
+                  className="text-xl flex items-center justify-center w-full gap-2 text-white bg-[#0F2167] py-2 px-4 rounded-md hover:bg-pink-700 transform-all duration-300 mt-5">
                   Post Now
                 </button>
               )}

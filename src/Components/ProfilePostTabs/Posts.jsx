@@ -12,7 +12,7 @@ import Swal from "sweetalert2";
 import PostCommentModal from "../../shared/VideoCommentModal/VideoCommentsModal";
 
 const Posts = ({ post, refetch }) => {
-  const { name, article, time, likes, comments, _id, auther_image, image } =
+  const { name, article, time, likes, comments, _id, auther_image, image, feelings } =
     post;
   const [likeCount, setLikeCount] = useState(likes);
   const axiosPublic = useAxiosPublic();
@@ -65,16 +65,30 @@ const Posts = ({ post, refetch }) => {
     });
   };
   return (
-    <div className="p-5 border rounded-md">
+    <div className="p-2 border rounded-md">
       <div className="flex justify-between items-center gap-2 relative">
-        <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2">
           <div className="avatar">
             <div className="w-10 rounded-full">
               <img src={auther_image} />
             </div>
           </div>
           <div>
-            <h3 className="text-xl font-medium">{name}</h3>
+            <h3 className="text-xl font-medium flex items-center gap-3">
+              {name}{" "}
+              <span className="text-[16px] font-normal text-gray-400">
+                {feelings ? (
+                  <p>
+                    Feelings with{" "}
+                    <span className="font-medium text-gray-950">
+                      {feelings}
+                    </span>
+                  </p>
+                ) : (
+                  ""
+                )}
+              </span>
+            </h3>
             <p className="text-sm text-gray-500">{time?.slice(0, 10)}</p>
           </div>
         </div>
@@ -102,7 +116,15 @@ const Posts = ({ post, refetch }) => {
       <h5 className="font-medium my-5">{article}</h5>
 
       <div>
-        <img src={image} className="object-cover h-[450px] w-full" alt="" />
+        {image ? (
+          <img
+            src={image}
+            className="object-cover h-[450px] w-full rounded-md"
+            alt=""
+          />
+        ) : (
+          ""
+        )}
       </div>
 
       {/* react  */}
@@ -114,7 +136,7 @@ const Posts = ({ post, refetch }) => {
         ) : (
           <button
             onClick={handleLike}
-            className="flex items-center gap-1 text-xl">
+            className="flex items-center gap-1 text-xl text-gray-500">
             <AiOutlineLike /> {likeCount}
           </button>
         )}
@@ -122,7 +144,7 @@ const Posts = ({ post, refetch }) => {
         {/* <FeedsShareModal/> */}
         <button
           onClick={shareHandler}
-          className="flex items-center gap-1 text-xl">
+          className="flex items-center gap-1 text-xl text-gray-500">
           <IoIosShareAlt /> Share
         </button>
       </div>

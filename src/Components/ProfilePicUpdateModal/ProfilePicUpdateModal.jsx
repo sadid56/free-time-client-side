@@ -5,6 +5,7 @@ import { IoCameraOutline } from "react-icons/io5";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
 import { useState } from "react";
+import { MdOutlineCloudUpload } from "react-icons/md";
 
 const ProfilePicUpdateModal = ({ refetch }) => {
   const { register, handleSubmit, reset } = useForm();
@@ -54,21 +55,40 @@ const ProfilePicUpdateModal = ({ refetch }) => {
             </button>
           </form>
           <div>
+            <div className="divider text-gray-500">Update Profile Pic</div>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Profile Pic Update</span>
+                
+                <div className="flex items-center justify-center w-full mt-5">
+                <label
+                  className="flex flex-col items-center justify-center w-full h-36 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800  hover:bg-gray-100  ">
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <MdOutlineCloudUpload className="text-4xl text-gray-500" />
+                    <p className=" text-sm text-gray-500 dark:text-gray-400">
+                      <span className="font-semibold">Click to upload</span>{" "}
+                      Photo
+                    </p>
+                    {/* <p className="font-medium text-gray-500">
+                      {selectedFileName}
+                    </p> */}
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      SVG, PNG, JPG
+                    </p>
+                  </div>
+                  <input
+                    accept="image/svg+xml,image/png,image/jpeg"
+                    id="dropzone-file"
+                    type="file"
+                    name="image"
+                    className="hidden"
+                    {...register("image")}
+                  />
                 </label>
-                <input
-                  type="file"
-                  {...register("file")}
-                  required
-                  className="file-input file-input-bordered file-input-secondary w-full h-[100px]"
-                />
+              </div>
               </div>
               <button
                 type="submit"
-                className="text-xl flex items-center justify-center w-full gap-2 text-white bg-pink-500 py-2 px-4 rounded-md hover:bg-pink-700 transform-all duration-300 mt-5">
+                className="text-xl flex items-center justify-center w-full gap-2 text-white bg-[#0F2167] py-2 px-4 rounded-md hover:bg-[#0c132d] transform-all duration-300 mt-5">
                 Update Now {loading && <span className="loading loading-spinner text-white"></span>}
               </button>
             </form>

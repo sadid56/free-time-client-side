@@ -42,7 +42,7 @@ const PostCommentModal = ({ comments, id, refetch }) => {
   return (
     <div>
       <button
-        className="font-medium flex items-center gap-1"
+        className="font-medium flex items-center gap-1 text-gray-500"
         onClick={openModal}>
         <MdInsertComment /> Comment {comments?.length}
       </button>
