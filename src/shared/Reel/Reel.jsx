@@ -13,7 +13,7 @@ const Reel = ({ reel, refetch }) => {
   const [likeCount, setLikeCount] = useState(likes);
   const [liked, setLiked] = useState(false);
   const axiosPublic = useAxiosPublic();
-  const [ref, inView, entry] = useInView();
+  const [ref, inView, ] = useInView();
   // console.log(reel);
   const shareHandler = async () => {
     const feedUrl = `${window.location.origin}/reels/${_id}`;
@@ -37,8 +37,8 @@ const Reel = ({ reel, refetch }) => {
       console.log("post error-->", err);
     }
   };
-  console.log(inView);
-  console.log(entry);
+  // console.log(inView);
+  // console.log(entry);
   return (
     <div ref={ref} className="border rounded-md shadow-md p-1 ">
       <div className="relative">
@@ -62,7 +62,7 @@ const Reel = ({ reel, refetch }) => {
           height="50%"
         />
        </div>
-        <div className="hidden flex-col py-5 px-3 space-y-10 text-xl bg-slate-200 rounded-full w-fit absolute bottom-32 -right-14">
+        <div className=" flex-col py-5 px-3 space-y-10 text-xl bg-slate-200 rounded-full w-fit absolute bottom-32 md:-right-14 right-2">
           {liked ? (
             <button className="flex flex-col items-center text-pink-500 gap-1 text-xl">
               <FaRegHeart /> {likeCount}

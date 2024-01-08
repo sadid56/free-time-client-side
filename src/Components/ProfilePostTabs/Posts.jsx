@@ -128,7 +128,7 @@ const Posts = ({ post, refetch }) => {
       </div>
 
       {/* react  */}
-      <div className="flex justify-between px-10 my-2 border-2 p-2 rounded-md">
+      <div className="flex justify-between mx-2 md:px-10 my-2 border-2 p-2 rounded-md">
         {liked ? (
           <button className="flex items-center text-pink-500 gap-1 text-xl">
             <BiSolidLike /> {likeCount}

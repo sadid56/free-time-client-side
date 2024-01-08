@@ -13,7 +13,7 @@ const AddPostModal = ({ refetch }) => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [loading, setLoading] = useState(false);
-  // const [selectedFileName, setSelectedFileName] = useState("");
+  // const [selectedFileName, setSelectedFileName] = useState("")
   const onSubmit = async (data) => {
     // console.log(data);
     try {
@@ -79,7 +79,7 @@ const AddPostModal = ({ refetch }) => {
       console.log("post err-->", err);
     }
   };
-  // const handleFileChange = (event) => {
+
   //   const selectedFile = event.target.files[0];
   //   if (selectedFile) {
   //     setSelectedFileName(selectedFile.name);
@@ -90,7 +90,7 @@ const AddPostModal = ({ refetch }) => {
   return (
     <div>
       <button
-        className="btn text-xl  bg-gray-100 rounded-full w-full"
+        className="flex items-center gap-1 py-2 px-4 text-sm  md:text-xl  border-2 border-gray-200 rounded-md text-gray-500"
         onClick={() => document.getElementById("post_modal_id").showModal()}>
         <MdArticle />
         Post

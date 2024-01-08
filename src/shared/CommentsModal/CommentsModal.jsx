@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+  /* eslint-disable react/prop-types */
 import { MdInsertComment } from "react-icons/md";
 import { useState } from "react"; // Import useState
 import { IoMdSend } from "react-icons/io";
@@ -42,7 +42,7 @@ const CommentsModal = ({ comments, id, refetch }) => {
   return (
     <div>
       <button
-        className="font-medium flex items-center gap-1"
+        className="font-medium flex items-center gap-1 text-gray-500"
         onClick={openModal}>
         <MdInsertComment /> Comment {comments?.length}
       </button>
@@ -66,11 +66,11 @@ const CommentsModal = ({ comments, id, refetch }) => {
                       </div>
                     </div>
                     <div>
-                    <h3 className="text-2xl font-semibold">{comment?.name}</h3>
-                  <p className="font-medium">{comment?.date?.slice(0, 10)}</p>
+                    <h3 className="text-xl font-semibold">{comment?.name}</h3>
+                  <p className="text-sm">{comment?.date?.slice(0, 10)}</p>
                     </div>
                   </div>
-                  <p className="bg-gray-200 text-slate-900 font-medium w-fit rounded-md py-3 px-5">
+                  <p className="bg-gray-50 text-slate-900 font-medium w-fit rounded-md py-3 px-5">
                     {comment?.comment}
                   </p>
                 </div>

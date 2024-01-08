@@ -1,5 +1,4 @@
 import { Link, NavLink } from "react-router-dom";
-import { HiMiniChatBubbleOvalLeft } from "react-icons/hi2";
 import {  MdOndemandVideo } from "react-icons/md";
 import { SiYoutubeshorts } from "react-icons/si";
 import { FaRegNewspaper } from "react-icons/fa";
@@ -12,12 +11,12 @@ const Sideber = () => {
 
   return (
     <div>
-      <ul id="sid" className="space-y-5 pl-5 text-xl pt-6">
+      <ul id="sid" className="space-y-5 pl-5 text-xl pt-6 hidden md:block">
         <li>
           <Link to="/profile">
           <div className="flex items-center gap-2">
             <div className="avatar online">
-              <div className="w-10 ring-2 ring-pink-500 rounded-full">
+              <div className="w-10 ring-2 ring-blue-600 rounded-full">
                 <img src={user && user?.photoURL} />
               </div>
             </div>
@@ -40,11 +39,7 @@ const Sideber = () => {
             <MdOndemandVideo /> Videos
           </NavLink>
         </li>
-        <li>
-          <NavLink to="/message" className="flex items-center gap-1">
-            <HiMiniChatBubbleOvalLeft className="text-xl" /> Message
-          </NavLink>
-        </li>
+       
       </ul>
     </div>
   );

@@ -1,7 +1,6 @@
-import { useState } from "react";
+
 import './navber.css'
 import { Link, NavLink } from "react-router-dom";
-import { FiAlignJustify, FiX } from "react-icons/fi";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
 import { FaHome } from "react-icons/fa";
@@ -10,7 +9,6 @@ import { MdNotifications, MdPersonalVideo } from "react-icons/md";
 import logo  from '../../assets/icon/logo.png'
 
 const Navber = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const { user, logOut } = useAuth();
   // console.log(user);
 
@@ -24,21 +22,10 @@ const Navber = () => {
       });
   };
   return (
-    <nav id="toNap" className="flex justify-between sticky top-0 z-10 py-2 px-4 bg-white items-center px-0  shadow-lg">
-       <img src={logo} className="w-16" alt="" />
-      <button onClick={() => setIsOpen(!isOpen)} className="md:hidden pl-5">
-        {!isOpen ? (
-          <FiAlignJustify className="text-2xl" />
-        ) : (
-          <FiX className="text-2xl" />
-        )}
-      </button>
+    <nav id="toNap" className="flex justify-between sticky top-0 z-10 py-2 px-4 bg-white items-center   shadow-lg">
+       <img src={logo} className="w-10 md:w-16" alt="" />
       <ul
-        className={`flex items-center gap-10 bg-gray-600 text-white p-10 md:p-0 md:text-black md:bg-transparent ${
-          isOpen
-            ? "flex-col  md:flex-row absolute md:relative top-20 md:top-0"
-            : "hidden md:flex"
-        }`}>
+        className={`flex items-center gap-8 `}>
         <li>
           <NavLink to="/" className="text-2xl">
             <FaHome />
@@ -51,8 +38,7 @@ const Navber = () => {
         </li>
         <li>
           <NavLink to="/videos" className="text-2xl">
-          <MdPersonalVideo />
-          </NavLink>
+          <MdPersonalVideo />  </NavLink>
         </li>
         <li>
           <NavLink className="text-2xl">
@@ -73,7 +59,7 @@ const Navber = () => {
           tabIndex={0}
           className="mt-3 z-[1] p-2 menu menu-sm dropdown-content bg-base-100 rounded-box w-52 space-y-3 border shadow-md">
           <li>
-            <Link to={"/profile"} className="justify-between">
+            <Link to={"/profile"} className="justify-between text-xl font-medium">
               Profile
             </Link>
           </li>

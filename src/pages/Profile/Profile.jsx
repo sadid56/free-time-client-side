@@ -31,13 +31,13 @@ const Profile = () => {
     <section className="">
       <SectionHelmet title={`${user?.displayName} - Profile`} />
       <Navber />
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-5xl mx-auto ">
         <div className="relative">
             {profiles?.map((profile) => (
-              <div key={profile?._id} className="h-[400px] relative">
+              <div key={profile?._id} className="md:h-[400px] w-full relative">
                 <img
                 
-                className="w-full object-cover h-[400px] rounded-md"
+                className="w-full object-cover md:h-[400px] rounded-md"
                 src={profile?.cover ? profile?.cover : coverImg}
                 alt=""
               />
@@ -45,33 +45,34 @@ const Profile = () => {
               </div>
               
             ))}
-          <div className="avatar absolute -bottom-4 left-10">
+          <div className="avatar absolute -bottom-10 md:-bottom-20  md:left-10 left-5">
             <div className="w-36 rounded-full ring ring-pink-500 ring-offset-base-100 ring-offset-2">
               <img src={user?.photoURL} />
             </div>
             <ProfilePicUpdateModal/>
           </div>
-          <div className="flex justify-between items-end px-5 ml-[200px] mt-5">
-            <div>
-              <h2 className="text-4xl  font-bold">{user?.displayName}</h2>
+          
+        </div>
+        <div className=" flex flex-col md:flex-row items-center justify-between px-5 md:ml-[200px] mt-14 md:mt-5  ">
+            <div className="relative">
+              <h2 className="text-4xl  font-bold top-10">{user?.displayName}</h2>
               <p className="text-gray-500 font-medium">{user?.email}</p>
             </div>
-            <div className="flex items-center gap-5">
+            <div className="flex items-center gap-5 mt-4 md:mt-0">
               <CreateProfileModal refetch={refetch} profiles={profiles} />
              {
              profiles.map(profile =>  <EditProfileModal key={profile?._id} refetch={refetch} profile={profile}/>)
              }
             </div>
           </div>
-        </div>
-        <div className="grid gap-5 grid-cols-3 mt-10">
+        <div className="grid gap-5 md:grid-cols-3 mt-10">
           {profiles.length === 0 ? (
             <p className="text-xl text-center text-red-600 font-medium mt-10">
               Please Create a profile !
             </p>
           ) : (
             profiles?.map((profile) => (
-              <div key={profile?._id} className="space-y-3">
+              <div key={profile?._id} className="space-y-3 ml-5">
                 <h1 className="text-xl font-semibold text-slate-950">Intro</h1>
                 <p className="h-[100px] flex items-center justify-center border shadow rounded-md bg-gray-200 text-slate-900 font-medium overflow-y-scroll w-full">
                   {profile?.bio}

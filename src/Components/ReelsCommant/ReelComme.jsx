@@ -67,7 +67,7 @@ const ReelComment = ({ comments, id, refetch }) => {
                     </div>
                     <div>
                     <h3 className="text-2xl font-semibold">{comment?.name}</h3>
-                  <p className="font-medium">{comment?.date?.slice(0, 10)}</p>
+                  <p className="text-sm">{comment?.date?.slice(0, 10)}</p>
                     </div>
                   </div>
                   <p className="bg-[#f6f1f1]  border text-slate-900 font-medium w-fit rounded-md py-3 px-5">

@@ -70,7 +70,7 @@ const ProfileVideo = ({ videos, refetch }) => {
   };
 
   return (
-    <div className="p-5 border rounded-md">
+    <div className="p-3 border rounded-md">
       
       <div className="flex justify-between items-center gap-2 relative">
         <div className="flex items-center gap-2">
@@ -108,7 +108,8 @@ const ProfileVideo = ({ videos, refetch }) => {
         <ReactPlayer
           controls
           // playing={true}
-          volume={"#357"}
+          muted
+          volume={0.5}
           url={video}
           width="100%"
           height="100%"
@@ -116,7 +117,7 @@ const ProfileVideo = ({ videos, refetch }) => {
       </div>
 
       {/* react  */}
-      <div className="flex justify-between mt-5 px-16 border-2 p-2 rounded-md">
+      <div className="flex justify-between mt-5 px-3 md:px-16 border-2 p-2 rounded-md">
         {liked ? (
           <button className="flex items-center text-pink-500 gap-1 text-xl">
             <BiSolidLike /> {likeCount}

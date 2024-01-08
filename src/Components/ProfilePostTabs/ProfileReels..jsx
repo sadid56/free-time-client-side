@@ -50,10 +50,11 @@ const ProfileReel = ({ reel, refetch }) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         const res = await axiosPublic.delete(`/reels/${_id}`);
+        // console.log(res.data);
         if (res.data.acknowledged) {
           Swal.fire({
             title: "Deleted!",
-            text: "Your video has been deleted !",
+            text: "Your reel has been deleted !",
             icon: "success",
           });
           refetch()
@@ -63,7 +64,7 @@ const ProfileReel = ({ reel, refetch }) => {
   };
 
   return (
-    <div className="p-5 border rounded-md">
+    <div className="p-3 border rounded-md">
       
       <div className="flex justify-between items-center gap-2 relative">
         <div className="flex items-center gap-2">

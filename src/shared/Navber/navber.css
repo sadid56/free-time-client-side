@@ -1,4 +1,4 @@
 #toNap a.active{
-    color: hotpink;
-    
+    color: navy;
+    border-bottom: 2px solid navy;  
 }

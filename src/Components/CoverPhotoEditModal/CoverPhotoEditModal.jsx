@@ -27,7 +27,7 @@ const CoverPhotoEditModal = ({profile, refetch}) => {
       };
       if (imageData?.success) {
         const res = await axiosPublic.patch(`/profile/cover/${profile?._id}`, profileInfo);
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data?.acknowledged) {
           toast.success("Cover Photo Update Successfully !");
           reset();

@@ -13,6 +13,7 @@ import { MdClose } from "react-icons/md";
 import { HiDotsVertical } from "react-icons/hi";
 import ReactPlayer from "react-player";
 import { useInView } from "react-intersection-observer";
+import { CiShare2 } from "react-icons/ci";
 
 const Video = ({ videos, refetch }) => {
   const { name, title, time, likes, comments, _id, auther_image, video } =
@@ -22,7 +23,7 @@ const Video = ({ videos, refetch }) => {
   const [likeCount, setLikeCount] = useState(likes);
   const [isToggle, setIsToggle] = useState(false);
   const [ref, inView] = useInView();
-  console.log(inView);
+  // console.log(inView);
   const handleLike = async () => {
     try {
       await axiosPublic.post(`/videos/likes/${_id}`);
@@ -47,7 +48,7 @@ const Video = ({ videos, refetch }) => {
   };
 
   return (
-    <div ref={ref} className="p-5 border rounded-md">
+    <div ref={ref} className="p-3 border rounded-md">
       
       <div className="flex justify-between items-center gap-2 relative">
         <div className="flex items-center gap-2">
@@ -81,7 +82,12 @@ const Video = ({ videos, refetch }) => {
 
       <div className="w-full h-full">
         <ReactPlayer
+        style={{
+          borderRadius: '20px' 
+        }}
+        progressInterval={1000}
           controls
+          muted
           playing={inView}
           volume={0.5}
           url={video}
@@ -91,7 +97,7 @@ const Video = ({ videos, refetch }) => {
       </div>
 
       {/* react  */}
-      <div className="flex justify-between mt-5 px-16 border-2 p-2 rounded-md">
+      <div className="flex justify-between mt-5 px-5 md:px-16 border-2 p-2 rounded-md">
         {liked ? (
           <button className="flex items-center text-pink-500 gap-1 text-xl">
             <BiSolidLike /> {likeCount}
@@ -99,11 +105,16 @@ const Video = ({ videos, refetch }) => {
         ) : (
           <button
             onClick={handleLike}
-            className="flex items-center gap-1 text-xl">
+            className="flex items-center gap-1 text-xl text-gray-500">
             <AiOutlineLike /> {likeCount}
           </button>
         )}
         <CommentsModal comments={comments} id={_id} refetch={refetch} />
+        <button
+            onClick={shareHandler}
+            className="text-xl flex   gap-1 items-center">
+            <CiShare2 /> Share
+          </button>
       </div>
     </div>
   );

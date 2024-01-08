@@ -6,6 +6,7 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { TbTableShortcut } from "react-icons/tb";
+import { MdOutlineCloudUpload } from "react-icons/md";
 
 const AddReelsModal = ({ refetch }) => {
   const { register, handleSubmit, reset } = useForm();
@@ -54,7 +55,7 @@ const AddReelsModal = ({ refetch }) => {
   return (
     <div>
       <button
-        className="btn text-xl  bg-gray-100 rounded-full"
+        className="flex items-center gap-1 py-2 px-4 text-sm  md:text-xl  bg-gray-100 border-2 border-gray-200 rounded-md text-gray-500"
         onClick={() => document.getElementById("reels_modal_id").showModal()}>
         <TbTableShortcut />Add Reels
       </button>
@@ -76,23 +77,38 @@ const AddReelsModal = ({ refetch }) => {
                   type="text"
                   required
                   {...register("title")}
-                  className="textarea textarea-secondary w-full"
+                  className="textarea border border-[#0F2167] focus:border-[#0F2167] w-fulltextarea w-full"
                 />
               </div>
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Reels</span>
+              
+              <div className="flex items-center justify-center w-full mt-5">
+                <label
+                  className="flex flex-col items-center justify-center w-full h-36 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800  hover:bg-gray-100  ">
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <MdOutlineCloudUpload className="text-4xl text-gray-500" />
+                    <p className=" text-sm text-gray-500 dark:text-gray-400">
+                      <span className="font-semibold">Click to upload</span>{" "}
+                      Photo
+                    </p>
+                    {/* <p className="font-medium text-gray-500">
+                      {selectedFileName}
+                    </p> */}
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      short video
+                    </p>
+                  </div>
+                  <input
+                    accept="video/*"
+                    id="dropzone-file"
+                    type="file"
+                    name="video"
+                    className="hidden"
+                    {...register("video")}
+                  />
                 </label>
-                <input
-                  type="file"
-                  accept="video/*"
-                  required
-                  {...register("video")}
-                  className="file-input file-input-bordered file-input-secondary w-full h-[100px]"
-                />
               </div>
               {loading ? (
-                <button className="text-xl btn btn-disabled flex items-center justify-center w-full gap-2 text-black bg-[#0F2167] py-2 px-4 rounded-md hover:bg-pink-700 transform-all duration-300 mt-5">
+                <button className="text-xl btn btn-disabled flex items-center justify-center w-full gap-2 text-black bg-[#0F2167] py-2 px-4 rounded-md hover:bg-[#0f1634] transform-all duration-300 mt-5">
                   Pending
                   {loading && (
                     <span className="loading loading-dots loading-md"></span>
@@ -101,7 +117,7 @@ const AddReelsModal = ({ refetch }) => {
               ) : (
                 <button
                   type="submit"
-                  className="text-xl flex items-center justify-center w-full gap-2 text-white bg-[#0F2167] py-2 px-4 rounded-md hover:bg-pink-700 transform-all duration-300 mt-5">
+                  className="text-xl flex items-center justify-center w-full gap-2 text-white bg-[#0F2167] py-2 px-4 rounded-md hover:bg-[#0f1634] transform-all duration-300 mt-5">
                   Post Now
                 </button>
               )}

@@ -1,7 +1,8 @@
+/* eslint-disable react/no-unknown-property */
 /* eslint-disable react/prop-types */
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
-import { MdOutlineVideoSettings } from "react-icons/md";
+import { MdOutlineCloudUpload, MdOutlineVideoSettings } from "react-icons/md";
 import axios from "axios";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
@@ -54,7 +55,7 @@ const AddVideoModal = ({ refetch }) => {
   return (
     <div>
       <button
-        className="btn text-xl bg-gray-100 rounded-full "
+        className="flex items-center gap-1 py-2 px-4 text-sm  md:text-xl  border-2 border-gray-200 rounded-md text-gray-500 "
         onClick={() => document.getElementById("video_modal_id").showModal()}>
         <MdOutlineVideoSettings />
         Add Video
@@ -77,20 +78,35 @@ const AddVideoModal = ({ refetch }) => {
                   type="text"
                   required
                   {...register("title")}
-                  className="textarea textarea-secondary w-full"
+                  className="textarea  border border-[#0F2167] focus:border-[#0F2167] w-full"
                 />
               </div>
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Video</span>
+              <div className="flex items-center justify-center w-full mt-5">
+                <label
+                  for="dropzone-file"
+                  className="flex flex-col items-center justify-center w-full h-36 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800  hover:bg-gray-100  ">
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <MdOutlineCloudUpload className="text-4xl text-gray-500" />
+                    <p className=" text-sm text-gray-500 dark:text-gray-400">
+                      <span className="font-semibold">Click to upload</span>{" "}
+                      Photo
+                    </p>
+                    {/* <p className="font-medium text-gray-500">
+                      {selectedFileName}
+                    </p> */}
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      videos
+                    </p>
+                  </div>
+                  <input
+                    accept="video/*"
+                    id="dropzone-file"
+                    type="file"
+                    name="image"
+                    className="hidden"
+                    {...register("image")}
+                  />
                 </label>
-                <input
-                  type="file"
-                  accept="video/*"
-                  required
-                  {...register("video")}
-                  className="file-input file-input-bordered file-input-secondary w-full h-[100px]"
-                />
               </div>
               {loading ? (
                 <button className="text-xl btn btn-disabled flex items-center justify-center w-full gap-2 text-black bg-[#0F2167] py-2 px-4 rounded-md hover:bg-pink-700 transform-all duration-300 mt-5">
@@ -102,7 +118,7 @@ const AddVideoModal = ({ refetch }) => {
               ) : (
                 <button
                   type="submit"
-                  className="text-xl flex items-center justify-center w-full gap-2 text-white bg-[#0F2167] py-2 px-4 rounded-md hover:bg-pink-700 transform-all duration-300 mt-5">
+                  className="text-xl flex items-center justify-center w-full gap-2 text-white bg-[#0F2167] py-2 px-4 rounded-md hover:bg-[#0f1634] transform-all duration-300 mt-5">
                   Post Now
                 </button>
               )}

@@ -16,22 +16,21 @@ const UpdatePostModal = ({ setIsToggle, post, refetch }) => {
   const onSubmit = async (data) => {
     // console.log(data);
     try {
-      const fileImage = data?.image[0];
-      const formData = new FormData();
-      formData.append("image", fileImage);
-      const { data: imageData } = await axios.post(
-        "https://api.imgbb.com/1/upload?key=ee9960786c60a08168b8606c5d54ae38",
-        formData
-      );
+      // const fileImage = data?.image[0];
+      // const formData = new FormData();
+      // formData.append("image", fileImage);
+      // const { data: imageData } = await axios.post(
+      //   "https://api.imgbb.com/1/upload?key=ee9960786c60a08168b8606c5d54ae38",
+      //   formData
+      // );
       setLoading(true);
       const postInfo = {
-        article: data?.article || "",
-        image: imageData?.data?.display_url || "",
+        article: data?.article ? data?.article  : "" ,
         
       };
 
       const response = await axiosSecure.patch(`/feeds/${_id}`, postInfo);
-    //   console.log(response.data);
+      console.log(response.data);
       if (response?.data?.acknowledged) {
         toast.success("Your post successfull !");
         reset();
@@ -68,12 +67,14 @@ const UpdatePostModal = ({ setIsToggle, post, refetch }) => {
                 </label>
                 <textarea
                   type="text"
+                  required
+                  
                   defaultValue={article}
                   {...register("article")}
                   className="py-3 px-2 outline-none border text-gray-500  border-[#0F2167] text-sm rounded-lg  focus:border-blue-500 block p-2.5 dark:placeholder-gray-400 w-fullv"
                 />
               </div>
-              <div className="flex items-center justify-center w-full mt-5">
+              {/* <div className="flex items-center justify-center w-full mt-5">
                 <label
                   className="flex flex-col items-center justify-center w-full h-36 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800  hover:bg-gray-100  ">
                   <div className="flex flex-col items-center justify-center pt-5 pb-6">
@@ -82,9 +83,7 @@ const UpdatePostModal = ({ setIsToggle, post, refetch }) => {
                       <span className="font-semibold">Click to upload</span>{" "}
                       Photo
                     </p>
-                    {/* <p className="font-medium text-gray-500">
-                      {selectedFileName}
-                    </p> */}
+                   
                     <p className="text-xs text-gray-500 dark:text-gray-400">
                       SVG, PNG, JPG
                     </p>
@@ -93,12 +92,12 @@ const UpdatePostModal = ({ setIsToggle, post, refetch }) => {
                     accept="image/svg+xml,image/png,image/jpeg"
                     id="dropzone-file"
                     type="file"
-                    name="image"
+                    name="image" 
                     className="hidden"
                     {...register("image")}
                   />
                 </label>
-              </div>
+              </div> */}
               <button
                 type="submit"
                 className="text-xl flex items-center justify-center w-full gap-2 text-white bg-[#0F2167] py-2 px-4 rounded-md hover:bg-[#0b122b] transform-all duration-300 mt-5">

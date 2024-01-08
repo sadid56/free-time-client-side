@@ -21,28 +21,32 @@ const Feeds = () => {
   return (
     <div>
       <div className="p-5 my-3 rounded-md shadow-md space-y-4 border">
-        <div  className="flex items-center gap-2">
-        <div className="avatar">
-  <div className="w-10 rounded-full">
-    <img src={user?.photoURL} />
-  </div>
-</div>
-<h2 className="px-4 py-2 rounded-full bg-gray-200 font-semibold text-slate-600 w-full">Hey {user?.displayName}, share your feelings ?</h2>
+        <div className="flex items-center gap-2">
+          <div className="avatar">
+            <div className="w-10 rounded-full">
+              <img src={user?.photoURL} />
+            </div>
+          </div>
+          <h2 className="px-4 py-2 rounded-full bg-gray-200 font-semibold text-slate-500 w-full">
+            Hey {user?.displayName}, share your feelings ?
+          </h2>
         </div>
         <hr />
-        <div className="flex items-center gap-5 justify-between">
-        <AddPostModal refetch={refetch}/>
-             <AddReelsModal/>
-              <AddVideoModal refetch={refetch}/>
+        <div className="flex items-center gap-5 justify-center">
+          <AddPostModal refetch={refetch} />
+          <AddReelsModal refetch={refetch}/>
+          <AddVideoModal refetch={refetch} />
         </div>
       </div>
-      {
-        news?.length === 0 ? <p className="text-center text-red-600 font-medium mt-20">No Post !</p> : <div className="grid grid-cols-1 gap-2">
-        {news.map((feed) => (
-          <Feed key={feed._id} feed={feed} refetch={refetch}></Feed>
-        ))}
-      </div>
-      }
+      {news?.length === 0 ? (
+        <p className="text-center text-red-600 font-medium mt-20">No Post !</p>
+      ) : (
+        <div className="grid grid-cols-1 gap-2">
+          {news.map((feed) => (
+            <Feed key={feed._id} feed={feed} refetch={refetch}></Feed>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
