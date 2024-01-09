@@ -17,9 +17,9 @@ const AddPostModal = ({ refetch }) => {
   const onSubmit = async (data) => {
     // console.log(data);
     try {
-      // setLoading(true);
+      setLoading(true);
       const fileImage = data?.image[0];
-      console.log(fileImage);
+      // console.log(fileImage);
       if (fileImage) {
         const formData = new FormData();
         formData.append("image", fileImage);
@@ -36,16 +36,29 @@ const AddPostModal = ({ refetch }) => {
           time: new Date(),
           likes: 0,
           comments: [],
-          feelings: data?.feelings
+          feelings: data?.feelings,
         };
         const response = await axiosSecure.post("/feeds", postInfo);
         if (response?.data?.acknowledged) {
-          toast.success("Your post successfull !");
-          reset();
-          const modal = document.getElementById("post_modal_id");
-          modal.close();
-          refetch();
-          setLoading(false);
+          const notificationsInfo = {
+            name: user?.displayName,
+            email: user?.email,
+            date: new Date(),
+            post_type: "photo",
+          };
+          const res = await axiosSecure.post(
+            "/notification",
+            notificationsInfo
+          );
+          // console.log(res.data);
+          if (res?.data?.acknowledged) {
+            toast.success("Your post successfull !");
+            reset();
+            const modal = document.getElementById("post_modal_id");
+            modal.close();
+            refetch();
+            setLoading(false);
+          }
         }
       } else if (data?.article) {
         const postInfo = {
@@ -57,20 +70,32 @@ const AddPostModal = ({ refetch }) => {
           time: new Date(),
           likes: 0,
           comments: [],
-          feelings: data?.feelings
+          feelings: data?.feelings,
         };
         const response = await axiosSecure.post("/feeds", postInfo);
         if (response?.data?.acknowledged) {
-          toast.success("Your post successfull !");
-          reset();
-          const modal = document.getElementById("post_modal_id");
-          modal.close();
-          refetch();
-          setLoading(false);
+          const notificationsInfo = {
+            name: user?.displayName,
+            email: user?.email,
+            date: new Date(),
+            post_type: "article",
+          };
+          const res = await axiosSecure.post(
+            "/notification",
+            notificationsInfo
+          );
+          // console.log(res.data);
+          if (res?.data?.acknowledged) {
+            toast.success("Your post successfull !");
+            reset();
+            const modal = document.getElementById("post_modal_id");
+            modal.close();
+            refetch();
+            setLoading(false);
+          }
         }
-      }
-      else{
-        toast.error("error")
+      } else {
+        toast.error("error");
         setLoading(false);
       }
 
@@ -104,7 +129,7 @@ const AddPostModal = ({ refetch }) => {
             </button>
           </form>
           <div>
-          <div className="divider">Create Post</div>
+            <div className="divider">Create Post</div>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="form-control">
                 <label className="label">

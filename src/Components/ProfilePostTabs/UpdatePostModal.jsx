@@ -1,42 +1,40 @@
-
-
 /* eslint-disable react/prop-types */
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { MdOutlineCloudUpload, MdUpdate } from "react-icons/md";
-import axios from "axios";
+import { MdUpdate } from "react-icons/md";
+import Modal from "react-modal";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
-import { useState } from "react";
 
 const UpdatePostModal = ({ setIsToggle, post, refetch }) => {
-    const {article, _id} = post;
+  const { article, _id } = post;
   const { register, handleSubmit, reset } = useForm();
   const axiosSecure = useAxiosSecure();
   const [loading, setLoading] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
   const onSubmit = async (data) => {
-    // console.log(data);
     try {
-      // const fileImage = data?.image[0];
-      // const formData = new FormData();
-      // formData.append("image", fileImage);
-      // const { data: imageData } = await axios.post(
-      //   "https://api.imgbb.com/1/upload?key=ee9960786c60a08168b8606c5d54ae38",
-      //   formData
-      // );
       setLoading(true);
       const postInfo = {
-        article: data?.article ? data?.article  : "" ,
-        
+        article: data?.article ? data?.article : "",
       };
 
       const response = await axiosSecure.patch(`/feeds/${_id}`, postInfo);
       console.log(response.data);
       if (response?.data?.acknowledged) {
-        toast.success("Your post successfull !");
+        toast.success("Your post was successful!");
         reset();
-        const modal = document.getElementById("post_update_modal");
-        modal.close();
-        refetch()
+        closeModal();
+        refetch();
         setIsToggle(false);
         setLoading(false);
       }
@@ -44,23 +42,23 @@ const UpdatePostModal = ({ setIsToggle, post, refetch }) => {
       console.log("post err-->", err);
     }
   };
+
   return (
     <div>
       <button
         className="text-xl text-white bg-slate-500 px-4 py-2 rounded-md hover:bg-slate-600 transform-all duration-300"
-        onClick={() => document.getElementById("post_update_modal").showModal()}>
-        <MdUpdate/>
+        onClick={openModal}
+      >
+        <MdUpdate />
       </button>
-      <dialog id="post_update_modal" className="modal">
-        <div className="modal-box">
-          <form method="dialog">
-            {/* if there is a button in form, it will close the modal */}
-            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-              ✕
-            </button>
-          </form>
-          <div>
-            <form onSubmit={handleSubmit(onSubmit)}>
+
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        contentLabel="Update Post Modal"
+        className={"max-w-2xl mx-auto mt-20 bg-white p-10 rounded-md shadow-2xl"}
+      >
+         <form onSubmit={handleSubmit(onSubmit)}>
               <div className="form-control">
                 <label className="label">
                   <span className="label-text text-gray-500">Article</span>
@@ -107,9 +105,8 @@ const UpdatePostModal = ({ setIsToggle, post, refetch }) => {
                 )}
               </button>
             </form>
-          </div>
-        </div>
-      </dialog>
+        <button onClick={closeModal} className=" mt-5 btn btn-primary">Close</button>
+      </Modal>
     </div>
   );
 };

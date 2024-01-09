@@ -23,7 +23,7 @@ const Videos = () => {
         <div className="md:w-[30%] fixed top-0 overflow-y-auto">
         <Sideber/>
         </div>
-        <div className="md:w-[70%] md:ml-[30%]"> 
+        <div className="md:w-[70%] md:ml-[30%] md:mx-20"> 
         {
         videos?.length === 0 ? <p className="text-xl text-center text-red-600 mt-20 font-medium">No Video!</p> : <div>  
         {videos.map((video) => (

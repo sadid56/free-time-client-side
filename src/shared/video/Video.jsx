@@ -48,7 +48,7 @@ const Video = ({ videos, refetch }) => {
   };
 
   return (
-    <div ref={ref} className="p-3 border rounded-md">
+    <div ref={ref} className="p-3 border rounded-md ">
       
       <div className="flex justify-between items-center gap-2 relative">
         <div className="flex items-center gap-2">
@@ -87,7 +87,6 @@ const Video = ({ videos, refetch }) => {
         }}
         progressInterval={1000}
           controls
-          muted
           playing={inView}
           volume={0.5}
           url={video}

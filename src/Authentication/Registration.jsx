@@ -5,8 +5,10 @@ import SectionHelmet from "../shared/SectionHelmet/SectionHelmet";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
+import { useState } from "react";
 
 const Registration = () => {
+  const [loading, setLoading] = useState(false)
   const { createUser, profileUpdate } = useAuth();
   const navigate = useNavigate();
   const {
@@ -18,6 +20,7 @@ const Registration = () => {
 
   const onSubmit = async (data) => {
     try {
+      setLoading(true)
       if (data?.password !== data?.confirmPassword) {
         return toast.error("Provide me a same password");
       } else {
@@ -37,6 +40,7 @@ const Registration = () => {
         await profileUpdate(name, imageData.data.display_url);
         navigate("/");
         toast.success("Account create success !");
+        setLoading(false)
       }
     } catch (err) {
       Swal.fire({
@@ -177,12 +181,21 @@ const Registration = () => {
               </p>
             </label>
           </div>
-          <button
-            className="mt-6 block w-full select-none rounded-lg bg-[#0F2167] py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+          {
+            loading ? <button
+            className="btn btn-disabled text-xl"
             type="submit"
             data-ripple-light="true">
-            Registration
-          </button>
+            Registration <span className="loading loading-spinner text-white"></span>
+
+          </button>:
+          <button
+          className="mt-6 block w-full select-none rounded-lg bg-[#0F2167] py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+          type="submit"
+          data-ripple-light="true">
+          Registration
+        </button>
+          }
           <p className="mt-4 block text-center font-sans text-base font-normal leading-relaxed text-gray-700 antialiased">
             Already have an account?
             <Link
