@@ -7,6 +7,7 @@ import PrivateRoute from "../Private/PrivateRoute";
 import Profile from "../pages/Profile/Profile";
 import Videos from "../pages/Videos/Videos";
 import Reels from "../pages/Reels/Reels";
+import SavePost from "../pages/Home/SavePost/SavePost";
 const Routers = createBrowserRouter([
   {
     path: "/",
@@ -20,6 +21,15 @@ const Routers = createBrowserRouter([
         path: "/",
         element: <Home />,
       },
+      {
+        path:"/save-post",
+        element: <SavePost/>
+      },
+
+      {
+        path: "/videos",
+        element: <PrivateRoute><Videos /></PrivateRoute>,
+      }
     ],
   },
   {
@@ -45,12 +55,7 @@ const Routers = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
-  },
-
-  {
-    path: "/videos",
-    element: <PrivateRoute><Videos /></PrivateRoute>,
-  },
+  }
 ]);
 
 export default Routers;

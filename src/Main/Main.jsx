@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Navber from "../shared/Navber/Navber";
 import Sideber from "../pages/Home/Sideber/Sideber";
-import AddverticeContent from "../shared/addverticContent/AddverticeContent";
+// import AddverticeContent from "../shared/addverticContent/AddverticeContent";
 
 const Main = () => {
     return ( 
@@ -12,14 +12,14 @@ const Main = () => {
           {/* sideber */}
           <Sideber />
         </div>
-        <div className="md:w-[40%] md:ml-[30%]">
+        <div className="md:w-[70%] md:ml-[30%]">
           {/* main content */}
           <Outlet />
         </div>
          {/* addcontent */}
-        <div className="md:w-[30%] sticky top-0  px-10 mt-5 hidden md:block">
+        {/* <div className="md:w-[30%] sticky top-0  px-10 mt-5 hidden md:block">
           <AddverticeContent/>
-        </div>
+        </div> */}
       </div>
         </div>
      );

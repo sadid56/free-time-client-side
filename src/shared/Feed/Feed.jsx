@@ -8,9 +8,11 @@ import { useState } from "react";
 // import FeedsShareModal from "../../Components/FeedsShareModal/FeedsShareModal";
 import toast from "react-hot-toast";
 import { IoIosShareAlt } from "react-icons/io";
-import { MdClose } from "react-icons/md";
+import { MdBookmarkAdd, MdClose } from "react-icons/md";
 import { HiDotsVertical } from "react-icons/hi";
 import PostCommentModal from "../VideoCommentModal/VideoCommentsModal";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useAuth from "../../hooks/useAuth";
 
 const Feed = ({ feed, refetch }) => {
   const {
@@ -22,12 +24,14 @@ const Feed = ({ feed, refetch }) => {
     _id,
     auther_image,
     image,
-    feelings,
+    feelings
   } = feed;
   const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure()
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes);
   const [isToggle, setIsToggle] = useState(false);
+  const {user} = useAuth()
   const handleLike = async () => {
     try {
       await axiosPublic.post(`/feeds/likes/${_id}`);
@@ -51,8 +55,28 @@ const Feed = ({ feed, refetch }) => {
     }
   };
 
+ const handleAddSave = async()=>{
+   try{
+    const postInfo = {
+      name: name,
+      article: article,
+      time: time,
+      email: user?.email,
+      auther_image:auther_image,
+      image: image,
+      feelings: feelings
+    }
+    const res = await axiosSecure.post("/post-save", postInfo)
+    if(res.data?.acknowledged){
+      toast.success("Post added Success !")
+    }
+   }catch(err){
+    toast.error(err?.message)
+   }
+ }
+
   return (
-    <div className="p-2 border rounded-md">
+    <div className="p-2 border rounded-md mx-36">
       <div className="flex justify-between items-center gap-2 relative">
         <div className="flex items-center gap-2">
           <div className="avatar">
@@ -85,7 +109,7 @@ const Feed = ({ feed, refetch }) => {
         <div
           className={`${
             isToggle
-              ? "absolute right-4 top-9 bg-slate-700 p-5 rounded-md shadow-md"
+              ? "absolute right-4 top-9 bg-white p-5 rounded-md shadow-md"
               : "hidden"
           } flex flex-col gap-2 `}>
           <button
@@ -93,6 +117,7 @@ const Feed = ({ feed, refetch }) => {
             className="flex items-center gap-1 text-xl text-white hover:bg-slate-600 bg-slate-400 px-4 py-2 rounded-md transform-all duration-300">
             <IoIosShareAlt /> Share
           </button>
+          <button onClick={handleAddSave} className="flex items-center gap-1 text-xl text-white hover:bg-slate-600 bg-slate-400 px-4 py-2 rounded-md transform-all duration-300"><MdBookmarkAdd/> Save</button>
         </div>
       </div>
       <h5 className="font-medium my-5">{article}</h5>
