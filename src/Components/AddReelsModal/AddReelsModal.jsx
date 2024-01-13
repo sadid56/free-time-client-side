@@ -85,6 +85,7 @@ const AddReelsModal = ({ refetch }) => {
                 </label>
                 <textarea
                   type="text"
+                  placeholder="Reels title"
                   required
                   {...register("title")}
                   className="textarea border border-[#0F2167] focus:border-[#0F2167] w-fulltextarea w-full"

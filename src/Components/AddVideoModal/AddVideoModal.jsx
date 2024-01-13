@@ -89,6 +89,7 @@ const AddVideoModal = ({ refetch }) => {
                 </label>
                 <textarea
                   type="text"
+                  placeholder="Video title"
                   required
                   {...register("title")}
                   className="textarea  border border-[#0F2167] focus:border-[#0F2167] w-full"
