@@ -63,7 +63,7 @@ const Reel = ({ reel, refetch }) => {
     }
   }
   return (
-    <div ref={ref} className="border rounded-md shadow-md p-1 min-h-screen">
+    <div ref={ref} className="border rounded-md shadow-md p-1">
       <div className="relative">
         <div className="flex items-center gap-2 absolute  p-3 bg-[rgba(0,0,0,0.5)] w-full">
           <div className="avatar right-1">
@@ -75,7 +75,7 @@ const Reel = ({ reel, refetch }) => {
             <h3 className="text-2xl text-white font-bold">{name}</h3>
           </div>
         </div>
-       <div className="">
+       <div className="w-full h-full">
        <ReactPlayer
           controls
           playing={inView}

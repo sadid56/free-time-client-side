@@ -59,7 +59,7 @@ const CreateProfileModal = ({refetch,profiles}) => {
         <IoMdCreate /> Create Profile
       </button> :
       <button
-      className="text-xl flex items-center gap-2 text-white bg-[#0F2167] py-2 px-4 btn btn-disabled"
+      className="text-sm md:text-xl flex items-center md:gap-2 text-white bg-[#0F2167] py-2 px-4 btn btn-disabled"
      >
       <IoMdCreate /> Create Profile
     </button>

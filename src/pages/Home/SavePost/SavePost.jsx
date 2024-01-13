@@ -4,14 +4,16 @@ import SectionHelmet from "../../../shared/SectionHelmet/SectionHelmet";
 import { MdDelete } from "react-icons/md";
 import Swal from "sweetalert2";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
+import useAuth from "../../../hooks/useAuth";
 
 const SavePost = () => {
   const axiosSecure = useAxiosSecure();
   const axiosPublic = useAxiosPublic()
+  const {user} = useAuth()
   const { data: savePosts = [], refetch } = useQuery({
     queryKey: ["savePost"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/post-save");
+      const res = await axiosSecure.get(`/post-save?email=${user?.email}`);
       return res.data;
     },
   });

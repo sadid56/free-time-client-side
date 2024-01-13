@@ -5,14 +5,16 @@ import SectionHelmet from "../../../shared/SectionHelmet/SectionHelmet";
 import Swal from "sweetalert2";
 import { MdDelete } from "react-icons/md";
 import ReactPlayer from "react-player";
+import useAuth from "../../../hooks/useAuth";
 
 const PlaylistVideos = () => {
   const axiosSecure = useAxiosSecure();
   const axiosPublic = useAxiosPublic();
+  const {user} = useAuth()
   const { data: playlists = [], refetch } = useQuery({
     queryKey: ["playlist"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/playlist");
+      const res = await axiosSecure.get(`/playlist?email=${user?.email}`);
       return res.data;
     },
   });

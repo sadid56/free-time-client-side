@@ -26,7 +26,7 @@ const Profile = () => {
       return res.data;
     },
   });
-  // console.log(profiles.cover);
+  // console.log(coverImg)
   return (
     <section className="">
       <SectionHelmet title={`${user?.displayName} - Profile`} />
@@ -38,7 +38,7 @@ const Profile = () => {
                 <img
                 
                 className="w-full object-cover md:h-[400px] rounded-md"
-                src={profile?.cover ? profile?.cover : coverImg}
+                src={profile?.cover}
                 alt=""
               />
               <CoverPhotoEditModal profile={profile} refetch={refetch}/>

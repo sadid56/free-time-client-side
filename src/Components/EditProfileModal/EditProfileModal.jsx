@@ -51,7 +51,7 @@ const EditProfileModal = ({ refetch, profile }) => {
   return (
     <div>
       <button
-        className="text-xl flex items-center gap-2 text-white bg-[#0F2167] py-2 px-4 rounded-md hover:bg-[#0d132e] transform-all duration-300"
+        className="text-sm md:text-xl flex items-center md:gap-2 btn text-white bg-[#0F2167] py-2 px-4 rounded-md hover:bg-[#0d132e] transform-all duration-300"
         onClick={() =>
           document.getElementById("Edit_profile_modal_id").showModal()
         }>
