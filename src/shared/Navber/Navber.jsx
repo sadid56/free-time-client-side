@@ -49,7 +49,7 @@ const Navber = () => {
   return (
     <nav
       id="toNap"
-      className="flex justify-between sticky top-0 z-10 py-2 px-4 bg-white items-center   shadow-lg">
+      className="flex justify-between sticky top-0 z-50 bg-white py-2 px-4  items-center   shadow-lg">
       <img src={logo} className="w-10 md:w-16" alt="" />
       <ul className={`flex items-center gap-8 md:gap-28 `}>
         <li>
@@ -70,7 +70,7 @@ const Navber = () => {
         <li>
           <button
             onClick={() => setIsToggle(!isToggle)}
-            className={`flex items-start text-2xl btn-ghost px-4 py-2 rounded-md transition-all duration-300 ${
+            className={`flex items-start text-2xl  rounded-md transition-all duration-300 ${
               isToggle ? "text-red-500" : " text-black"
             }`}>
             <MdNotifications />
@@ -82,7 +82,7 @@ const Navber = () => {
       </ul>
       <div
         className={`rounded-md bg-gray-100 border p-4 shadow-xl ${
-          isToggle ? "absolute top-16 left-1/2" : "hidden"
+          isToggle ? "absolute top-16 md:left-1/2" : "hidden"
         }`}>
         <div className="space-y-2">
           {

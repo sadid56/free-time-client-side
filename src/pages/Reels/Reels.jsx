@@ -19,9 +19,9 @@ const Reels = () => {
         <div>
             <Navber/>
             <SectionHelmet title={"Free Time | Reels"}/>
-           <div className=" md:w-[30%] space-y-5 mx-auto">
+           <div className=" md:w-[30%] mx-auto">
            {
-            reels?.length === 0 ? <p className="text-red-500 text-center font-semibold mt-10">No Reels Available !</p> : <div>
+            reels?.length === 0 ? <p className="text-red-500 text-center font-semibold mt-10">No Reels Available !</p> : <div className="grid grid-cols-1 gap-3">
             {
                 reels.map(reel => <Reel key={reel._id} reel={reel} refetch={refetch}/>)
             }

@@ -41,29 +41,29 @@ const handleDelete = (_id) => {
     });
   };
   return (
-    <section>
+    <section className="mx-3">
       <SectionHelmet title={"Free Time | Save Post"} />
-      <h2 className="text-2xl font-semibold text-center my-10">Total Save Post: {savePosts?.length}</h2>
+      <h2 className="text-2xl font-semibold text-center my-3 md:my-10">Total Save Post: {savePosts?.length}</h2>
         <div className="space-y-3">
       {savePosts?.length === 0 ? (
-        <p className="text-red-500 text-xl text-center mt-20">
+        <p className="text-red-500 text-xl text-center md:mt-20">
           No Post Saved !
         </p>
       ) : (
         savePosts?.map((savePost) => (
           <div
             key={savePost?._id}
-            className="card lg:card-side bg-base-100 shadow-xl w-full">
+            className="flex relative flex-col md:flex-row gap-3 md:gap-10 shadow-md w-full p-3">
            {
             savePost?.image ?  <figure>
             <img
               src={savePost?.image}
-              className="h-[300px] w-[400px] object-cover rounded-md"
+              className="md:h-[300px] md:w-[400px] object-cover rounded-md"
               alt="Album"
             />
           </figure> : ""
            }
-            <div className="card-body">
+            <div className="">
               <div className="flex items-center gap-2">
                 <div className="avatar">
                   <div className="w-10 rounded-full">
@@ -91,8 +91,8 @@ const handleDelete = (_id) => {
                   </p>
                 </div>
               </div>
-              <p>Click the button to listen on Spotiwhy app.</p>
-              <div className="card-actions justify-end">
+              <p>{savePost?.article}</p>
+              <div className="absolute  right-0  bottom-5">
                 <button onClick={()=>handleDelete(savePost?._id)} className="btn btn-circle text-xl"><MdDelete/></button>
               </div>
             </div>

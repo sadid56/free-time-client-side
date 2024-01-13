@@ -5,6 +5,7 @@ import useAuth from "../../../hooks/useAuth";
 import AddPostModal from "../../../Components/AddPostModal/AddPostModal";
 import AddReelsModal from "../../../Components/AddReelsModal/AddReelsModal";
 import AddVideoModal from "../../../Components/AddVideoModal/AddVideoModal";
+import AddverticeContent from "../../../shared/addverticContent/AddverticeContent";
 
 const Feeds = () => {
   const axiosSecure = useAxiosSecure();
@@ -19,7 +20,8 @@ const Feeds = () => {
   });
 
   return (
-    <div>
+    <div className="flex w-full gap-3">
+      <div className="md:w-[65%]">
       <div className="p-5 my-3 rounded-md shadow-md space-y-4 border">
         <div className="flex items-center gap-2">
           <div className="avatar">
@@ -47,6 +49,10 @@ const Feeds = () => {
           ))}
         </div>
       )}
+      </div>
+      <div className="hidden md:block w-[35%]  mt-3">
+        <AddverticeContent/>
+      </div>
     </div>
   );
 };

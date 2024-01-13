@@ -7,12 +7,17 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { useInView } from "react-intersection-observer";
+import { MdBookmark } from "react-icons/md";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useAuth from "../../hooks/useAuth";
 
 const Reel = ({ reel, refetch }) => {
   const { name, title, time, auther_image, reels, _id, comments, likes } = reel;
   const [likeCount, setLikeCount] = useState(likes);
   const [liked, setLiked] = useState(false);
   const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure()
+  const {user} = useAuth()
   const [ref, inView, ] = useInView();
   // console.log(reel);
   const shareHandler = async () => {
@@ -39,8 +44,26 @@ const Reel = ({ reel, refetch }) => {
   };
   // console.log(inView);
   // console.log(entry);
+  const handleAddSave = async()=>{
+    try{
+     const postInfo = {
+       name: name,
+       title: title,
+       time: time,
+       email: user?.email,
+       auther_image:auther_image,
+       video: reels,
+     }
+     const res = await axiosSecure.post("/playlist", postInfo)
+     if(res.data?.acknowledged){
+       toast.success("Video added Success !")
+     }
+    }catch(err){
+     toast.error(err?.message)
+    }
+  }
   return (
-    <div ref={ref} className="border rounded-md shadow-md p-1 ">
+    <div ref={ref} className="border rounded-md shadow-md p-1 min-h-screen">
       <div className="relative">
         <div className="flex items-center gap-2 absolute  p-3 bg-[rgba(0,0,0,0.5)] w-full">
           <div className="avatar right-1">
@@ -52,7 +75,7 @@ const Reel = ({ reel, refetch }) => {
             <h3 className="text-2xl text-white font-bold">{name}</h3>
           </div>
         </div>
-       <div>
+       <div className="">
        <ReactPlayer
           controls
           playing={inView}
@@ -62,7 +85,7 @@ const Reel = ({ reel, refetch }) => {
           height="50%"
         />
        </div>
-        <div className=" flex-col py-5 px-3 space-y-10 text-xl bg-slate-200 rounded-full w-fit absolute bottom-32 md:-right-14 right-2">
+        <div className="flex flex-col py-5 px-3 space-y-10 text-xl bg-slate-200 rounded-full w-fit absolute bottom-32 md:-right-14 right-2">
           {liked ? (
             <button className="flex flex-col items-center text-pink-500 gap-1 text-xl">
               <FaRegHeart /> {likeCount}
@@ -75,8 +98,12 @@ const Reel = ({ reel, refetch }) => {
             </button>
           )}
           <ReelComment refetch={refetch} id={_id} comments={comments} />
+          
           <button onClick={shareHandler}>
             <IoIosShareAlt />
+          </button>
+          <button onClick={handleAddSave}>
+            <MdBookmark/>
           </button>
         </div>
       </div>

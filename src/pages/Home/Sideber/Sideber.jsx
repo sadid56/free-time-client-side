@@ -10,8 +10,8 @@ const Sideber = () => {
   const { user } = useAuth();
 
   return (
-    <div>
-      <ul id="sid" className="space-y-5 pl-5 text-xl pt-6 hidden md:block">
+    <div className="bg-[#f0f2f5] z-50 min-h-screen">
+      <ul id="sid" className="space-y-5 pl-5 text-xl pt-6">
         <li>
           <Link to="/profile">
           <div className="flex items-center gap-2">

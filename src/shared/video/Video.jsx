@@ -9,16 +9,20 @@ import { useState } from "react";
 // import FeedsShareModal from "../../Components/FeedsShareModal/FeedsShareModal";
 import toast from "react-hot-toast";
 import { IoIosShareAlt } from "react-icons/io";
-import { MdClose } from "react-icons/md";
+import { MdClose, MdPlaylistAdd } from "react-icons/md";
 import { HiDotsVertical } from "react-icons/hi";
 import ReactPlayer from "react-player";
 import { useInView } from "react-intersection-observer";
 import { CiShare2 } from "react-icons/ci";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useAuth from "../../hooks/useAuth";
 
 const Video = ({ videos, refetch }) => {
   const { name, title, time, likes, comments, _id, auther_image, video } =
     videos;
   const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure()
+  const {user} = useAuth()
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes);
   const [isToggle, setIsToggle] = useState(false);
@@ -47,6 +51,25 @@ const Video = ({ videos, refetch }) => {
     }
   };
 
+  const handleAddSave = async()=>{
+    try{
+     const postInfo = {
+       name: name,
+       title: title,
+       time: time,
+       email: user?.email,
+       auther_image:auther_image,
+       video: video,
+     }
+     const res = await axiosSecure.post("/playlist", postInfo)
+     if(res.data?.acknowledged){
+       toast.success("Video added Success !")
+     }
+    }catch(err){
+     toast.error(err?.message)
+    }
+  }
+
   return (
     <div ref={ref} className="p-3 border rounded-md ">
       
@@ -68,7 +91,7 @@ const Video = ({ videos, refetch }) => {
         <div
           className={`${
             isToggle
-              ? "absolute right-4 top-9 bg-slate-700 p-5 rounded-md shadow-md"
+              ? "absolute right-4 top-9 bg-white p-5 rounded-md shadow-md"
               : "hidden"
           } flex flex-col gap-2 `}>
           <button
@@ -76,11 +99,16 @@ const Video = ({ videos, refetch }) => {
             className="flex items-center gap-1 text-xl text-white hover:bg-slate-600 bg-slate-400 px-4 py-2 rounded-md transform-all duration-300">
             <IoIosShareAlt /> Share
           </button>
+          <button
+            onClick={handleAddSave}
+            className="flex items-center gap-1 text-xl text-white hover:bg-slate-600 bg-slate-400 px-4 py-2 rounded-md transform-all duration-300 cursor-pointer">
+            <MdPlaylistAdd /> Add Play list
+          </button>
         </div>
       </div>
       <h5 className="font-medium my-5">{title}</h5>
 
-      <div className="w-full h-full">
+      <div className="w-full h-[500px]">
         <ReactPlayer
         style={{
           borderRadius: '20px' 

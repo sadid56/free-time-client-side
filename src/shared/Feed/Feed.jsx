@@ -76,7 +76,7 @@ const Feed = ({ feed, refetch }) => {
  }
 
   return (
-    <div className="p-2 border rounded-md mx-36">
+    <div className="p-2 border rounded-md">
       <div className="flex justify-between items-center gap-2 relative">
         <div className="flex items-center gap-2">
           <div className="avatar">

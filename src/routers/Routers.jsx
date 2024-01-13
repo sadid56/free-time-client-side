@@ -8,6 +8,7 @@ import Profile from "../pages/Profile/Profile";
 import Videos from "../pages/Videos/Videos";
 import Reels from "../pages/Reels/Reels";
 import SavePost from "../pages/Home/SavePost/SavePost";
+import PlaylistVideos from "../pages/Home/PlaylistVideos/PlaylistVideos";
 const Routers = createBrowserRouter([
   {
     path: "/",
@@ -29,6 +30,10 @@ const Routers = createBrowserRouter([
       {
         path: "/videos",
         element: <PrivateRoute><Videos /></PrivateRoute>,
+      },
+      {
+        path: "/playlist",
+        element: <PlaylistVideos/>,
       }
     ],
   },
