@@ -115,6 +115,7 @@ const Video = ({ videos, refetch }) => {
         }}
         progressInterval={1000}
           controls
+          muted
           playing={inView}
           volume={0.5}
           url={video}

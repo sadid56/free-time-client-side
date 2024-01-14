@@ -44,14 +44,14 @@ const PlaylistVideos = () => {
   return (
     <section>
       <SectionHelmet title={"Free Time | Playlist"} />
-      <div className="grid grid-cols-1">
+      <div className="">
         {playlists?.length === 0 ? (
           <p className="text-red-500 text-xl text-center md:mt-20">
             No video Saved !
           </p>
         ) : (
           playlists?.map((playlist) => (
-            <div key={playlist?._id} className="flex shadow-md border w-full mt-4 gap-5 md:gap-10 md:mx-5 p-3 rounded-md relative">
+            <div key={playlist?._id} className="flex shadow-md border w-full mt-4 gap-5 md:gap-10 md:mx-5 p-3 rounded-md relative ">
               <div className="flex-1 w-full h-[100px] md:h-[250px]">
                 <ReactPlayer
                   style={{
@@ -82,7 +82,7 @@ const PlaylistVideos = () => {
                   </div>
                 </div>
                 <p>{playlist?.title}</p>
-                <div className="absolute top-2 right-0 md:right-8 md:bottom-5">
+                <div className="absolute  right-0 md:right-8 bottom-0 md:top-0">
                   <button
                     onClick={() => handleDelete(playlist?._id)}
                     className="btn btn-circle text-xl">

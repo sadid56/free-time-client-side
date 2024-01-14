@@ -63,7 +63,7 @@ const Reel = ({ reel, refetch }) => {
     }
   }
   return (
-    <div ref={ref} className="border rounded-md shadow-md p-1">
+    <div ref={ref} className="border rounded-md shadow-md  relative h-[100vh]">
       <div className="relative">
         <div className="flex items-center gap-2 absolute  p-3 bg-[rgba(0,0,0,0.5)] w-full">
           <div className="avatar right-1">
@@ -75,14 +75,14 @@ const Reel = ({ reel, refetch }) => {
             <h3 className="text-2xl text-white font-bold">{name}</h3>
           </div>
         </div>
-       <div className="w-full h-full">
+       <div className="w-full h-[100vh]">
        <ReactPlayer
           controls
           playing={inView}
           volume={0.5}
           url={reels}
           width="100%"
-          height="50%"
+          height="100%"
         />
        </div>
         <div className="flex flex-col py-5 px-3 space-y-10 text-xl bg-slate-200 rounded-full w-fit absolute bottom-32 md:-right-14 right-2">
@@ -107,9 +107,9 @@ const Reel = ({ reel, refetch }) => {
           </button>
         </div>
       </div>
-      <div className="flex flex-col justify-start gap-1 ml-2">
-        <h3 className="text-xl font-medium  ">{title}</h3>
-        <p className="text-sm text-gray-500">{time?.slice(0, 10)}</p>
+      <div className="flex flex-col justify-start gap-1  absolute bottom-0 bg-[rgba(0,0,0,0.5)] w-full z-50">
+        <h3 className="text-xl font-medium  text-white">{title}</h3>
+        <p className="text-sm text-gray-200">{time?.slice(0, 10)}</p>
       </div>
     </div>
   );
