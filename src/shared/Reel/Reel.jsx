@@ -63,7 +63,7 @@ const Reel = ({ reel, refetch }) => {
     }
   }
   return (
-    <div ref={ref} className="border rounded-md shadow-md  relative h-[100vh]">
+    <div ref={ref} className="border shadow-md  relative w-full h-[100vh] rounded-md ">
       <div className="relative">
         <div className="flex items-center gap-2 absolute  p-3 bg-[rgba(0,0,0,0.5)] w-full">
           <div className="avatar right-1">
@@ -75,8 +75,12 @@ const Reel = ({ reel, refetch }) => {
             <h3 className="text-2xl text-white font-bold">{name}</h3>
           </div>
         </div>
-       <div className="w-full h-[100vh]">
+       <div className="w-full shadow-lg h-[100vh]">
        <ReactPlayer
+        style={{
+          borderRadius: '5px',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Adjust shadow properties as needed
+        }}
           controls
           playing={inView}
           volume={0.5}

@@ -1,5 +1,5 @@
   /* eslint-disable react/prop-types */
-import { MdInsertComment } from "react-icons/md";
+import { MdClose, MdInsertComment } from "react-icons/md";
 import { useState } from "react"; // Import useState
 import { IoMdSend } from "react-icons/io";
 import { useForm } from "react-hook-form";
@@ -52,7 +52,7 @@ const CommentsModal = ({ comments, id, refetch }) => {
             <div className="modal-action">
               <form method="dialog" className="absolute right-0 top-0">
                 <button onClick={closeModal} className="btn btn-circle text-xl">
-                  X
+                  <MdClose/>
                 </button>
               </form>
             </div>
@@ -70,7 +70,7 @@ const CommentsModal = ({ comments, id, refetch }) => {
                   <p className="text-sm">{comment?.date?.slice(0, 10)}</p>
                     </div>
                   </div>
-                  <p className="bg-gray-50 text-slate-900 font-medium w-fit rounded-md py-3 px-5">
+                  <p className="bg-gray-100 text-slate-900 font-medium w-fit rounded-md py-3 px-5">
                     {comment?.comment}
                   </p>
                 </div>
@@ -85,7 +85,7 @@ const CommentsModal = ({ comments, id, refetch }) => {
                     className="textarea textarea-bordered"
                     placeholder="Your Comments"></textarea>
                 </div>
-                <div className="absolute left-1 bottom-0">
+                <div className="absolute right-1 -bottom-7">
                   {/* <EmojiPicker /> */}
                   <button type="submit" className="text-xl text-pink-500">
                     <IoMdSend />

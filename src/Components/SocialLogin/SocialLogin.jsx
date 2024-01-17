@@ -3,21 +3,27 @@ import { MdFacebook } from "react-icons/md";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const SocialLogin = () => {
   const { googleLogin } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const handleGoogleLogin = () => {
+  const axiosPublic = useAxiosPublic();
+  const handleGoogleLogin = async () => {
     try {
-      googleLogin()
-        .then(() => {
-          toast.success("Google Login Success !");
-          navigate(location?.state ? location?.state : "/");
-        })
-        .catch((err) => {
-          toast.error(err);
-        });
+      const res = await googleLogin();
+      if (res) {
+        const postInfo = {
+          photo:res?.user?.photoURL,
+          name: res?.user?.displayName,
+          email: res?.user?.email,
+        };
+        console.log(res.user);
+        await axiosPublic.post("/users", postInfo);
+        toast.success("Google Login Success !");
+        navigate(location?.state ? location?.state : "/");
+      }
     } catch (err) {
       console.log("Google login error-->", err);
     }
@@ -26,7 +32,7 @@ const SocialLogin = () => {
     <div>
       {/* You can open the modal using document.getElementById('ID').showModal() method */}
       <button
-        className="text-xl font-medium text-black py-1 px-4 w-full border border-pink-500 rounded-md hover:text-white hover:bg-[#0F2167] transition-all duration-300"
+        className="text-xl font-medium text-black py-1 px-4 w-full border border-[#0F2167] rounded-md hover:text-white hover:bg-[#0F2167] transition-all duration-300"
         onClick={() =>
           document.getElementById("SocialLogin_modal").showModal()
         }>

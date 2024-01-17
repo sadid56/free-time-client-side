@@ -10,13 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.13.4",
+    "@tanstack/react-query": "^5.17.15",
     "axios": "^1.6.2",
     "cloudinary-react": "^1.8.1",
     "emoji-picker-react": "^4.6.0",
     "firebase": "^10.6.0",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
+    "moment": "^2.30.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet-async": "^1.3.0",

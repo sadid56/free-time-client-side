@@ -126,7 +126,7 @@ const Feed = ({ feed, refetch }) => {
         {image ? (
           <img
             src={image}
-            className="object-cover h-[450px] w-full rounded-md"
+            className="object-cover  w-full rounded-md"
             alt=""
           />
         ) : (

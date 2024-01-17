@@ -2,13 +2,15 @@ import "./navber.css";
 import { Link, NavLink } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
-import { FaHome } from "react-icons/fa";
+import { FaHome, FaUserCircle } from "react-icons/fa";
 import { SiYoutubeshorts } from "react-icons/si";
 import { MdDelete, MdNotifications, MdPersonalVideo } from "react-icons/md";
 import logo from "../../assets/icon/logo.png";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { IoMdSettings } from "react-icons/io";
+import { TbLogout2 } from "react-icons/tb";
 
 const Navber = () => {
   const { user, logOut } = useAuth();
@@ -49,7 +51,7 @@ const Navber = () => {
   return (
     <nav
       id="toNap"
-      className="flex justify-between sticky top-0 z-50 bg-white py-2 px-4  items-center   shadow-lg">
+      className="flex justify-between sticky top-0 z-50 bg-white  py-2 px-4  items-center   shadow-lg">
       <img src={logo} className="w-10 md:w-16" alt="" />
       <ul className={`flex items-center gap-8 md:gap-28 `}>
         <li>
@@ -109,19 +111,23 @@ const Navber = () => {
         </label>
         <ul
           tabIndex={0}
-          className="mt-3 z-[1] p-2 menu menu-sm dropdown-content bg-base-100 rounded-box w-52 space-y-3 border shadow-md">
+          className="mt-3 z-[1] p-2 menu menu-sm dropdown-content bg-base-100 rounded-box w-52 space-y-3 border shadow-2xl ">
           <li>
             <Link
               to={"/profile"}
-              className="justify-between text-xl font-medium">
-              Profile
+              className=" text-xl font-medium flex items-center">
+             <FaUserCircle /> Profile
             </Link>
           </li>
           <li>
-            <a>Settings</a>
+          <Link
+              to={"/setting"}
+              className=" text-xl font-medium">
+              <IoMdSettings /> Setting
+            </Link>
           </li>
-          <button className="btn" onClick={handleLogOut}>
-            Log Out
+          <button className="btn border shadow-md text-xl" onClick={handleLogOut}>
+            <TbLogout2/> Log Out
           </button>
         </ul>
       </div>
