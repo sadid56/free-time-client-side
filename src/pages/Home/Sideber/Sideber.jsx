@@ -1,5 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
-import {  MdBookmarkAdded, MdOndemandVideo, MdPlaylistAdd } from "react-icons/md";
+import {  MdBookmarkAdded, MdMessage, MdOndemandVideo, MdPlaylistAdd } from "react-icons/md";
 import { SiYoutubeshorts } from "react-icons/si";
 import { FaRegNewspaper, FaUserFriends } from "react-icons/fa";
 import "./sidebar.css";
@@ -31,9 +31,15 @@ const Sideber = () => {
         </li>
         <li>
           <NavLink to="/friends" className="flex items-center gap-1">
+          <MdMessage /> Message
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/friends" className="flex items-center gap-1">
           <FaUserFriends /> Friends
           </NavLink>
         </li>
+       
         <li>
           <NavLink to="/reels" className="flex items-center gap-1">
             <SiYoutubeshorts /> Short

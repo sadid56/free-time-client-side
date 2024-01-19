@@ -29,7 +29,7 @@ const Video = ({ videos, refetch }) => {
   const { data: playlists = [] } = useQuery({
     queryKey: ["playlists"],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/playlist`);
+      const res = await axiosSecure.get(`/playlist?email=${user?.email}`);
       return res.data;
     },
   });

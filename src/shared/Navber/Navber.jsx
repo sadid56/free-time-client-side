@@ -51,7 +51,7 @@ const Navber = () => {
   return (
     <nav
       id="toNap"
-      className="flex justify-between sticky top-0 z-50 bg-white  py-2 px-4  items-center   shadow-lg">
+      className="flex justify-between sticky top-0 z-50 bg-white py-1 px-4  items-center   shadow-lg ">
       <img src={logo} className="w-10 md:w-16" alt="" />
       <ul className={`flex items-center gap-8 md:gap-28 `}>
         <li>

@@ -37,7 +37,7 @@ const Reels = () => {
             <Swiper
             // direction={'vertical'}
             slidesPerView={1}
-            // spaceBetween={30}
+            spaceBetween={30}
             mousewheel={true}
             navigation={true} modules={[Navigation]} className="mySwiper"
           >

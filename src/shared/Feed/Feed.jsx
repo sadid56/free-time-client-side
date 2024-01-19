@@ -33,7 +33,7 @@ const Feed = ({ feed, refetch }) => {
   const { data: savePosts = []} = useQuery({
     queryKey: ["savePosts"],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/post-save`);
+      const res = await axiosSecure.get(`/post-save?email=${user?.email}`);
       return res.data;
     },
   });

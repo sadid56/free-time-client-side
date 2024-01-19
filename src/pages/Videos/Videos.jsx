@@ -18,7 +18,7 @@ const Videos = () => {
       <SectionHelmet title={"Free Time | Videos"}/>
      
         {
-        videos?.length === 0 ? <p className="text-xl text-center text-red-600 mt-20 font-medium">No Video!</p> : <div className="md:mx-10">  
+        videos?.length === 0 ? <p className="text-xl text-center text-red-600 mt-20 font-medium">No Video!</p> : <div className="md:mx-20">  
         {videos.map((video) => (
           <Video key={video?._id} refetch={refetch} videos={video} />
         ))}

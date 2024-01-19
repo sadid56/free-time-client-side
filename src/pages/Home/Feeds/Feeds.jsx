@@ -22,7 +22,7 @@ const Feeds = () => {
   return (
     <div className="flex w-full gap-3">
       <div className="md:w-[65%]">
-      <div className="p-5 my-3 rounded-md shadow-md space-y-4 border">
+      <div className="p-5 my-2 rounded-md shadow-md space-y-4 border">
         <div className="flex items-center gap-2">
           <div className="avatar">
             <div className="w-10 rounded-full">
@@ -50,7 +50,7 @@ const Feeds = () => {
         </div>
       )}
       </div>
-      <div className="hidden md:block w-[35%]  mt-3">
+      <div className="hidden md:block w-[35%]  mt-2">
         <AddverticeContent/>
       </div>
     </div>

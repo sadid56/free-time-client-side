@@ -24,7 +24,7 @@ const Reel = ({ reel, refetch }) => {
   const { data: playlists = [] } = useQuery({
     queryKey: ["playlists"],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/playlist`);
+      const res = await axiosSecure.get(`/playlist?email=${user?.email}`);
       return res.data;
     },
   });
@@ -81,7 +81,7 @@ const Reel = ({ reel, refetch }) => {
     
   }
   return (
-    <div ref={ref} className=" shadow-md  relative w-full  rounded-md h-[100vh]">
+    <div ref={ref} className=" shadow-md  relative w-full bg-black  rounded-md h-[100vh]">
       <div className="relative">
         <div className="flex items-center gap-2 absolute  p-3 bg-[rgba(0,0,0,0.5)] w-full">
           <div className="avatar right-1">
@@ -107,7 +107,7 @@ const Reel = ({ reel, refetch }) => {
           height="100%"
         />
        </div>
-        <div style={{backdropFilter:"blur(20px)"}} className="flex z-30 flex-col py-5 px-3 space-y-7 text-xl  rounded-full w-fit absolute bottom-6 right-1 text-white">
+        <div style={{backdropFilter:"blur(20px)"}} className="flex z-30 flex-col py-5 px-3 space-y-7 text-xl  rounded-full w-fit absolute bottom-20 md:bottom-6 right-1 text-white">
           {liked ? (
             <button className="flex flex-col items-center text-pink-500 gap-1 text-xl">
               <FaRegHeart /> {likeCount}
