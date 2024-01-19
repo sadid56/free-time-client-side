@@ -3,9 +3,6 @@ import { AiOutlineLike } from "react-icons/ai";
 import { BiSolidLike } from "react-icons/bi";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { useState } from "react";
-// import useAuth from "../../hooks/useAuth";
-
-// import FeedsShareModal from "../../Components/FeedsShareModal/FeedsShareModal";
 import toast from "react-hot-toast";
 import { IoIosShareAlt } from "react-icons/io";
 import { MdBookmarkAdd, MdClose } from "react-icons/md";
@@ -13,6 +10,7 @@ import { HiDotsVertical } from "react-icons/hi";
 import PostCommentModal from "../VideoCommentModal/VideoCommentsModal";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
 
 const Feed = ({ feed, refetch }) => {
   const {
@@ -32,6 +30,13 @@ const Feed = ({ feed, refetch }) => {
   const [likeCount, setLikeCount] = useState(likes);
   const [isToggle, setIsToggle] = useState(false);
   const {user} = useAuth()
+  const { data: savePosts = []} = useQuery({
+    queryKey: ["savePosts"],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/post-save`);
+      return res.data;
+    },
+  });
   const handleLike = async () => {
     try {
       await axiosPublic.post(`/feeds/likes/${_id}`);
@@ -54,24 +59,29 @@ const Feed = ({ feed, refetch }) => {
       toast.error("Share not supported by your browser");
     }
   };
-
+  const isExist = savePosts?.find(post=> post?.PrevId === _id)
  const handleAddSave = async()=>{
-   try{
-    const postInfo = {
-      name: name,
-      article: article,
-      time: time,
-      email: user?.email,
-      auther_image:auther_image,
-      image: image,
-      feelings: feelings
-    }
-    const res = await axiosSecure.post("/post-save", postInfo)
-    if(res.data?.acknowledged){
-      toast.success("Post added Success !")
-    }
-   }catch(err){
-    toast.error(err?.message)
+   if(isExist){
+    toast.error("Already saved this post !")
+   }else{
+    try{
+      const postInfo = {
+        name: name,
+        article: article,
+        time: time,
+        email: user?.email,
+        auther_image:auther_image,
+        image: image,
+        feelings: feelings,
+        PrevId: _id
+      }
+      const res = await axiosSecure.post("/post-save", postInfo)
+      if(res.data?.acknowledged){
+        toast.success("Post added Success !")
+      }
+     }catch(err){
+      toast.error(err?.message)
+     }
    }
  }
 

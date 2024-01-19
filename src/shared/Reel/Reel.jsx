@@ -10,6 +10,7 @@ import { useInView } from "react-intersection-observer";
 import { MdBookmark } from "react-icons/md";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
 
 const Reel = ({ reel, refetch }) => {
   const { name, title, time, auther_image, reels, _id, comments, likes } = reel;
@@ -20,6 +21,13 @@ const Reel = ({ reel, refetch }) => {
   const {user} = useAuth()
   const [ref, inView, ] = useInView();
   // console.log(reel);
+  const { data: playlists = [] } = useQuery({
+    queryKey: ["playlists"],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/playlist`);
+      return res.data;
+    },
+  });
   const shareHandler = async () => {
     const feedUrl = `${window.location.origin}/reels/${_id}`;
     if ("share" in navigator) {
@@ -43,27 +51,37 @@ const Reel = ({ reel, refetch }) => {
     }
   };
   // console.log(inView);
-  // console.log(entry);
+  // console.log(playlists);
+  // console.log(_id);
+  // console.log(PrevId);
+  const isExist = playlists?.find(playlist=> playlist?.PrevId === _id)
   const handleAddSave = async()=>{
-    try{
-     const postInfo = {
-       name: name,
-       title: title,
-       time: time,
-       email: user?.email,
-       auther_image:auther_image,
-       video: reels,
-     }
-     const res = await axiosSecure.post("/playlist", postInfo)
-     if(res.data?.acknowledged){
-       toast.success("Video added Success !")
-     }
-    }catch(err){
-     toast.error(err?.message)
-    }
+      if(isExist){
+           toast.error("Already saved this reel !")
+      }else{
+        try{
+          const postInfo = {
+            name: name,
+            title: title,
+            time: time,
+            email: user?.email,
+            auther_image:auther_image,
+            video: reels,
+            PrevId:_id
+          }
+          const res = await axiosSecure.post("/playlist", postInfo)
+          if(res.data?.acknowledged){
+            toast.success("Video added Success !")
+          }
+         }catch(err){
+          toast.error(err?.message)
+         }
+      }
+    
+    
   }
   return (
-    <div ref={ref} className="border shadow-md  relative w-full h-[100vh] rounded-md ">
+    <div ref={ref} className=" shadow-md  relative w-full  rounded-md h-[100vh]">
       <div className="relative">
         <div className="flex items-center gap-2 absolute  p-3 bg-[rgba(0,0,0,0.5)] w-full">
           <div className="avatar right-1">
@@ -89,7 +107,7 @@ const Reel = ({ reel, refetch }) => {
           height="100%"
         />
        </div>
-        <div className="flex flex-col py-5 px-3 space-y-10 text-xl bg-slate-200 rounded-full w-fit absolute bottom-32 md:-right-14 right-2">
+        <div style={{backdropFilter:"blur(20px)"}} className="flex z-30 flex-col py-5 px-3 space-y-7 text-xl  rounded-full w-fit absolute bottom-6 right-1 text-white">
           {liked ? (
             <button className="flex flex-col items-center text-pink-500 gap-1 text-xl">
               <FaRegHeart /> {likeCount}
@@ -111,7 +129,7 @@ const Reel = ({ reel, refetch }) => {
           </button>
         </div>
       </div>
-      <div className="flex flex-col justify-start gap-1  absolute bottom-0 bg-[rgba(0,0,0,0.5)] w-full z-50">
+      <div className="flex flex-col justify-start gap-1  absolute bottom-0 bg-[rgba(0,0,0,0.5)] w-full z-20 left-1">
         <h3 className="text-xl font-medium  text-white">{title}</h3>
         <p className="text-sm text-gray-200">{time?.slice(0, 10)}</p>
       </div>

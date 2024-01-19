@@ -10,7 +10,7 @@ import useAuth from "../../../hooks/useAuth";
 const PlaylistVideos = () => {
   const axiosSecure = useAxiosSecure();
   const axiosPublic = useAxiosPublic();
-  const {user} = useAuth()
+  const { user } = useAuth();
   const { data: playlists = [], refetch } = useQuery({
     queryKey: ["playlist"],
     queryFn: async () => {
@@ -51,7 +51,9 @@ const PlaylistVideos = () => {
           </p>
         ) : (
           playlists?.map((playlist) => (
-            <div key={playlist?._id} className="flex shadow-md border w-full mt-4 gap-5 md:gap-10 md:mx-5 p-3 rounded-md relative ">
+            <div
+              key={playlist?._id}
+              className="flex shadow-md border w-full mt-4 gap-5 md:gap-10 md:mx-5 p-3 rounded-md relative ">
               <div className="flex-1 w-full h-[100px] md:h-[250px]">
                 <ReactPlayer
                   style={{

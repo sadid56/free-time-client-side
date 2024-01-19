@@ -6,7 +6,7 @@
 }
 
 #sid li {
-    border-bottom: 2px solid transparent;
+    border-bottom: 8px solid transparent;
     width: 100%;
     transition: background 0.1s ease-in-out; 
 }

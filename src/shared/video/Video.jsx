@@ -4,9 +4,6 @@ import { BiSolidLike } from "react-icons/bi";
 import CommentsModal from "../CommentsModal/CommentsModal";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { useState } from "react";
-// import useAuth from "../../hooks/useAuth";
-
-// import FeedsShareModal from "../../Components/FeedsShareModal/FeedsShareModal";
 import toast from "react-hot-toast";
 import { IoIosShareAlt } from "react-icons/io";
 import { MdClose, MdPlaylistAdd } from "react-icons/md";
@@ -16,6 +13,7 @@ import { useInView } from "react-intersection-observer";
 import { CiShare2 } from "react-icons/ci";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
 
 const Video = ({ videos, refetch }) => {
   const { name, title, time, likes, comments, _id, auther_image, video } =
@@ -28,6 +26,13 @@ const Video = ({ videos, refetch }) => {
   const [isToggle, setIsToggle] = useState(false);
   const [ref, inView] = useInView();
   // console.log(inView);
+  const { data: playlists = [] } = useQuery({
+    queryKey: ["playlists"],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/playlist`);
+      return res.data;
+    },
+  });
   const handleLike = async () => {
     try {
       await axiosPublic.post(`/videos/likes/${_id}`);
@@ -50,24 +55,30 @@ const Video = ({ videos, refetch }) => {
       toast.error("Share not supported by your browser");
     }
   };
-
+  const isExist = playlists?.find(playlist=> playlist?.PrevId === _id)
   const handleAddSave = async()=>{
-    try{
-     const postInfo = {
-       name: name,
-       title: title,
-       time: time,
-       email: user?.email,
-       auther_image:auther_image,
-       video: video,
-     }
-     const res = await axiosSecure.post("/playlist", postInfo)
-     if(res.data?.acknowledged){
-       toast.success("Video added Success !")
-     }
-    }catch(err){
-     toast.error(err?.message)
+    if(isExist){
+      toast.error("Already Saved This video!")
+    }else{
+      try{
+        const postInfo = {
+          name: name,
+          title: title,
+          time: time,
+          email: user?.email,
+          auther_image:auther_image,
+          video: video,
+          PrevId: _id
+        }
+        const res = await axiosSecure.post("/playlist", postInfo)
+        if(res.data?.acknowledged){
+          toast.success("Video added Success !")
+        }
+       }catch(err){
+        toast.error(err?.message)
+       }
     }
+   
   }
 
   return (
@@ -108,7 +119,7 @@ const Video = ({ videos, refetch }) => {
       </div>
       <h5 className="font-medium my-5">{title}</h5>
 
-      <div className="w-full h-[500px]">
+      <div className="w-full ">
         <ReactPlayer
         style={{
           borderRadius: '20px' 
