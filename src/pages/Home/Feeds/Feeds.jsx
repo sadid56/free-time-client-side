@@ -4,8 +4,6 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
 import AddPostModal from "../../../Components/AddPostModal/AddPostModal";
 import AddReelsModal from "../../../Components/AddReelsModal/AddReelsModal";
-import AddVideoModal from "../../../Components/AddVideoModal/AddVideoModal";
-import AddverticeContent from "../../../shared/addverticContent/AddverticeContent";
 
 const Feeds = () => {
   const axiosSecure = useAxiosSecure();
@@ -20,10 +18,10 @@ const Feeds = () => {
   });
 
   return (
-    <div className="flex w-full gap-3">
-      <div className="md:w-[65%]">
-      <div className="p-5 my-2 rounded-md shadow-md space-y-4 border">
-        <div className="flex items-center gap-2">
+    <div className=" w-full">
+      <div className="">
+      <div className="p-5 my-2 rounded-md shadow-md space-y-4 border bg-white">
+        <div className="flex items-center gap-2 ">
           <div className="avatar">
             <div className="w-10 rounded-full">
               <img src={user?.photoURL} />
@@ -37,21 +35,17 @@ const Feeds = () => {
         <div className="flex items-center gap-5 justify-center">
           <AddPostModal refetch={refetch} />
           <AddReelsModal refetch={refetch}/>
-          <AddVideoModal refetch={refetch} />
         </div>
       </div>
       {news?.length === 0 ? (
         <p className="text-center text-red-600 font-medium mt-20">No Post !</p>
       ) : (
-        <div className="grid grid-cols-1 gap-2">
+        <div className="grid grid-cols-1 gap-2 bg-white rounded-md">
           {news.map((feed) => (
             <Feed key={feed._id} feed={feed} refetch={refetch}></Feed>
           ))}
         </div>
       )}
-      </div>
-      <div className="hidden md:block w-[35%]  mt-2">
-        <AddverticeContent/>
       </div>
     </div>
   );

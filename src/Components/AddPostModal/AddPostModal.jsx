@@ -13,16 +13,15 @@ const AddPostModal = ({ refetch }) => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [loading, setLoading] = useState(false);
-  // const [selectedFileName, setSelectedFileName] = useState("")
+  const [selectedFileName, setSelectedFileName] = useState();
+  // console.log(selectedFileName);
   const onSubmit = async (data) => {
     // console.log(data);
     try {
       setLoading(true);
-      const fileImage = data?.image[0];
-      // console.log(fileImage);
-      if (fileImage) {
+      if (selectedFileName) {
         const formData = new FormData();
-        formData.append("image", fileImage);
+        formData.append("image", selectedFileName);
         const { data: imageData } = await axios.post(
           "https://api.imgbb.com/1/upload?key=ee9960786c60a08168b8606c5d54ae38",
           formData
@@ -57,6 +56,7 @@ const AddPostModal = ({ refetch }) => {
             const modal = document.getElementById("post_modal_id");
             modal.close();
             refetch();
+            setSelectedFileName(null);
             setLoading(false);
           }
         }
@@ -91,6 +91,7 @@ const AddPostModal = ({ refetch }) => {
             const modal = document.getElementById("post_modal_id");
             modal.close();
             refetch();
+            setSelectedFileName(null);
             setLoading(false);
           }
         }
@@ -115,7 +116,7 @@ const AddPostModal = ({ refetch }) => {
   return (
     <div>
       <button
-        className="flex items-center gap-1 py-2 px-4 text-sm  md:text-xl  border-2 border-gray-200 rounded-md text-gray-500"
+        className="flex  items-center gap-1 py-2 px-8 text-sm  md:text-xl  border-2 border-gray-200 rounded-md text-gray-500"
         onClick={() => document.getElementById("post_modal_id").showModal()}>
         <MdArticle />
         Post
@@ -177,20 +178,25 @@ const AddPostModal = ({ refetch }) => {
                       <span className="font-semibold">Click to upload</span>{" "}
                       Photo
                     </p>
-                    {/* <p className="font-medium text-gray-500">
-                      {selectedFileName}
-                    </p> */}
                     <p className="text-xs text-gray-500 dark:text-gray-400">
                       SVG, PNG, JPG
                     </p>
+                    {selectedFileName ? (
+                      <div className="font-medium text-gray-400 text-center">
+                        {selectedFileName?.name} <br /> {selectedFileName?.type}{" "}
+                        / {(selectedFileName?.size / 1024 / 1024).toFixed(2)} MB
+                      </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
                   <input
-                    accept="image/svg+xml,image/png,image/jpeg"
+                   
                     id="dropzone-file"
                     type="file"
                     name="image"
                     className="hidden"
-                    {...register("image")}
+                    onChange={(e) => setSelectedFileName(e.target.files[0])}
                   />
                 </label>
               </div>

@@ -83,10 +83,10 @@ const Navber = () => {
         </li>
       </ul>
       <div
-        className={`rounded-md bg-gray-100 border p-4 shadow-xl ${
+        className={`rounded-md bg-gray-100 border p-4 shadow-xl overflow-y-scroll ${
           isToggle ? "absolute top-16 md:left-1/2" : "hidden"
         }`}>
-        <div className="space-y-2">
+        <div className="space-y-2 ">
           {
             notifications?.length === 0 ? <p className="text-red-500 text-xl text-center">No Notification</p> : notifications.map((notification, idx) => (
               <div key={notification?._id} className="flex items-center gap-3 p-2 rounded-md border bg-gray-50 font-medium">

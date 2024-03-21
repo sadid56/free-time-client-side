@@ -1,19 +1,8 @@
 #sid a.active{
     color: navy;
-    width: fit-content;
-    border-bottom: 2px solid black;
+    /* width: fit-content;
+    border-bottom: 2px solid black; */
 
 }
 
-#sid li {
-    border-bottom: 8px solid transparent;
-    width: 100%;
-    transition: background 0.1s ease-in-out; 
-}
 
-#sid li:hover {
-    background: rgb(227, 225, 225);
-    border-radius: 8px;
-    cursor: pointer;
-    border-bottom-color: rgb(227, 225, 225); 
-}

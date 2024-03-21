@@ -15,6 +15,7 @@ const ProfilePicUpdateModal = ({ refetch }) => {
     try {
       setLoading(true)
       const fileImage = data?.file[0];
+      // console.log(fileImage);
       const formData = new FormData();
       formData.append("image", fileImage);
       const { data: imageData } = await axios.post(
@@ -68,9 +69,7 @@ const ProfilePicUpdateModal = ({ refetch }) => {
                       <span className="font-semibold">Click to upload</span>{" "}
                       Photo
                     </p>
-                    {/* <p className="font-medium text-gray-500">
-                      {selectedFileName}
-                    </p> */}
+                 
                     <p className="text-xs text-gray-500 dark:text-gray-400">
                       SVG, PNG, JPG
                     </p>
@@ -79,9 +78,9 @@ const ProfilePicUpdateModal = ({ refetch }) => {
                     accept="image/svg+xml,image/png,image/jpeg"
                     id="dropzone-file"
                     type="file"
-                    name="image"
+                    name="file"
                     className="hidden"
-                    {...register("image")}
+                    {...register("file")}
                   />
                 </label>
               </div>

@@ -13,6 +13,7 @@ const AddReelsModal = ({ refetch }) => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [loading, setLoading] = useState(false);
+  
   const onSubmit = async (data) => {
     // console.log(data);
     try {
@@ -64,7 +65,7 @@ const AddReelsModal = ({ refetch }) => {
   return (
     <div>
       <button
-        className="flex items-center gap-1 py-2 px-4 text-sm  md:text-xl  bg-gray-100 border-2 border-gray-200 rounded-md text-gray-500"
+        className="flex w-full items-center gap-1 py-2 px-4 text-sm  md:text-xl  bg-gray-100 border-2 border-gray-200 rounded-md text-gray-500"
         onClick={() => document.getElementById("reels_modal_id").showModal()}>
         <TbTableShortcut />
         Add Reels

@@ -1,37 +1,30 @@
 import { Outlet } from "react-router-dom";
 import Navber from "../shared/Navber/Navber";
 import Sideber from "../pages/Home/Sideber/Sideber";
-import { useState } from "react";
-import { MdClose } from "react-icons/md";
-import { FiAlignJustify } from "react-icons/fi";
-// import AddverticeContent from "../shared/addverticContent/AddverticeContent";
 
 const Main = () => {
-  const [isToggle, setIsToggle] = useState(false);
   return (
-    <div>
-      <div className="md:hidden flex justify-end sticky top-0">
-        <button
-          className="text-2xl mr-2 mt-1 transition-all duration-1000"
-          onClick={() => setIsToggle(!isToggle)}>
-          {isToggle ? <MdClose /> : <FiAlignJustify />}
-        </button>
-      </div>
-      <Navber />
-      <div className="md:flex bg-[#f0f2f5]">
-        <div
-          className={`w-[60%] md:w-[30%] z-50   border-r-2 min-h-screen fixed overflow-y-scroll transition-all duration-1000 ${
-            isToggle ? "block " : "hidden md:block"
-          }`}>
-          {/* sideber */}
-          <Sideber />
+      <div className="flex gap-5 w-full bg-gray-200">
+        <div className="w-1/4">
+          {/* Left Sidebar */}
+          <div className="sticky top-0 h-screen overflow-y-auto">
+            {/* Content of left sidebar */}
+           <Sideber/>
+          </div>
         </div>
-        <div onClick={()=>setIsToggle(false)} className="md:w-[70%] md:ml-[30%]">
-          {/* main content */}
-          <Outlet />
+        <div className="w-1/2">
+          {/* Main Content */}
+          <div className="overflow-y-auto">
+            <Outlet />
+          </div>
         </div>
-
-      </div>
+        <div className="w-1/4 mr-3">
+          {/* Right Sidebar chat content */}
+          <div className="sticky top-2 h-screen overflow-y-auto bg-white p-5 rounded-md">
+            {/* Content of right sidebar */}
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis ipsam, consectetur ratione enim praesentium magni dolores alias autem iure fugit, repellendus iusto odit tempore iste laborum nostrum quidem assumenda non, illo cum. Consequuntur, tenetur incidunt asperiores repellendus voluptatem ullam deserunt nemo quasi, magni perferendis debitis expedita. At quae consequatur vel recusandae a deleniti dignissimos, id repudiandae. Nobis quia iure cupiditate voluptas culpa aliquid at debitis nisi ea vitae officia saepe libero veniam error deleniti ducimus vero earum sint, aliquam quis illo! Voluptate esse dolores aut omnis eveniet harum consequuntur modi! Sequi quia earum voluptate deserunt ducimus, architecto natus! Cumque, dolor!</p>
+          </div>
+        </div>
     </div>
   );
 };
