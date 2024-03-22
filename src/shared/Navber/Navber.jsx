@@ -4,7 +4,7 @@ import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
 import { FaHome, FaUserCircle } from "react-icons/fa";
 import { SiYoutubeshorts } from "react-icons/si";
-import { MdDelete, MdNotifications, MdPersonalVideo } from "react-icons/md";
+import { MdDelete, MdNotifications } from "react-icons/md";
 import logo from "../../assets/icon/logo.png";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -62,11 +62,6 @@ const Navber = () => {
         <li>
           <NavLink to="/reels" className="text-2xl">
             <SiYoutubeshorts />
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/videos" className="text-2xl">
-            <MdPersonalVideo />{" "}
           </NavLink>
         </li>
         <li>

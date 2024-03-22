@@ -5,7 +5,6 @@ import Registration from "../Authentication/Registration";
 import Login from "../Authentication/Login";
 import PrivateRoute from "../Private/PrivateRoute";
 import Profile from "../pages/Profile/Profile";
-import Videos from "../pages/Videos/Videos";
 import Reels from "../pages/Reels/Reels";
 import SavePost from "../pages/Home/SavePost/SavePost";
 import PlaylistVideos from "../pages/Home/PlaylistVideos/PlaylistVideos";
@@ -28,11 +27,6 @@ const Routers = createBrowserRouter([
       {
         path:"/save-post",
         element: <SavePost/>
-      },
-
-      {
-        path: "/videos",
-        element: <PrivateRoute><Videos /></PrivateRoute>,
       },
       {
         path: "/playlist",

@@ -5,7 +5,6 @@ import {FaLink} from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { MdOutlineEmail } from "react-icons/md";
 import { IoIosSchool, IoMdHome } from "react-icons/io";
-import { CiCalendarDate } from "react-icons/ci";
 import { GiSelfLove } from "react-icons/gi";
 import Navber from "../../shared/Navber/Navber";
 import CreateProfileModal from "../../Components/CreateProfileModal/CreateProfileModal";
@@ -20,19 +19,19 @@ const Profile = () => {
   const { user } = useAuth();
   const axiosPublic = useAxiosPublic();
   const { data: profiles = [], refetch } = useQuery({
-    queryKey: ["profile"],
+    queryKey: ["profile", user?.email],
     queryFn: async () => {
       const res = await axiosPublic.get(`/profiles?email=${user?.email}`);
       return res.data;
     },
   });
-  // console.log(coverImg)
   return (
     <section className="">
       <SectionHelmet title={`${user?.displayName} - Profile`} />
       <Navber />
       <div className="max-w-5xl mx-auto ">
         <div className="relative">
+          {/* cover  photo */}
             {profiles?.map((profile) => (
               <div key={profile?._id} className="md:h-[400px] w-full relative">
                 <img
@@ -45,6 +44,13 @@ const Profile = () => {
               </div>
               
             ))}
+            {/* default cover photo */}
+            <img
+                
+                className={`${profiles.length === 0 ? "block" : "hidden"} w-full object-cover md:h-[400px] rounded-md`}
+                src={coverImg}
+                alt=""
+              />
           <div className="avatar absolute -bottom-10 md:-bottom-20  md:left-10 left-5">
             <div className="w-36 rounded-full ring ring-pink-500 ring-offset-base-100 ring-offset-2">
               <img src={user?.photoURL} />
@@ -96,9 +102,6 @@ const Profile = () => {
                 </p>
                 <p className="text-gray-600 font-medium flex items-center gap-1">
                   <GiSelfLove /> Date Of Birth - {profile?.date_of_birth}
-                </p>
-                <p className="text-gray-600 font-medium flex items-center gap-1">
-                  <CiCalendarDate /> Joined - 12-3-03-2023
                 </p>
                 <Link
                   target="_blank"

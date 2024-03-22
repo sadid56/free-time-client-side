@@ -8,118 +8,112 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 import { useState } from "react";
 
-const AddPostModal = ({ refetch }) => {
+const AddPostModal = ({ refetch, name, isMedia, setIsMedia }) => {
   const { register, handleSubmit, reset, setValue, watch } = useForm();
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [loading, setLoading] = useState(false);
-  const [selectedFileName, setSelectedFileName] = useState();
-  // console.log(selectedFileName);
+  const [selectedFileName, setSelectedFileName] = useState(null);
+  // const [isMedial, setIsMedia] = useState(false)
   const onSubmit = async (data) => {
-    // console.log(data);
     try {
+      if (selectedFileName && selectedFileName.size >= 5265000) {
+        reset();
+        setSelectedFileName(null);
+        const modal = document.getElementById("post_modal_id");
+        modal.close();
+        return toast.error("Please provide a smaller media file!");
+      }
+
       setLoading(true);
-      if (selectedFileName) {
+
+      let postInfo = {
+        name: user?.displayName,
+        auther_image: user?.photoURL,
+        email: user?.email,
+        article: data?.article || "",
+        image: "",
+        time: new Date(),
+        likes: 0,
+        comments: [],
+        feelings: data?.feelings || "",
+      };
+
+      if (!selectedFileName && data?.article) {
+        // Upload article
+        const response = await axiosSecure.post("/feeds", postInfo);
+        if (response?.data?.acknowledged) {
+          toast.success("Your post was successful!");
+          reset();
+          setSelectedFileName(null);
+          const modal = document.getElementById("post_modal_id");
+          modal.close();
+          refetch();
+        }
+      } else if (
+        selectedFileName &&
+        selectedFileName.type.startsWith("image")
+      ) {
+        // Upload image
         const formData = new FormData();
         formData.append("image", selectedFileName);
         const { data: imageData } = await axios.post(
           "https://api.imgbb.com/1/upload?key=ee9960786c60a08168b8606c5d54ae38",
           formData
         );
-        const postInfo = {
-          name: user?.displayName,
-          auther_image: user?.photoURL,
-          email: user?.email,
-          article: data?.article,
-          image: imageData?.data?.display_url,
-          time: new Date(),
-          likes: 0,
-          comments: [],
-          feelings: data?.feelings,
-        };
+        postInfo.image = imageData?.data?.display_url;
         const response = await axiosSecure.post("/feeds", postInfo);
         if (response?.data?.acknowledged) {
-          const notificationsInfo = {
-            name: user?.displayName,
-            email: user?.email,
-            date: new Date(),
-            post_type: "photo",
-          };
-          const res = await axiosSecure.post(
-            "/notification",
-            notificationsInfo
-          );
-          // console.log(res.data);
-          if (res?.data?.acknowledged) {
-            toast.success("Your post successfull !");
-            reset();
-            const modal = document.getElementById("post_modal_id");
-            modal.close();
-            refetch();
-            setSelectedFileName(null);
-            setLoading(false);
-          }
+          toast.success("Your post was successful!");
+          reset();
+          setSelectedFileName(null);
+          const modal = document.getElementById("post_modal_id");
+          modal.close();
+          refetch();
         }
-      } else if (data?.article) {
-        const postInfo = {
-          name: user?.displayName,
-          auther_image: user?.photoURL,
-          email: user?.email,
-          article: data?.article,
-          image: "",
-          time: new Date(),
-          likes: 0,
-          comments: [],
-          feelings: data?.feelings,
-        };
+      } else if (selectedFileName && selectedFileName.type === "video/mp4") {
+        // Upload video
+        const formData = new FormData();
+        formData.append("file", selectedFileName);
+        formData.append("upload_preset", "video_presed");
+        const { data: videoData } = await axios.post(
+          "https://api.cloudinary.com/v1_1/dvphwrb7p/video/upload",
+          formData
+        );
+        postInfo.video = videoData?.secure_url;
         const response = await axiosSecure.post("/feeds", postInfo);
         if (response?.data?.acknowledged) {
-          const notificationsInfo = {
-            name: user?.displayName,
-            email: user?.email,
-            date: new Date(),
-            post_type: "article",
-          };
-          const res = await axiosSecure.post(
-            "/notification",
-            notificationsInfo
-          );
-          // console.log(res.data);
-          if (res?.data?.acknowledged) {
-            toast.success("Your post successfull !");
-            reset();
-            const modal = document.getElementById("post_modal_id");
-            modal.close();
-            refetch();
-            setSelectedFileName(null);
-            setLoading(false);
-          }
+          toast.success("Your post was successful!");
+          reset();
+          setSelectedFileName(null);
+          const modal = document.getElementById("post_modal_id");
+          modal.close();
+          refetch();
         }
       } else {
-        toast.error("error");
-        setLoading(false);
-      }
-
-      //   console.log(res.data);
+        toast.error("Please provide a valid file or article.");
+      } 
+       setLoading(false);
     } catch (err) {
-      console.log("post err-->", err);
+      console.error("Error submitting post:", err);
+      toast.error("An error occurred while submitting your post.");
+      setLoading(false);
     }
   };
+ const selectFeelings = watch("feelings");
 
-  //   const selectedFile = event.target.files[0];
-  //   if (selectedFile) {
-  //     setSelectedFileName(selectedFile.name);
-  //   }
-  // };
-
-  const selectFeelings = watch("feelings");
+ // modal control
+ const handleModal = ()=>{
+  setIsMedia(false)
+  document.getElementById("post_modal_id").showModal()
+ }
   return (
     <div>
       <button
-        className="flex  items-center gap-1 py-2 px-8 text-sm  md:text-xl  border-2 border-gray-200 rounded-md text-gray-500"
-        onClick={() => document.getElementById("post_modal_id").showModal()}>
+        className="flex  items-center gap-1 py-2 px-4 md:px-8 text-sm  md:text-xl  border-2 border-gray-200 rounded-md text-gray-500"
+        onClick={handleModal}>
         <MdArticle />
-        Post
+        {name}
       </button>
       <dialog id="post_modal_id" className="modal">
         <div className="modal-box">
@@ -131,18 +125,10 @@ const AddPostModal = ({ refetch }) => {
           </form>
           <div>
             <div className="divider">Create Post</div>
+            {/* <div className="flex w-full justify-end">
+                <button onClick={()=>setIsMedia(!isMedial)} className="bg-[#0F2167] text-xl text-white p-2 rounded-md my-2">Media</button>
+              </div> */}
             <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text text-gray-500">Article</span>
-                </label>
-                <textarea
-                  type="text"
-                  placeholder="Share your article..."
-                  {...register("article")}
-                  className="textarea border border-[#0F2167] focus:border-[#0F2167] w-full"
-                />
-              </div>
               <div className="form-control w-full">
                 <label className="label">
                   <span className="label-text text-gray-500">Feelings</span>
@@ -168,7 +154,21 @@ const AddPostModal = ({ refetch }) => {
                   <option value="Sad 🥲">Sad 🥲</option>
                 </select>
               </div>
-              <div className="flex items-center justify-center w-full mt-5">
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text text-gray-500">Article</span>
+                </label>
+                <textarea
+                  type="text"
+                  placeholder="Share your article..."
+                  {...register("article")}
+                  className="textarea border border-[#0F2167] focus:border-[#0F2167] w-full"
+                />
+              </div>
+              
+
+                {/* medial box with conditional */}
+             <div className={`${isMedia ? "block" : "hidden"} flex items-center justify-center w-full mt-5`}>
                 <label
                   for="dropzone-file"
                   className="flex flex-col items-center justify-center w-full h-36 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800  hover:bg-gray-100  ">
@@ -176,10 +176,10 @@ const AddPostModal = ({ refetch }) => {
                     <MdOutlineCloudUpload className="text-4xl text-gray-500" />
                     <p className=" text-sm text-gray-500 dark:text-gray-400">
                       <span className="font-semibold">Click to upload</span>{" "}
-                      Photo
+                      Photo/video
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
-                      SVG, PNG, JPG
+                      SVG, PNG, JPG, video/mp4
                     </p>
                     {selectedFileName ? (
                       <div className="font-medium text-gray-400 text-center">
@@ -191,7 +191,7 @@ const AddPostModal = ({ refetch }) => {
                     )}
                   </div>
                   <input
-                   
+                    accept="image/png,image/jpeg,image/jpg,video/mp4"
                     id="dropzone-file"
                     type="file"
                     name="image"
@@ -200,6 +200,7 @@ const AddPostModal = ({ refetch }) => {
                   />
                 </label>
               </div>
+              
 
               {loading ? (
                 <button className="text-xl btn btn-disabled flex items-center justify-center w-full gap-2 text-black bg-[#0F2167] py-2 px-4 rounded-md mt-5">

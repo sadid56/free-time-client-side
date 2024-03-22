@@ -10,14 +10,17 @@ import { MdClose, MdDelete } from "react-icons/md";
 import UpdatePostModal from "./UpdatePostModal";
 import Swal from "sweetalert2";
 import PostCommentModal from "../../shared/VideoCommentModal/VideoCommentsModal";
+import ReactPlayer from "react-player";
+import { useInView } from "react-intersection-observer";
 
 const Posts = ({ post, refetch }) => {
-  const { name, article, time, likes, comments, _id, auther_image, image, feelings } =
+  const { name, article, time, likes, comments, _id, auther_image, image, video, feelings } =
     post;
   const [likeCount, setLikeCount] = useState(likes);
   const axiosPublic = useAxiosPublic();
   const [liked, setLiked] = useState(false);
   const [isToggle, setIsToggle] = useState(false);
+  const [ref, inView] = useInView();
   const handleLike = async () => {
     try {
       await axiosPublic.post(`/feeds/likes/${_id}`);
@@ -65,7 +68,7 @@ const Posts = ({ post, refetch }) => {
     });
   };
   return (
-    <div className="p-2 border rounded-md">
+    <div ref={ref} className="p-2 border rounded-md">
       <div className="flex justify-between items-center gap-2 relative">
       <div className="flex items-center gap-2">
           <div className="avatar">
@@ -115,7 +118,7 @@ const Posts = ({ post, refetch }) => {
       </div>
       <h5 className="font-medium my-5">{article}</h5>
 
-      <div>
+      <div className={`${image || video ? "block" : "hidden"}`}>
         {image ? (
           <img
             src={image}
@@ -123,7 +126,20 @@ const Posts = ({ post, refetch }) => {
             alt=""
           />
         ) : (
-          ""
+          <div className="h-[350px] w-full bg-black">
+            <ReactPlayer
+        style={{
+          borderRadius: '20px' 
+        }}
+        progressInterval={1000}
+          controls
+          playing={inView}
+          volume={0.5}
+          url={video}
+          width="100%"
+          height="100%"
+        />
+          </div>
         )}
       </div>
 

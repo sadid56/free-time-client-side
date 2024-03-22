@@ -11,8 +11,10 @@ import PostCommentModal from "../VideoCommentModal/VideoCommentsModal";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
+import ReactPlayer from "react-player";
+import { useInView } from "react-intersection-observer";
 
-const Feed = ({ feed, refetch }) => {
+const Feed = ({ feed, refetch}) => {
   const {
     name,
     article,
@@ -22,6 +24,7 @@ const Feed = ({ feed, refetch }) => {
     _id,
     auther_image,
     image,
+    video,
     feelings
   } = feed;
   const axiosPublic = useAxiosPublic();
@@ -29,6 +32,7 @@ const Feed = ({ feed, refetch }) => {
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes);
   const [isToggle, setIsToggle] = useState(false);
+  const [ref, inView] = useInView();
   const {user} = useAuth()
   const { data: savePosts = []} = useQuery({
     queryKey: ["savePosts"],
@@ -37,6 +41,7 @@ const Feed = ({ feed, refetch }) => {
       return res.data;
     },
   });
+
   const handleLike = async () => {
     try {
       await axiosPublic.post(`/feeds/likes/${_id}`);
@@ -86,7 +91,7 @@ const Feed = ({ feed, refetch }) => {
  }
 
   return (
-    <div className="p-2 border rounded-md">
+    <div ref={ref} className="p-2 border rounded-md bg-white shadow">
       <div className="flex justify-between items-center gap-2 relative">
         <div className="flex items-center gap-2">
           <div className="avatar">
@@ -95,7 +100,7 @@ const Feed = ({ feed, refetch }) => {
             </div>
           </div>
           <div>
-            <h3 className="text-xl font-medium flex items-center gap-3">
+            <h3 className=" font-medium flex items-center gap-3">
               {name}{" "}
               <span className="text-[16px] font-normal text-gray-400">
                 {feelings ? (
@@ -132,7 +137,7 @@ const Feed = ({ feed, refetch }) => {
       </div>
       <h5 className="font-medium my-5">{article}</h5>
 
-      <div>
+      <div className={`${image || video ? "block" : "hidden"}`}>
         {image ? (
           <img
             src={image}
@@ -140,9 +145,23 @@ const Feed = ({ feed, refetch }) => {
             alt=""
           />
         ) : (
-          ""
+          <div className="h-[350px] w-full bg-black">
+            <ReactPlayer
+        style={{
+          borderRadius: '20px' 
+        }}
+        progressInterval={1000}
+          controls
+          playing={inView}
+          volume={0.5}
+          url={video}
+          width="100%"
+          height="100%"
+        />
+          </div>
         )}
       </div>
+ 
 
       {/* react  */}
       <div className="flex justify-between mt-5 px-5 md:px-16 border-2 p-2 rounded-md">
