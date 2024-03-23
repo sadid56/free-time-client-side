@@ -2,7 +2,7 @@ import "./navber.css";
 import { Link, NavLink } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
-import { FaHome, FaUserCircle } from "react-icons/fa";
+import { FaBookmark, FaHome, FaUserCircle } from "react-icons/fa";
 import { SiYoutubeshorts } from "react-icons/si";
 import { MdDelete, MdNotifications } from "react-icons/md";
 import logo from "../../assets/icon/logo.png";
@@ -112,6 +112,13 @@ const Navber = () => {
               to={"/profile"}
               className=" text-xl font-medium flex items-center">
              <FaUserCircle /> Profile
+            </Link>
+          </li>
+          <li>
+            <Link
+              to={"/save-post"}
+              className=" text-xl font-medium flex items-center">
+             <FaBookmark /> Bookmark
             </Link>
           </li>
           <li>

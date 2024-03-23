@@ -17,13 +17,13 @@ const Main = () => {
            <Sideber/>
           </div>
         </div>
-        <div className="md:w-1/2 pt-14 md:pt-0">
+        <div className="md:w-[44%] pt-14 md:pt-0">
           {/* Main Content */}
           <div className="overflow-y-auto">
             <Outlet />
           </div>
         </div>
-        <div className="md:w-1/4 hidden md:block mr-3">
+        <div className="md:w-[30%] hidden md:block mr-3">
           {/* Right Sidebar chat content */}
           <div className="sticky top-2 h-screen overflow-y-auto bg-white p-5 rounded-md">
             {/* Content of right sidebar */}

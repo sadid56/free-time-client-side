@@ -22,7 +22,7 @@ const Feeds = () => {
       return res.data;
     },
   });
-
+// console.log(news);
   //skeliton loading 
 
   if(isLoading){

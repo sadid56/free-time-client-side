@@ -1,5 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
-import useAxiosSecure from "../../hooks/useAxiosSecure";
+
 import Reel from "../../shared/Reel/Reel";
 import SectionHelmet from "../../shared/SectionHelmet/SectionHelmet";
 import { useNavigate } from "react-router-dom";
@@ -8,16 +7,11 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { Navigation } from 'swiper/modules';
+import useReels from "../../hooks/useReels";
 const Reels = () => {
-  const axiosSecure = useAxiosSecure();
+  const [reels, reelsRefetch] = useReels()
   const navigate = useNavigate();
-  const { data: reels = [], refetch } = useQuery({
-    queryKey: ["feels"],
-    queryFn: async () => {
-      const res = await axiosSecure.get("/reels");
-      return res.data;
-    },
-  });
+  
   // console.log(reels);
   return (
     <div>
@@ -37,13 +31,13 @@ const Reels = () => {
             <Swiper
             // direction={'vertical'}
             slidesPerView={1}
-            spaceBetween={30}
+            spaceBetween={10}
             mousewheel={true}
             navigation={true} modules={[Navigation]} className="mySwiper"
           >
             {reels.map((reel) => (
               <SwiperSlide key={reel._id}>
-                <Reel reel={reel} refetch={refetch} />
+                <Reel reel={reel} refetch={reelsRefetch} />
               </SwiperSlide>
             ))}
           </Swiper>

@@ -57,7 +57,7 @@ const Sideber = () => {
                 <img src={user && user?.photoURL} />
               </div>
             </div>
-            <h2 className="text-xl font-semibold">{user && user?.displayName}</h2>
+            <h2 className="text-xl font-semibold">Profile</h2>
           </div>
           </Link>
 

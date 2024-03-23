@@ -66,10 +66,10 @@ const ReelComment = ({ comments, id, refetch }) => {
                   </button>
                 </form>
               </div>
-              <div className="space-y-3">
+              <div className="">
                 {comments?.map((comment, index) => (
                   <div
-                    className="space-y-3 border p-3 rounded-md"
+                    className="space-y-1 p-3 rounded-md"
                     key={index}
                   >
                     <div className="flex items-center gap-2">
@@ -79,15 +79,15 @@ const ReelComment = ({ comments, id, refetch }) => {
                         </div>
                       </div>
                       <div>
-                        <h3 className="text-2xl font-semibold">
+                        <h3 className="font-semibold">
                           {comment?.name}
                         </h3>
                         <p className="text-sm">
-                          {comment?.date?.slice(0, 10)}
+                          <small>{comment?.date?.slice(0, 10)}</small>
                         </p>
                       </div>
                     </div>
-                    <p className="bg-[#f6f1f1] border text-slate-900 font-medium w-fit rounded-md py-3 px-5">
+                    <p className="bg-gray-100 border text-slate-900 font-medium w-fit rounded-md py-3 px-5 ml-10">
                       {comment?.comment}
                     </p>
                   </div>
@@ -103,8 +103,8 @@ const ReelComment = ({ comments, id, refetch }) => {
                       placeholder="Your Comments"
                     ></textarea>
                   </div>
-                  <div className="absolute left-1 bottom-0">
-                    <button type="submit" className="text-xl text-pink-500">
+                  <div className="absolute right-1 bottom-0">
+                    <button type="submit" className="text-2xl text-pink-500">
                       <IoMdSend />
                     </button>
                   </div>

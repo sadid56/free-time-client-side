@@ -1,10 +1,11 @@
 /* eslint-disable react/prop-types */
-import { MdClose, MdInsertComment } from "react-icons/md";
+import { MdClose } from "react-icons/md";
 import { useState } from "react"; // Import useState
 import { IoMdSend } from "react-icons/io";
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { FaRegCommentDots } from "react-icons/fa";
 // import EmojiPicker from "emoji-picker-react";
 
 const PostCommentModal = ({ comments, id, refetch }) => {
@@ -42,9 +43,9 @@ const PostCommentModal = ({ comments, id, refetch }) => {
   return (
     <div>
       <button
-        className="font-medium flex items-center gap-1 text-gray-500"
+        className="font-medium text-xl flex items-center gap-1 text-gray-500"
         onClick={openModal}>
-        <MdInsertComment /> Comment {comments?.length}
+        <FaRegCommentDots />{comments?.length}
       </button>
       {isModalOpen && (
         <dialog open={isModalOpen} className="modal">
@@ -56,9 +57,9 @@ const PostCommentModal = ({ comments, id, refetch }) => {
                 </button>
               </form>
             </div>
-            <div className="space-y-3">
+            <div className="">
               {comments?.map((comment, index) => (
-                <div className="space-y-3 border p-3 rounded-md" key={index}>
+                <div className="space-y-1 p-3 rounded-md" key={index}>
                   <div className="flex items-center gap-2">
                     <div className="avatar">
                       <div className="w-10 rounded-full">
@@ -66,11 +67,11 @@ const PostCommentModal = ({ comments, id, refetch }) => {
                       </div>
                     </div>
                     <div>
-                    <h3 className="text-xl font-semibold">{comment?.name}</h3>
-                  <p className="font-medium text-sm">{comment?.date?.slice(0, 10)}</p>
+                    <h3 className=" font-semibold">{comment?.name}</h3>
+                  <p className="font-medium text-sm"><small>{comment?.date?.slice(0, 10)}</small></p>
                     </div>
                   </div>
-                  <p className="bg-gray-100 text-slate-900 font-medium w-fit rounded-md py-3 px-5">
+                  <p className="bg-gray-100 text-slate-900 font-medium w-fit rounded py-3 px-5 border ml-10">
                     {comment?.comment}
                   </p>
                 </div>
@@ -85,9 +86,9 @@ const PostCommentModal = ({ comments, id, refetch }) => {
                     className="textarea textarea-bordered"
                     placeholder="Your Comments"></textarea>
                 </div>
-                <div className="absolute right-1 -bottom-7">
+                <div className="absolute right-1 bottom-0">
                   {/* <EmojiPicker /> */}
-                  <button type="submit" className="text-xl text-pink-500">
+                  <button type="submit" className="text-2xl text-pink-500">
                     <IoMdSend />
                   </button>
                 </div>

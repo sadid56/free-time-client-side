@@ -1,64 +1,90 @@
 /* eslint-disable react/prop-types */
-import { FaRegHeart } from "react-icons/fa";
+import { FaRegBookmark, FaRegHeart } from "react-icons/fa";
 import { IoIosShareAlt } from "react-icons/io";
 import ReactPlayer from "react-player";
 import ReelComment from "../../Components/ReelsCommant/ReelComme";
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { useInView } from "react-intersection-observer";
-import { MdBookmark } from "react-icons/md";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
-import { useQuery } from "@tanstack/react-query";
+import useGetBookmark from "../../hooks/useGetBookmark";
+import { BsFillBookmarkCheckFill } from "react-icons/bs";
+import { FcLike } from "react-icons/fc";
+import useGetSIngleUser from "../../hooks/useGetSIngleUser";
 
 const Reel = ({ reel, refetch }) => {
   const { name, title, time, auther_image, reels, _id, comments, likes } = reel;
   const [likeCount, setLikeCount] = useState(likes);
   const [liked, setLiked] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
   const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure()
   const {user} = useAuth()
   const [ref, inView, ] = useInView();
-  // console.log(reel);
-  const { data: playlists = [] } = useQuery({
-    queryKey: ["playlists"],
-    queryFn: async () => {
-      const res = await axiosSecure.get(`/playlist?email=${user?.email}`);
-      return res.data;
-    },
-  });
+  const [savePosts, bookmarkRefetch] = useGetBookmark();
+  const [sinleUser] = useGetSIngleUser();
   const shareHandler = async () => {
-    const feedUrl = `${window.location.origin}/reels/${_id}`;
+    const reelUrl = `${window.location.origin}/reels/${_id}`;
     if ("share" in navigator) {
       await navigator.share({
-        title: "Share",
-        text: "Share this url",
-        url: feedUrl,
+        title: "Share Reel",
+        text: title, // Use the title of the reel as the shared text
+        url: reelUrl,
       });
     } else {
       toast.error("Share not supported by your browser");
     }
   };
-  const handleLike = async () => {
-    try {
-      await axiosPublic.post(`/reels/likes/${_id}`);
+
+   // get like state in local storage
+   useEffect(() => {
+    const likedState = localStorage.getItem(`reels_liked_${_id}`);
+    if (likedState === "true") {
       setLiked(true);
-      setLikeCount((prevLikeCount) => prevLikeCount + 1);
-      // console.log(res.data);
+    }
+  }, [_id]);
+
+  // like the reels
+  const handleLike = async () => {
+    const userId = sinleUser?._id;
+    try {
+      // liked
+      if (!liked) {
+        await axiosPublic.post(`/reels/likes/${_id}`, { userId });
+        // set like state in local storage
+        localStorage.setItem(`reels_liked_${_id}`, "true");
+        setLiked(true);
+        setLikeCount((prevLikeCount) => prevLikeCount + 1);
+      } else {
+        //dislike
+        await axiosPublic.post(`/reels/Dislikes/${_id}`, { userId });
+         // set like state in local storage
+        localStorage.setItem(`reels_liked_${_id}`, "false"); 
+        setLiked(false);
+        setLikeCount((prevLikeCount) => prevLikeCount - 1);
+      }
     } catch (err) {
-      console.log("post error-->", err);
+      console.log("Error:", err);
+      toast.error("Failed to like/unlike post");
     }
   };
-  // console.log(inView);
-  // console.log(playlists);
-  // console.log(_id);
-  // console.log(PrevId);
-  const isExist = playlists?.find(playlist=> playlist?.PrevId === _id)
+   // bookmark find
+   useEffect(() => {
+    bookmarkRefetch();
+    const isExist = savePosts?.find((post) => post?.PrevId === _id);
+    if (isExist) {
+      bookmarkRefetch();
+      setIsSaved(true);
+    }
+  }, [_id, savePosts, bookmarkRefetch]);
   const handleAddSave = async()=>{
+    const isExist = savePosts?.find((post) => post?.PrevId === _id);
       if(isExist){
            toast.error("Already saved this reel !")
       }else{
+        setIsSaved(false)
         try{
           const postInfo = {
             name: name,
@@ -69,9 +95,10 @@ const Reel = ({ reel, refetch }) => {
             video: reels,
             PrevId:_id
           }
-          const res = await axiosSecure.post("/playlist", postInfo)
+          const res = await axiosSecure.post("/post-save", postInfo)
           if(res.data?.acknowledged){
-            toast.success("Video added Success !")
+            bookmarkRefetch()
+            toast.success("Reels bookmark Success !")
           }
          }catch(err){
           toast.error(err?.message)
@@ -96,8 +123,8 @@ const Reel = ({ reel, refetch }) => {
        <div className="w-full shadow-lg h-[100vh]">
        <ReactPlayer
         style={{
-          borderRadius: '5px',
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Adjust shadow properties as needed
+          borderRadius: '50px',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
         }}
           controls
           playing={inView}
@@ -108,14 +135,17 @@ const Reel = ({ reel, refetch }) => {
         />
        </div>
         <div style={{backdropFilter:"blur(20px)"}} className="flex z-30 flex-col py-5 px-3 space-y-7 text-xl  rounded-full w-fit absolute bottom-20 md:bottom-6 right-1 text-white">
-          {liked ? (
-            <button className="flex flex-col items-center text-pink-500 gap-1 text-xl">
-              <FaRegHeart /> {likeCount}
+        {liked ? (
+            <button
+              onClick={handleLike}
+              className="flex flex-col items-center text-pink-500 gap-1 text-xl">
+              <FcLike />
+              <span className="text-white">{likeCount}</span>
             </button>
           ) : (
             <button
               onClick={handleLike}
-              className="flex flex-col items-center gap-1 text-xl">
+              className="flex flex-col items-center gap-1 text-xl text-white">
               <FaRegHeart /> {likeCount}
             </button>
           )}
@@ -124,9 +154,13 @@ const Reel = ({ reel, refetch }) => {
           <button onClick={shareHandler}>
             <IoIosShareAlt />
           </button>
-          <button onClick={handleAddSave}>
-            <MdBookmark/>
+          {isSaved ? (
+          <button onClick={handleAddSave} className="text-xl text-pink-500"><BsFillBookmarkCheckFill /></button>
+        ) : (
+          <button onClick={handleAddSave} className="text-xl">
+            <FaRegBookmark />
           </button>
+        )}
         </div>
       </div>
       <div className="flex flex-col justify-start gap-1  absolute bottom-0 bg-[rgba(0,0,0,0.5)] w-full z-20 left-1">
