@@ -1,39 +1,48 @@
 import { Link, NavLink } from "react-router-dom";
-import {  MdBookmarkAdded } from "react-icons/md";
-import { SiYoutubeshorts } from "react-icons/si";
-import { FaRegNewspaper, FaUserFriends } from "react-icons/fa";
 import "./sidebar.css";
 import useAuth from "../../../hooks/useAuth";
-import { TbLogout2 } from "react-icons/tb";
 import toast from "react-hot-toast";
-import { IoMdSettings } from "react-icons/io";
+import feedimg from "../../../assets/icon/feeds.png";
+import reelsimg from "../../../assets/icon/reels.png";
+import freindimg from "../../../assets/icon/freinds.png";
+import notificationimg from "../../../assets/icon/notification.png";
+import bookmarkimg from "../../../assets/icon/bookmark.png";
+import setingimg from "../../../assets/icon/setting.png";
+import logoutimg from "../../../assets/icon/logout.png";
+
 
 const data = [
   {
-    id:1,
-    path:"/",
-    icon:<FaRegNewspaper />,
-    name:"Feeds"
+    id: 1,
+    path: "/",
+    icon: feedimg,
+    name: "Feeds",
   },
   {
-    id:2,
-    path:"/friends",
-    icon:<FaUserFriends/>,
-    name:"Friends"
+    id: 2,
+    path: "/reels",
+    icon: reelsimg,
+    name: "Reels",
   },
   {
-    id:3,
-    path:"/reels",
-    icon:<SiYoutubeshorts/>,
-    name:"Reels"
+    id: 3,
+    path: "/reels",
+    icon: freindimg,
+    name: "Freinds",
   },
   {
-    id:4,
-    path:"/save-post",
-    icon:<MdBookmarkAdded/>,
-    name:"Bookmark"
+    id: 4,
+    path: "/reels",
+    icon: notificationimg,
+    name: "Notification",
   },
-]
+  {
+    id: 5,
+    path: "/save-post",
+    icon: bookmarkimg,
+    name: "Bookmark",
+  },
+];
 // style={{boxShadow:"0px 0px 20px gray"}}
 const Sideber = () => {
   const { user, logOut } = useAuth();
@@ -47,36 +56,49 @@ const Sideber = () => {
       });
   };
   return (
-    <div  className="bg-white flex flex-col p-5 justify-between  z-30 rounded-md my-2 h-[97vh] ml-3 py-5">
-    <div className="">
-    <div className="hover:bg-gray-200 p-2 rounded-md">
-          <Link to="/profile" >
-          <div className="flex items-center gap-2">
-            <div className="avatar online">
-              <div className="w-10 ring-2 ring-blue-600 rounded-full">
-                <img src={user && user?.photoURL} />
+    <div className="bg-white flex flex-col p-5 justify-between  z-30 rounded-md my-2 h-[97vh] ml-3 py-5">
+      <div className="">
+        <h2 className="text-3xl font-bold pl-3 mb-5">Free <span className="text-primary">Time</span></h2>
+        <div className="hover:bg-gray-200 p-2 rounded-md">
+          <Link to="/profile">
+            <div className="flex items-center gap-2">
+              <div className="avatar online">
+                <div className="w-10 ring-2 ring-blue-600 rounded-full">
+                  <img src={user && user?.photoURL} />
+                </div>
               </div>
+              <h2 className="text-2xl font-semibold">Profile</h2>
             </div>
-            <h2 className="text-xl font-semibold">Profile</h2>
-          </div>
           </Link>
-
+        </div>
+        <ul id="sid" className="flex flex-col gap-3  text-xl mt-2">
+          {data.map((item) => (
+            <li key={item.id}>
+              <NavLink
+                to={item.path}
+                className="flex items-center gap-2 hover:bg-gray-200 rounded-md p-2">
+                <img src={item?.icon} className="w-7" alt="" /> <span className="font-medium text-gray-600">{item.name}</span>
+              </NavLink>
+            </li>
+          ))}
+        </ul>
       </div>
-      <ul id="sid" className="flex flex-col gap-3  text-xl mt-5">
-        {
-          data.map(item => <li key={item.id}>
-            <NavLink to={item.path} className="flex items-center gap-1 hover:bg-gray-200 rounded-md p-2">
-              {item.icon} {item.name}
-            </NavLink>
-          </li>)
-        }
-      </ul>
-    </div>
+      <hr />
       <ul>
-        <li><NavLink to="/setting" className="flex items-center gap-1 hover:bg-gray-200 rounded-md p-2 text-xl"><IoMdSettings /> Setting</NavLink></li>
-        <li><button className="flex items-center gap-1 hover:bg-gray-200 rounded-md p-2 text-xl w-full" onClick={handleLogOut}>
-            <TbLogout2/> Log Out
-          </button></li>
+        <li>
+          <NavLink
+            to="/setting"
+            className="flex items-center gap-2 hover:bg-gray-200 rounded-md p-2 text-xl">
+            <img src={setingimg} className="w-7" alt="" /> Setting
+          </NavLink>
+        </li>
+        <li>
+          <button
+            className="flex items-center gap-2 hover:bg-gray-200 rounded-md p-2 text-xl w-full"
+            onClick={handleLogOut}>
+            <img src={logoutimg} className="w-7" alt="" /> Log Out
+          </button>
+        </li>
       </ul>
     </div>
   );

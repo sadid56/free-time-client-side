@@ -2,12 +2,12 @@
 /* eslint-disable react/prop-types */
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
-import { MdArticle, MdOutlineCloudUpload } from "react-icons/md";
+import { MdOutlineCloudUpload } from "react-icons/md";
 import axios from "axios";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 import { useState } from "react";
-
+import postimg from "../../assets/icon/post.png";
 const AddPostModal = ({ refetch, name, isMedia, setIsMedia }) => {
   const { register, handleSubmit, reset, setValue, watch } = useForm();
   const { user } = useAuth();
@@ -92,27 +92,27 @@ const AddPostModal = ({ refetch, name, isMedia, setIsMedia }) => {
         }
       } else {
         toast.error("Please provide a valid file or article.");
-      } 
-       setLoading(false);
+      }
+      setLoading(false);
     } catch (err) {
       console.error("Error submitting post:", err);
       toast.error("An error occurred while submitting your post.");
       setLoading(false);
     }
   };
- const selectFeelings = watch("feelings");
+  const selectFeelings = watch("feelings");
 
- // modal control
- const handleModal = ()=>{
-  setIsMedia(false)
-  document.getElementById("post_modal_id").showModal()
- }
+  // modal control
+  const handleModal = () => {
+    setIsMedia(false);
+    document.getElementById("post_modal_id").showModal();
+  };
   return (
     <div>
       <button
-        className="flex  items-center gap-1 py-2 px-4 md:px-8 text-sm  md:text-xl  border-2 border-gray-200 rounded-md text-gray-500"
+        className="flex  items-center gap-2 py-2 px-4 md:px-8 text-sm  md:text-xl  border-2 border-gray-100 rounded-md text-gray-500 font-medium bg-gray-200 hover:bg-gray-300 transition-all duration-300"
         onClick={handleModal}>
-        <MdArticle />
+        <img src={postimg} className="w-6" alt="" />
         {name}
       </button>
       <dialog id="post_modal_id" className="modal">
@@ -126,7 +126,7 @@ const AddPostModal = ({ refetch, name, isMedia, setIsMedia }) => {
           <div>
             <div className="divider">Create Post</div>
             {/* <div className="flex w-full justify-end">
-                <button onClick={()=>setIsMedia(!isMedial)} className="bg-[#0F2167] text-xl text-white p-2 rounded-md my-2">Media</button>
+                <button onClick={()=>setIsMedia(!isMedial)} className="bg-primary text-xl text-white p-2 rounded-md my-2">Media</button>
               </div> */}
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="form-control w-full">
@@ -162,13 +162,15 @@ const AddPostModal = ({ refetch, name, isMedia, setIsMedia }) => {
                   type="text"
                   placeholder="Share your article..."
                   {...register("article")}
-                  className="textarea border border-[#0F2167] focus:border-[#0F2167] w-full"
+                  className="textarea border border-primary focus:border-primary w-full"
                 />
               </div>
-              
 
-                {/* medial box with conditional */}
-             <div className={`${isMedia ? "block" : "hidden"} flex items-center justify-center w-full mt-5`}>
+              {/* medial box with conditional */}
+              <div
+                className={`${
+                  isMedia ? "block" : "hidden"
+                } flex items-center justify-center w-full mt-5`}>
                 <label
                   for="dropzone-file"
                   className="flex flex-col items-center justify-center w-full h-36 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800  hover:bg-gray-100  ">
@@ -200,10 +202,9 @@ const AddPostModal = ({ refetch, name, isMedia, setIsMedia }) => {
                   />
                 </label>
               </div>
-              
 
               {loading ? (
-                <button className="text-xl btn btn-disabled flex items-center justify-center w-full gap-2 text-black bg-[#0F2167] py-2 px-4 rounded-md mt-5">
+                <button className="text-xl btn btn-disabled flex items-center justify-center w-full gap-2 text-black bg-primary py-2 px-4 rounded-md mt-5">
                   Post Now
                   {loading && (
                     <span className="loading loading-spinner text-black"></span>
@@ -212,7 +213,7 @@ const AddPostModal = ({ refetch, name, isMedia, setIsMedia }) => {
               ) : (
                 <button
                   type="submit"
-                  className="text-xl flex items-center justify-center w-full gap-2 text-white bg-[#0F2167] py-2 px-4 rounded-md hover:bg-[#131a39] transform-all duration-300 mt-5">
+                  className="text-xl flex items-center justify-center w-full gap-2 text-white bg-primary py-2 px-4 rounded-md hover:bg-[#131a39] transform-all duration-300 mt-5">
                   Post Now
                   {loading && (
                     <span className="loading loading-spinner text-white"></span>

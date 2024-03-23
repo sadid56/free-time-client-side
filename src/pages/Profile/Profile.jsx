@@ -1,7 +1,7 @@
 import useAuth from "../../hooks/useAuth";
 import SectionHelmet from "../../shared/SectionHelmet/SectionHelmet";
 import coverImg from "../../assets/images/cover.jpeg";
-import {FaLink} from "react-icons/fa";
+import { FaLink } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { MdOutlineEmail } from "react-icons/md";
 import { IoIosSchool, IoMdHome } from "react-icons/io";
@@ -32,46 +32,49 @@ const Profile = () => {
       <div className="max-w-5xl mx-auto ">
         <div className="relative">
           {/* cover  photo */}
-            {profiles?.map((profile) => (
-              <div key={profile?._id} className="md:h-[400px] w-full relative">
-                <img
-                
+          {profiles?.map((profile) => (
+            <div key={profile?._id} className="md:h-[400px] w-full relative">
+              <img
                 className="w-full object-cover md:h-[400px] rounded-md"
                 src={profile?.cover}
                 alt=""
               />
-              <CoverPhotoEditModal profile={profile} refetch={refetch}/>
-              </div>
-              
-            ))}
-            {/* default cover photo */}
-            <img
-                
-                className={`${profiles.length === 0 ? "block" : "hidden"} w-full object-cover md:h-[400px] rounded-md`}
-                src={coverImg}
-                alt=""
-              />
+              <CoverPhotoEditModal profile={profile} refetch={refetch} />
+            </div>
+          ))}
+          {/* default cover photo */}
+          <img
+            className={`${
+              profiles.length === 0 ? "block" : "hidden"
+            } w-full object-cover md:h-[400px] rounded-md`}
+            src={coverImg}
+            alt=""
+          />
           <div className="avatar absolute -bottom-10 md:-bottom-20  md:left-10 left-5">
             <div className="w-36 rounded-full ring ring-pink-500 ring-offset-base-100 ring-offset-2">
               <img src={user?.photoURL} />
             </div>
-            <ProfilePicUpdateModal/>
+            <ProfilePicUpdateModal />
           </div>
-          
         </div>
         <div className=" flex flex-col md:flex-row items-center justify-between px-5 md:ml-[200px] mt-14 md:mt-5  ">
-            <div className="relative">
-              <h2 className="text-4xl  font-bold top-10">{user?.displayName}</h2>
-              <p className="text-gray-500 font-medium">{user?.email}</p>
-            </div>
-            <div className="flex items-center gap-5 mt-4 md:mt-0">
-              <CreateProfileModal refetch={refetch} profiles={profiles} />
-             {
-             profiles.map(profile =>  <EditProfileModal key={profile?._id} refetch={refetch} profile={profile}/>)
-             }
-            </div>
+          <div className="relative">
+            <h2 className="text-4xl  font-bold top-10">{user?.displayName}</h2>
+            <p className="text-gray-500 font-medium">{user?.email}</p>
           </div>
+          <div className="flex items-center gap-5 mt-4 md:mt-0">
+            <CreateProfileModal refetch={refetch} profiles={profiles} />
+            {profiles.map((profile) => (
+              <EditProfileModal
+                key={profile?._id}
+                refetch={refetch}
+                profile={profile}
+              />
+            ))}
+          </div>
+        </div>
         <div className="grid gap-5 md:grid-cols-3 mt-10">
+          <div className="md:h-screen md:sticky top-0">
           {profiles.length === 0 ? (
             <p className="text-xl text-center text-red-600 font-medium mt-10">
               Please Create a profile !
@@ -87,8 +90,7 @@ const Profile = () => {
                   <MdOutlineEmail /> {user?.email}
                 </p>
                 <p className="text-gray-600 font-medium flex items-center gap-1">
-                  <IoIosSchool /> Work At -{" "}
-                  {profile?.work}
+                  <IoIosSchool /> Work At - {profile?.work}
                 </p>
                 <p className="text-gray-600 font-medium flex items-center gap-1">
                   <IoMdHome /> Home - {profile?.home}
@@ -112,9 +114,10 @@ const Profile = () => {
               </div>
             ))
           )}
+          </div>
           {/* content */}
           <div className="col-span-2">
-            <ProfilePostTabs/>
+            <ProfilePostTabs />
           </div>
         </div>
       </div>

@@ -52,14 +52,14 @@ const CreateProfileModal = ({refetch,profiles}) => {
     <div>
       {
         profiles.length === 0 ? <button
-        className="text-xl flex items-center gap-2 text-white bg-[#0F2167] py-2 px-4 rounded-md hover:bg-[#0b122c] transform-all duration-300"
+        className="text-xl flex items-center gap-2 text-white bg-primary py-2 px-4 rounded-md hover:bg-[#0b122c] transform-all duration-300"
         onClick={() =>
           document.getElementById("Create_profile_modal").showModal()
         }>
         <IoMdCreate /> Create Profile
       </button> :
       <button
-      className="text-sm md:text-xl flex items-center md:gap-2 text-white bg-[#0F2167] py-2 px-4 btn btn-disabled"
+      className="text-sm md:text-xl flex items-center md:gap-2 text-white bg-primary py-2 px-4 btn btn-disabled"
      >
       <IoMdCreate /> Create Profile
     </button>
@@ -78,7 +78,7 @@ const CreateProfileModal = ({refetch,profiles}) => {
                   {...register("file")}
                   required
                   placeholder="Type here"
-                  className="py-3 px-2 outline-none border text-gray-500  border-[#0F2167] text-sm rounded-lg  focus:border-blue-500 block p-2.5 dark:placeholder-gray-400 w-full"
+                  className="py-3 px-2 outline-none border text-gray-500  border-primary text-sm rounded-lg  focus:border-blue-500 block p-2.5 dark:placeholder-gray-400 w-full"
                 />
               </div>
               <div className="form-control">
@@ -90,7 +90,7 @@ const CreateProfileModal = ({refetch,profiles}) => {
                   {...register("bio")}
                   required
                   placeholder="Your profile bio"
-                  className="py-3 px-2 outline-none border text-gray-500  border-[#0F2167] text-sm rounded-lg  focus:border-blue-500 block p-2.5 dark:placeholder-gray-400 w-full"
+                  className="py-3 px-2 outline-none border text-gray-500  border-primary text-sm rounded-lg  focus:border-blue-500 block p-2.5 dark:placeholder-gray-400 w-full"
                 />
               </div>
               <div className="form-control">
@@ -102,7 +102,7 @@ const CreateProfileModal = ({refetch,profiles}) => {
                   {...register("work")}
                   required
                   placeholder="Your Work name"
-                  className="py-3 px-2 outline-none border text-gray-500  border-[#0F2167] text-sm rounded-lg  focus:border-blue-500 block p-2.5 dark:placeholder-gray-400 w-full"
+                  className="py-3 px-2 outline-none border text-gray-500  border-primary text-sm rounded-lg  focus:border-blue-500 block p-2.5 dark:placeholder-gray-400 w-full"
                 />
               </div>
               <div className="form-control">
@@ -114,7 +114,7 @@ const CreateProfileModal = ({refetch,profiles}) => {
                   {...register("home")}
                   required
                   placeholder="Your Home"
-                  className="py-3 px-2 outline-none border text-gray-500  border-[#0F2167] text-sm rounded-lg  focus:border-blue-500 block p-2.5 dark:placeholder-gray-400 w-full"
+                  className="py-3 px-2 outline-none border text-gray-500  border-primary text-sm rounded-lg  focus:border-blue-500 block p-2.5 dark:placeholder-gray-400 w-full"
                 />
               </div>
               <div className="form-control">
@@ -126,7 +126,7 @@ const CreateProfileModal = ({refetch,profiles}) => {
                   {...register("institute")}
                   required
                   placeholder="Your Institute"
-                  className="py-3 px-2 outline-none border text-gray-500  border-[#0F2167] text-sm rounded-lg  focus:border-blue-500 block p-2.5 dark:placeholder-gray-400 w-full"
+                  className="py-3 px-2 outline-none border text-gray-500  border-primary text-sm rounded-lg  focus:border-blue-500 block p-2.5 dark:placeholder-gray-400 w-full"
                 />
               </div>
               <div className="form-control">
@@ -153,7 +153,7 @@ const CreateProfileModal = ({refetch,profiles}) => {
                   type="date"
                   {...register("birthDay")}
                   required
-                  className="py-3 px-2 outline-none border text-gray-500  border-[#0F2167] text-sm rounded-lg  focus:border-blue-500 block p-2.5 dark:placeholder-gray-400 w-full"
+                  className="py-3 px-2 outline-none border text-gray-500  border-primary text-sm rounded-lg  focus:border-blue-500 block p-2.5 dark:placeholder-gray-400 w-full"
                 />
               </div>
               <div className="form-control">
@@ -165,11 +165,11 @@ const CreateProfileModal = ({refetch,profiles}) => {
                   {...register("social")}
                   required
                   placeholder="Any Social Link"
-                  className="py-3 px-2 outline-none border text-gray-500  border-[#0F2167] text-sm rounded-lg  focus:border-blue-500 block p-2.5 dark:placeholder-gray-400 w-full"
+                  className="py-3 px-2 outline-none border text-gray-500  border-primary text-sm rounded-lg  focus:border-blue-500 block p-2.5 dark:placeholder-gray-400 w-full"
                 />
               </div>
               </div>
-              <button type="submit" className="text-xl w-full gap-2 text-white bg-[#0F2167] py-2 px-4 rounded-md hover:bg-[#0b1129] transform-all duration-300 mt-5">Submit</button>
+              <button type="submit" className="text-xl w-full gap-2 text-white bg-primary py-2 px-4 rounded-md hover:bg-[#0b1129] transform-all duration-300 mt-5">Submit</button>
             </form>
           </div>
           <div className="modal-action">

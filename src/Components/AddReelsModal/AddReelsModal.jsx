@@ -5,9 +5,8 @@ import axios from "axios";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 import { useState } from "react";
-import { TbTableShortcut } from "react-icons/tb";
 import { MdOutlineCloudUpload } from "react-icons/md";
-
+import reelsImg from "../../assets/icon/add_reels.png";
 const AddReelsModal = ({ refetch }) => {
   const { register, handleSubmit, reset } = useForm();
   const { user } = useAuth();
@@ -65,9 +64,9 @@ const AddReelsModal = ({ refetch }) => {
   return (
     <div>
       <button
-        className="flex w-full items-center gap-1 py-2 px-4 text-sm  md:text-xl  bg-gray-100 border-2 border-gray-200 rounded-md text-gray-500"
+        className="flex w-full items-center gap-2 py-2 px-4 text-sm  md:text-xl  border-2 border-gray-100 rounded-md text-gray-500 font-medium hover:bg-gray-300 transition-all duration-300 bg-gray-200"
         onClick={() => document.getElementById("reels_modal_id").showModal()}>
-        <TbTableShortcut />
+        <img src={reelsImg} className="w-6" alt="" />
         Add Reels
       </button>
       <dialog id="reels_modal_id" className="modal">
@@ -89,7 +88,7 @@ const AddReelsModal = ({ refetch }) => {
                   placeholder="Reels title"
                   required
                   {...register("title")}
-                  className="textarea border border-[#0F2167] focus:border-[#0F2167] w-fulltextarea w-full"
+                  className="textarea border border-primary focus:border-primary w-fulltextarea w-full"
                 />
               </div>
 
@@ -119,7 +118,7 @@ const AddReelsModal = ({ refetch }) => {
                 </label>
               </div>
               {loading ? (
-                <button className="text-xl btn btn-disabled flex items-center justify-center w-full gap-2 text-black bg-[#0F2167] py-2 px-4 rounded-md hover:bg-[#0f1634] transform-all duration-300 mt-5">
+                <button className="text-xl btn btn-disabled flex items-center justify-center w-full gap-2 text-black bg-primary py-2 px-4 rounded-md hover:bg-[#0f1634] transform-all duration-300 mt-5">
                   Pending
                   {loading && (
                     <span className="loading loading-dots loading-md"></span>
@@ -128,7 +127,7 @@ const AddReelsModal = ({ refetch }) => {
               ) : (
                 <button
                   type="submit"
-                  className="text-xl flex items-center justify-center w-full gap-2 text-white bg-[#0F2167] py-2 px-4 rounded-md hover:bg-[#0f1634] transform-all duration-300 mt-5">
+                  className="text-xl flex items-center justify-center w-full gap-2 text-white bg-primary py-2 px-4 rounded-md hover:bg-[#0f1634] transform-all duration-300 mt-5">
                   Post Now
                 </button>
               )}

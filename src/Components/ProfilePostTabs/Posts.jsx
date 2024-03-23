@@ -1,10 +1,7 @@
 /* eslint-disable react/prop-types */
-import { AiOutlineLike } from "react-icons/ai";
-import { BiSolidLike } from "react-icons/bi";
-import { IoIosShareAlt } from "react-icons/io";
 import { HiDotsVertical } from "react-icons/hi";
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { MdClose, MdDelete } from "react-icons/md";
 import UpdatePostModal from "./UpdatePostModal";
@@ -12,6 +9,10 @@ import Swal from "sweetalert2";
 import PostCommentModal from "../../shared/VideoCommentModal/VideoCommentsModal";
 import ReactPlayer from "react-player";
 import { useInView } from "react-intersection-observer";
+import useGetSIngleUser from "../../hooks/useGetSIngleUser";
+import { FcLike } from "react-icons/fc";
+import { FaRegHeart } from "react-icons/fa";
+import PostShare from "../PostShare/PostShare";
 
 const Posts = ({ post, refetch }) => {
   const { name, article, time, likes, comments, _id, auther_image, image, video, feelings } =
@@ -21,29 +22,38 @@ const Posts = ({ post, refetch }) => {
   const [liked, setLiked] = useState(false);
   const [isToggle, setIsToggle] = useState(false);
   const [ref, inView] = useInView();
+  const [sinleUser] = useGetSIngleUser();
+    // get like state in local storage
+    useEffect(() => {
+      const likedState = localStorage.getItem(`liked_${_id}`);
+      if (likedState === "true") {
+        setLiked(true);
+      }
+    }, [_id]);
   const handleLike = async () => {
+    const userId = sinleUser?._id;
     try {
-      await axiosPublic.post(`/feeds/likes/${_id}`);
-      setLiked(true);
-      setLikeCount((prevLikeCount) => prevLikeCount + 1);
-      // console.log(res.data);
+      // liked
+      if (!liked) {
+        await axiosPublic.post(`/feeds/likes/${_id}`, { userId });
+        // set like state in local storage
+        localStorage.setItem(`liked_${_id}`, "true");
+        setLiked(true);
+        setLikeCount((prevLikeCount) => prevLikeCount + 1);
+      } else {
+        //dislike
+        await axiosPublic.post(`/feeds/Dislikes/${_id}`, { userId });
+        // set like state in local storage
+        localStorage.setItem(`liked_${_id}`, "false");
+        setLiked(false);
+        setLikeCount((prevLikeCount) => prevLikeCount - 1);
+      }
     } catch (err) {
-      console.log("post error-->", err);
+      console.log("Error:", err);
+      toast.error("Failed to like/unlike post");
     }
   };
-  const shareHandler = async () => {
-    const feedUrl = `${window.location.origin}/feeds/${_id}`;
-    if ("share" in navigator) {
-      await navigator.share({
-        title: "Share",
-        text: "Share this url",
-        url: feedUrl,
-      });
-    } else {
-      toast.error("Share not supported by your browser");
-    }
-  };
-
+ 
   const handleDelete = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -103,7 +113,7 @@ const Posts = ({ post, refetch }) => {
             isToggle
               ? "absolute right-4 top-9 bg-slate-700 p-5 rounded-md shadow-md"
               : "hidden"
-          } flex flex-col gap-2 `}>
+          } flex flex-col gap-2 z-10`}>
           <button
             onClick={handleDelete}
             className="text-xl text-white bg-slate-500 px-4 py-2 rounded-md hover:bg-slate-600 transform-all duration-300">
@@ -122,7 +132,7 @@ const Posts = ({ post, refetch }) => {
         {image ? (
           <img
             src={image}
-            className="object-cover h-[450px] w-full rounded-md"
+            className="object-cover h-[350px] w-full rounded-md"
             alt=""
           />
         ) : (
@@ -143,26 +153,29 @@ const Posts = ({ post, refetch }) => {
         )}
       </div>
 
-      {/* react  */}
-      <div className="flex justify-between mx-2 md:px-10 my-2 border-2 p-2 rounded-md">
-        {liked ? (
-          <button className="flex items-center text-pink-500 gap-1 text-xl">
-            <BiSolidLike /> {likeCount}
-          </button>
-        ) : (
-          <button
-            onClick={handleLike}
-            className="flex items-center gap-1 text-xl text-gray-500">
-            <AiOutlineLike /> {likeCount}
-          </button>
-        )}
-        <PostCommentModal comments={comments} id={_id} refetch={refetch} />
-        {/* <FeedsShareModal/> */}
-        <button
-          onClick={shareHandler}
-          className="flex items-center gap-1 text-xl text-gray-500">
-          <IoIosShareAlt /> Share
-        </button>
+     {/* react  */}
+     <div className="flex justify-start px-5 py-3">
+        <div className="flex items-center gap-5">
+          {liked ? (
+            <button
+              onClick={handleLike}
+              className="flex items-center text-pink-500 gap-1 text-xl">
+              <FcLike />
+              {likeCount}
+            </button>
+          ) : (
+            <button
+              onClick={handleLike}
+              className="flex items-center gap-1 text-xl text-gray-500">
+              <FaRegHeart /> {likeCount}
+            </button>
+          )}
+          <PostCommentModal comments={comments} refetch={refetch} id={_id} />
+          {
+            image || video ? <PostShare url={image || video}/> : ""
+          }
+        </div>
+       
       </div>
     </div>
   );

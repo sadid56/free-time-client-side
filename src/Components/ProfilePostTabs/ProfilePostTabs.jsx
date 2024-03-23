@@ -42,6 +42,7 @@ const ProfilePostTabs = () => {
           </Tab>
         ))}
       </TabList>
+      {/* post container */}
       <TabPanel className={"md:mx-20 mt-5 space-y-2"}>
       {
         profilePosts?.length === 0 ? <p className="text-red-600 text text-center mt-5">No Post Added !</p> : <>
@@ -51,8 +52,9 @@ const ProfilePostTabs = () => {
         </>
       }
       </TabPanel>
+      {/* reels container */}
       <TabPanel>
-      <div className="grid md:grid-cols-2 gap-3">
+      <div className="md:mx-[150px] flex flex-col  gap-3">
       {
         profileReels?.length === 0 ? <p className="text-red-600 text text-center mt-5">No Reel Added !</p> : <>
         {profileReels.map((reels) => (

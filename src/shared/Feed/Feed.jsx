@@ -3,7 +3,6 @@ import { FcLike } from "react-icons/fc";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { IoIosShareAlt } from "react-icons/io";
 import { FaRegBookmark, FaRegHeart } from "react-icons/fa";
 import PostCommentModal from "../VideoCommentModal/VideoCommentsModal";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
@@ -13,20 +12,10 @@ import { useInView } from "react-intersection-observer";
 import useGetSIngleUser from "../../hooks/useGetSIngleUser";
 import useGetBookmark from "../../hooks/useGetBookmark";
 import { BsFillBookmarkCheckFill } from "react-icons/bs";
+import PostShare from "../../Components/PostShare/PostShare";
 
 const Feed = ({ feed, refetch }) => {
-  const {
-    name,
-    article,
-    time,
-    likes,
-    comments,
-    _id,
-    auther_image,
-    image,
-    video,
-    feelings,
-  } = feed;
+  const {name, article, time, likes, comments,_id,auther_image,image,video,feelings,} = feed;
   const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure();
   const [liked, setLiked] = useState(false);
@@ -45,7 +34,6 @@ const Feed = ({ feed, refetch }) => {
     }
   }, [_id]);
 
-
   // like the post
   const handleLike = async () => {
     const userId = sinleUser?._id;
@@ -60,27 +48,14 @@ const Feed = ({ feed, refetch }) => {
       } else {
         //dislike
         await axiosPublic.post(`/feeds/Dislikes/${_id}`, { userId });
-         // set like state in local storage
-        localStorage.setItem(`liked_${_id}`, "false"); 
+        // set like state in local storage
+        localStorage.setItem(`liked_${_id}`, "false");
         setLiked(false);
         setLikeCount((prevLikeCount) => prevLikeCount - 1);
       }
     } catch (err) {
       console.log("Error:", err);
       toast.error("Failed to like/unlike post");
-    }
-  };
-
-  const shareHandler = async () => {
-    const feedUrl = `${window.location.origin}/feeds/${_id}`;
-    if ("share" in navigator) {
-      await navigator.share({
-        title: "Share",
-        text: "Share this url",
-        url: feedUrl,
-      });
-    } else {
-      toast.error("Share not supported by your browser");
     }
   };
 
@@ -115,7 +90,7 @@ const Feed = ({ feed, refetch }) => {
         };
         const res = await axiosSecure.post("/post-save", postInfo);
         if (res.data?.acknowledged) {
-          bookmarkRefetch()
+          bookmarkRefetch();
           toast.success("Post added Success !");
         }
       } catch (err) {
@@ -194,12 +169,14 @@ const Feed = ({ feed, refetch }) => {
             </button>
           )}
           <PostCommentModal comments={comments} refetch={refetch} id={_id} />
-          <button onClick={shareHandler} className="text-xl text-gray-500">
-            <IoIosShareAlt />
-          </button>
+          {
+            image || video ? <PostShare url={image || video}/> : ""
+          }
         </div>
         {isSaved ? (
-          <button onClick={handleAddSave} className="text-xl text-pink-500"><BsFillBookmarkCheckFill /></button>
+          <button onClick={handleAddSave} className="text-xl text-pink-500">
+            <BsFillBookmarkCheckFill />
+          </button>
         ) : (
           <button onClick={handleAddSave} className="text-xl">
             <FaRegBookmark />

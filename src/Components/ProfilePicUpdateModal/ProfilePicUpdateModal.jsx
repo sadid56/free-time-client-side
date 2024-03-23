@@ -87,7 +87,7 @@ const ProfilePicUpdateModal = ({ refetch }) => {
               </div>
               <button
                 type="submit"
-                className="text-xl flex items-center justify-center w-full gap-2 text-white bg-[#0F2167] py-2 px-4 rounded-md hover:bg-[#0c132d] transform-all duration-300 mt-5">
+                className="text-xl flex items-center justify-center w-full gap-2 text-white bg-primary py-2 px-4 rounded-md hover:bg-[#0c132d] transform-all duration-300 mt-5">
                 Update Now {loading && <span className="loading loading-spinner text-white"></span>}
               </button>
             </form>

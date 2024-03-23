@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import useAxiosPublic from "../../hooks/useAxiosPublic";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { MdClose, MdDelete } from "react-icons/md";
 import { HiDotsVertical } from "react-icons/hi";
@@ -8,36 +8,49 @@ import ReactPlayer from "react-player";
 import Swal from "sweetalert2";
 import { FaRegHeart } from "react-icons/fa";
 import ReelComment from "../ReelsCommant/ReelComme";
-import { IoIosShareAlt } from "react-icons/io";
+import useGetSIngleUser from "../../hooks/useGetSIngleUser";
+import PostShare from "../PostShare/PostShare";
+import { FcLike } from "react-icons/fc";
 const ProfileReel = ({ reel, refetch }) => {
   const { name, title, time, likes, comments, _id, auther_image, reels } = reel;
   const axiosPublic = useAxiosPublic();
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes);
   const [isToggle, setIsToggle] = useState(false);
-  const handleLike = async () => {
-    try {
-      await axiosPublic.post(`/reels/likes/${_id}`);
+  const [sinleUser] = useGetSIngleUser();
+  // get like state in local storage
+  useEffect(() => {
+    const likedState = localStorage.getItem(`reels_liked_${_id}`);
+    if (likedState === "true") {
       setLiked(true);
-      setLikeCount((prevLikeCount) => prevLikeCount + 1);
-      // console.log(res.data);
+    }
+  }, [_id]);
+
+  // like the reels
+  const handleLike = async () => {
+    const userId = sinleUser?._id;
+    try {
+      // liked
+      if (!liked) {
+        await axiosPublic.post(`/reels/likes/${_id}`, { userId });
+        // set like state in local storage
+        localStorage.setItem(`reels_liked_${_id}`, "true");
+        setLiked(true);
+        setLikeCount((prevLikeCount) => prevLikeCount + 1);
+      } else {
+        //dislike
+        await axiosPublic.post(`/reels/Dislikes/${_id}`, { userId });
+        // set like state in local storage
+        localStorage.setItem(`reels_liked_${_id}`, "false");
+        setLiked(false);
+        setLikeCount((prevLikeCount) => prevLikeCount - 1);
+      }
     } catch (err) {
-      console.log("post error-->", err);
+      console.log("Error:", err);
+      toast.error("Failed to like/unlike post");
     }
   };
-  const shareHandler = async () => {
-    const feedUrl = `${window.location.origin}/reels/${_id}`;
-    if ("share" in navigator) {
-      await navigator.share({
-        title: "Share",
-        text: "Share this url",
-        url: feedUrl,
-      });
-    } else {
-      toast.error("Share not supported by your browser");
-    }
-  };
-  
+
   const handleDelete = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -57,15 +70,14 @@ const ProfileReel = ({ reel, refetch }) => {
             text: "Your reel has been deleted !",
             icon: "success",
           });
-          refetch()
+          refetch();
         }
       }
     });
   };
 
   return (
-    <div className="p-3 border rounded-md">
-      
+    <div className="p-3 border rounded-md bg-black relative">
       <div className="flex justify-between items-center gap-2 relative">
         <div className="flex items-center gap-2">
           <div className="avatar">
@@ -92,13 +104,11 @@ const ProfileReel = ({ reel, refetch }) => {
             className="text-xl text-white bg-slate-500 px-4 py-2 rounded-md hover:bg-slate-600 transform-all duration-300">
             <MdDelete />
           </button>
-          
-         
         </div>
       </div>
       <h5 className="font-medium my-5">{title}</h5>
 
-      <div className=" relative">
+      <div className="h-full w-full">
         <ReactPlayer
           controls
           // playing={true}
@@ -107,10 +117,10 @@ const ProfileReel = ({ reel, refetch }) => {
           width="100%"
           height="100%"
         />
-        <div className="flex flex-col py-5 px-3 space-y-10 text-xl bg-slate-200 rounded-full w-fit absolute bottom-32 right-0">
+        <div className="flex flex-col py-5 px-3 space-y-10 text-xl bg-slate-200 rounded-full w-fit absolute bottom-20 right-1">
           {liked ? (
             <button className="flex flex-col items-center text-pink-500 gap-1 text-xl">
-              <FaRegHeart /> {likeCount}
+              <FcLike /> {likeCount}
             </button>
           ) : (
             <button
@@ -120,32 +130,9 @@ const ProfileReel = ({ reel, refetch }) => {
             </button>
           )}
           <ReelComment refetch={refetch} id={_id} comments={comments} />
-          <button onClick={shareHandler}>
-            <IoIosShareAlt />
-          </button>
+          <PostShare url={reels}/>
         </div>
       </div>
-
-      {/* react  */}
-      {/* <div className="flex justify-between mt-5 px-16 border-2 p-2 rounded-md">
-        {liked ? (
-          <button className="flex items-center text-pink-500 gap-1 text-xl">
-            <BiSolidLike /> {likeCount}
-          </button>
-        ) : (
-          <button
-            onClick={handleLike}
-            className="flex items-center gap-1 text-xl">
-            <AiOutlineLike /> {likeCount}
-          </button>
-        )}
-        <CommentsModal comments={comments} id={_id} refetch={refetch} />
-        <button
-            onClick={shareHandler}
-            className="text-xl flex   gap-1 items-center">
-            <CiShare2 /> Share
-          </button>
-      </div> */}
     </div>
   );
 };

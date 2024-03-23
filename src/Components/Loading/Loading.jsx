@@ -1,13 +1,15 @@
-
-
+import logo from "../../assets/icon/logo.png";
+import "./loading.css"
 
 const Loading = () => {
     return (
         <div className="">
            <div className="flex flex-col h-[80vh] md:h-[90vh] justify-center items-center">
-           <h2 className="text-5xl font-bold">Free Time</h2>
+           <div className=" p-5 rounded-xl logo">
+            <img src={logo} className="w-20" alt="" />
            </div>
-           <p className="text-center">© Copyright by Sadid</p>
+           </div>
+           <p style={{fontFamily:"cursive"}} className="text-center">© Copyright by Sadid</p>
         </div>
     );
 };
