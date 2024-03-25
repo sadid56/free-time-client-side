@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosSecure  = axios.create({
-    baseURL: 'https://free-time-server-side.vercel.app/'
+    baseURL: 'http://localhost:9000/'
 })
 
 //https://free-time-server-side.vercel.app/

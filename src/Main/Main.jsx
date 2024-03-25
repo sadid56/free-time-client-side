@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Navber from "../shared/Navber/Navber";
 import Sideber from "../pages/Home/Sideber/Sideber";
+import Messangers from "../Components/Messanger/Messangers";
 
 const Main = () => {
   return (
@@ -25,9 +26,9 @@ const Main = () => {
         </div>
         <div className="md:w-[30%] hidden md:block mr-3">
           {/* Right Sidebar chat content */}
-          <div className="sticky top-2 h-screen overflow-y-auto bg-white p-5 rounded-md">
+          <div className="sticky top-2 h-[97vh] p-5 overflow-y-auto bg-white  rounded-md">
             {/* Content of right sidebar */}
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis ipsam, consectetur ratione enim praesentium magni dolores alias autem iure fugit, repellendus iusto odit tempore iste laborum nostrum quidem assumenda non, illo cum. Consequuntur, tenetur incidunt asperiores repellendus voluptatem ullam deserunt nemo quasi, magni perferendis debitis expedita. At quae consequatur vel recusandae a deleniti dignissimos, id repudiandae. Nobis quia iure cupiditate voluptas culpa aliquid at debitis nisi ea vitae officia saepe libero veniam error deleniti ducimus vero earum sint, aliquam quis illo! Voluptate esse dolores aut omnis eveniet harum consequuntur modi! Sequi quia earum voluptate deserunt ducimus, architecto natus! Cumque, dolor! Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum aspernatur suscipit assumenda blanditiis possimus ex accusantium. Asperiores, suscipit. Quo, molestias labore! Reprehenderit quisquam consectetur aperiam. Doloremque maxime porro veritatis fugit harum! Minima, dolore ratione ipsa earum quas repellendus rerum sed nisi commodi et incidunt ut eius inventore explicabo ullam eum maxime magnam velit ea voluptates officiis! Incidunt voluptatibus aut dolore iste, repudiandae velit sed fugiat quo ipsa provident vitae dolor pariatur quibusdam nihil, qui quae sunt amet quidem corrupti atque quisquam laudantium! Pariatur, praesentium at? Dignissimos, beatae eum culpa cumque voluptatibus eveniet, voluptas aperiam, est atque harum ullam eaque. Quibusdam! </p>
+            <Messangers/>
           </div>
         </div>
        </div>
