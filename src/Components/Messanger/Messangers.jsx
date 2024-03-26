@@ -9,17 +9,21 @@ import Conversation from "./Conversation";
 import Message from "./Message";
 import useGetAllUser from "../../hooks/useGetAllUser";
 import useAxiosMessanger from "../../hooks/useAxiosMessenger";
+import "./messanger.css";
+import { MdDelete } from "react-icons/md";
+import Swal from "sweetalert2";
 let socket;
 const Messangers = () => {
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
-  const axiosMessanger = useAxiosMessanger()
+  const axiosMessanger = useAxiosMessanger();
   const [chats, chatsRefetch] = useChats();
   const [sinleUser] = useGetSIngleUser();
   const [anotherUser, setAnotherUser] = useState(null);
   const [users] = useGetAllUser();
+  const messageContainerRef = useRef(null);
   // connect socket server
   useEffect(() => {
     socket = io("http://localhost:5000");
@@ -88,20 +92,28 @@ const Messangers = () => {
       toast.error("Can't send empty message!");
     }
   };
+  // Event listener for Enter key press
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault(); // Prevent default form submission behavior
+      handleSend(); // Send the message
+    }
+  };
   // get message in database
-  const { refetch } = useQuery({
+  const { refetch, isLoading: messageLoading } = useQuery({
     queryKey: ["messageData", currentChat?._id],
     queryFn: async () => {
       if (currentChat) {
-        const response = await axiosMessanger.get(`message/${currentChat?._id}`);
+        const response = await axiosMessanger.get(
+          `message/${currentChat?._id}`
+        );
         setMessages(response.data);
         return response.data;
       }
       return [];
     },
   });
-  // console.log(messages);
-  // Handle received message
+  // refetch the message
   useEffect(() => {
     refetch();
   }, [currentChat, refetch]);
@@ -118,59 +130,146 @@ const Messangers = () => {
     const chatMember = chat.members.find((member) => member !== sinleUser._id);
     return onlineUsers.some((user) => user.userId === chatMember);
   };
-  const scroll = useRef();
+  // delete conversation
+  const handleDelete = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: `Are you sure you want to delete this conversation?`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await axiosMessanger.delete(
+            `chat/${currentChat?._id}`
+          );
+          if (response?.data) {
+            Swal.fire({
+              title: "",
+              text: `Conversation deleted successfully!`,
+              icon: "success",
+            });
+            chatsRefetch();
+            setCurrentChat(null)
+          }
+        } catch (error) {
+          console.error("Failed to delete conversation:", error.message);
+          Swal.fire({
+            title: "Error",
+            text: "Failed to delete conversation. Please try again later.",
+            icon: "error",
+          });
+        }
+      }
+    });
+  };
+
+  //auto scroll in bottom
   useEffect(() => {
-    scroll.current?.scrollIntoView({ behavior: "smooth" });
-  }, []);
+    if (messageContainerRef.current) {
+      messageContainerRef.current.scrollTop =
+        messageContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
   return (
     <section>
       {/* conversation */}
-      <div className="h-24 overflow-hidden flex gap-3 ">
-        {chats?.map((chat) => (
-          <div key={chat?._id}>
-            <Conversation
-              data={chat}
-              refetch={chatsRefetch}
-              setCurrentChat={setCurrentChat}
-              currentUser={sinleUser?._id}
-              online={isOnline(chat)}
-            />
-          </div>
-        ))}
+      <div className="h-20 overflow-x-auto items-center px-2 flex gap-3 bg-gray-200 rounded-md">
+        {chats ? (
+          <>
+            {chats?.map((chat) => (
+              <div key={chat?._id}>
+                <Conversation
+                  data={chat}
+                  refetch={chatsRefetch}
+                  setCurrentChat={setCurrentChat}
+                  currentUser={sinleUser?._id}
+                  online={isOnline(chat)}
+                />
+              </div>
+            ))}
+          </>
+        ) : (
+          <h2 className="text-xl">Please add a freind!</h2>
+        )}
       </div>
       <hr />
       {/* chatbox */}
-      <div className=" mt-4">
-        {/* messages */}
-        <div
-         
-          className="p-4 bg-gray-200 rounded-md h-[350px] overflow-y-auto">
-          {messages?.map((message, i) => (
-            <Message key={i} message={message} anotherUser={anotherUser} />
-          ))}
-        </div>
+      {currentChat ? (
+        <div className=" mt-4 ">
+          {/* messages */}
+          <div
+            style={{ scrollBehavior: "smooth" }}
+            ref={messageContainerRef}
+            className=" bg-gray-200 rounded-md message-container relative">
+            {/* user name inf */}
+            <div className="sticky top-0 w-full  flex justify-between items-center p-2 bg-primary">
+              <div className="flex items-center gap-1">
+                <div className="avatar">
+                  <div className="w-8 rounded-full border-2 border-primary">
+                    <img src={anotherUser?.photo} alt="none" />
+                  </div>
+                </div>
+                <h3 className="text-white font-medium">{anotherUser?.name}</h3>
+              </div>
+              <div>
+                <button onClick={handleDelete} className="text-xl text-white">
+                  <MdDelete />
+                </button>
+              </div>
+            </div>
+            {messageLoading ? (
+              <p className="text-center mt-20">
+                <span className="loading loading-spinner text-primary"></span>
+              </p>
+            ) : (
+              <div className="flex flex-col justify-end px-2">
+                {messages?.length === 0 ? (
+                  <p className="text-primary text-center mt-24 font-medium">No Message !</p>
+                ) : (
+                  <>
+                    {messages?.map((message, i) => (
+                      <Message
+                        key={i}
+                        message={message}
+                        anotherUser={anotherUser}
+                      />
+                    ))}
+                  </>
+                )}
+              </div>
+            )}
+          </div>
 
-        <hr className="my-3" />
-        {/* send box */}
-       
-        {
-          currentChat ? <div class=" flex">
-          <input
-            id="user-input"
-            type="text"
-            placeholder="Type a message"
-            class="w-full px-3 py-2 border rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            onChange={handleChange}
-            value={newMessage}
-          />
-          <button onClick={handleSend}
-            id="send-button"
-            class="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600 transition duration-300">
-            Send
-          </button>
-        </div> : <p>Select</p>
-        }
-      </div>
+          <hr className="my-3" />
+          {/* send box */}
+
+          <div class=" flex">
+            <input
+              id="user-input"
+              type="text"
+              placeholder="Type a message"
+              class="w-full px-3 py-2 border rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onChange={handleChange}
+              onKeyPress={handleKeyPress}
+              value={newMessage}
+            />
+            <button
+              onClick={handleSend}
+              id="send-button"
+              class="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600 transition duration-300">
+              Send
+            </button>
+          </div>
+        </div>
+      ) : (
+        <h2 className="text-center mt-40 text-primary font-medium text-xl">
+          Select a chat to start messaging!
+        </h2>
+      )}
     </section>
   );
 };

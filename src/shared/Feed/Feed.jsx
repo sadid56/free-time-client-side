@@ -13,6 +13,7 @@ import useGetSIngleUser from "../../hooks/useGetSIngleUser";
 import useGetBookmark from "../../hooks/useGetBookmark";
 import { BsFillBookmarkCheckFill } from "react-icons/bs";
 import PostShare from "../../Components/PostShare/PostShare";
+import { format } from "timeago.js";
 
 const Feed = ({ feed, refetch }) => {
   const {name, article, time, likes, comments,_id,auther_image,image,video,feelings,} = feed;
@@ -124,7 +125,7 @@ const Feed = ({ feed, refetch }) => {
                 )}
               </span>
             </h3>
-            <p className="text-sm text-gray-500">{time?.slice(0, 10)}</p>
+            <p className="text-sm text-gray-500">{format(time)}</p>
           </div>
         </div>
       </div>

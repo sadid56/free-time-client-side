@@ -9,7 +9,6 @@ const useChats = () => {
         queryKey: ["chatsData", sinleUser?._id],
         queryFn: () => axiosMessanger.get(`chat/${sinleUser?._id}`).then((response) => response.data),
       });
-      console.log(chats);
       return [chats, chatsRefetch]
 };
 

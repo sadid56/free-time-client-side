@@ -1,15 +1,29 @@
 
 import Friend from "../../../shared/Friend/Friend";
 import useGetAllUser from "../../../hooks/useGetAllUser";
+import useGetSIngleUser from "../../../hooks/useGetSIngleUser";
+import useChats from "../../../hooks/useChats";
 
 
 const Friends = () => {
    const [users] = useGetAllUser()
-    // console.log(friends);
+    const [sinleUser] = useGetSIngleUser();
+    const [chats, chatsRefetch] = useChats();
+  
+    //get avilable user with existing all users
+    const userId = chats?.map((chat) =>
+      chat.members.find((member) => member !== sinleUser._id)
+    );
+  
+    const finalUsers = users?.filter((user) => user._id !== sinleUser._id);
+    const availableUsers = finalUsers.filter(
+      (user) => !userId.includes(user?._id)
+    );
+  
     return (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-3">
+        <div className="grid px-3 md:grid-cols-2 gap-5 mt-3">
             {
-                users?.map(friend => <Friend key={friend?._id} friend={friend}/>)
+                availableUsers?.map(friend => <Friend key={friend?._id} friend={friend} chatsRefetch={chatsRefetch}/>)
             }
         </div>
     );

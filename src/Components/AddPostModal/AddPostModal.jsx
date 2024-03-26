@@ -110,7 +110,7 @@ const AddPostModal = ({ refetch, name, isMedia, setIsMedia }) => {
   return (
     <div>
       <button
-        className="flex  items-center gap-2 py-2 px-4 md:px-8 text-sm  md:text-xl  border-2 border-gray-100 rounded-md text-gray-500 font-medium bg-gray-200 hover:bg-gray-300 transition-all duration-300"
+        className="flex  items-center gap-2 py-2 px-3 md:px-8 text-sm  md:text-xl  border-2 border-gray-100 rounded-md text-gray-500 font-medium bg-gray-200 hover:bg-gray-300 transition-all duration-300"
         onClick={handleModal}>
         <img src={postimg} className="w-6" alt="" />
         {name}

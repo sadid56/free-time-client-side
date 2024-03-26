@@ -2,9 +2,12 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 
-const Conversation = ({ data,currentUser,online,
-//   refetch,
-setCurrentChat,
+const Conversation = ({
+  data,
+  currentUser,
+  online,
+  //   refetch,
+  setCurrentChat,
 }) => {
   const axiosPublic = useAxiosPublic();
   // get conversation  data with id
@@ -14,25 +17,27 @@ setCurrentChat,
     queryFn: () =>
       axiosPublic.get(`/user/${userId}`).then((response) => response.data),
   });
-//   console.log(conversationData);
+  //   console.log(conversationData);
   // conversation skeliton loading
   if (isLoading) {
     return (
-      <div className="relative flex w-64 animate-pulse gap-2 p-4">
+      <div className="relative  w-64 animate-pulse gap-2 p-4">
         <div className="h-10 w-10 rounded-full bg-slate-400"></div>
-        <div className="flex-1">
-          <div className="mb-1 h-4 w-[80%] rounded-lg bg-slate-400 text-lg"></div>
-          <div className="h-2 w-[30%] rounded-lg bg-slate-400 text-sm"></div>
-        </div>
+          <div className="h-2 w-[20%] rounded-lg bg-slate-400 text-sm mt-1"></div>
       </div>
     );
   }
   return (
-      <div onClick={() => setCurrentChat(data)} className={`avatar border-2 rounded-full border-primary ${online ? "online" : ""} cursor-pointer`}>
-        <div className="w-10 rounded-full ">
-          <img src={conversationData?.photo} />
-        </div>
+   <div onClick={() => setCurrentChat(data)} className="flex flex-col items-center">
+     <div  className={`avatar border-2 rounded-full border-primary ${
+        online ? "online" : "offline"
+      } cursor-pointer`}>
+      <div className="w-10 rounded-full ">
+        <img src={conversationData?.photo} alt="no photo"/>
+      </div>
     </div>
+    <h4>{conversationData?.name}</h4>
+   </div>
   );
 };
 

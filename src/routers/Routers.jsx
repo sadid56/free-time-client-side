@@ -7,10 +7,10 @@ import PrivateRoute from "../Private/PrivateRoute";
 import Profile from "../pages/Profile/Profile";
 import Reels from "../pages/Reels/Reels";
 import SavePost from "../pages/Home/SavePost/SavePost";
-import PlaylistVideos from "../pages/Home/PlaylistVideos/PlaylistVideos";
 import Friends from "../pages/Home/Friends/Friends";
 import Setting from "../pages/Setting/Setting";
-import Chating from "../pages/Chating/Chating";
+import Chat from "../pages/Home/chat/Chat";
+import Notification from "../pages/Home/notification/Notification";
 const Routers = createBrowserRouter([
   {
     path: "/",
@@ -29,16 +29,16 @@ const Routers = createBrowserRouter([
         element: <SavePost/>
       },
       {
-        path: "/playlist",
-        element: <PlaylistVideos/>,
-      },
-      {
-        path:'/friends',
+        path:'/add-conversation',
         element:<Friends/>
       },
       {
-        path: "/chating",
-        element: <Chating/>
+        path: "/chat",
+        element: <Chat/>
+      },
+      {
+        path: "/notification",
+        element: <Notification/>
       }
     ],
   },

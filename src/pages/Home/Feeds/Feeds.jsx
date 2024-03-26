@@ -58,7 +58,7 @@ const Feeds = () => {
           <hr />
           <div className="flex items-center gap-3 md:gap-5 justify-center">
             <AddPostModal isMedia={isMedia} setIsMedia={setIsMedia} name={"Post"} refetch={refetch} />
-            <button className="flex  items-center gap-2 py-1 px-4 md:px-8 text-sm  md:text-xl  border-2 border-gray-200 rounded-md text-gray-500 font-medium bg-gray-200 hover:bg-gray-300 transition-all duration-300" onClick={handleMedia}><img src={mediaimg} className="w-8" alt="" /> Media</button>
+            <button className="flex  items-center gap-2 py-2 px-3 md:px-8 text-sm  md:text-xl  border-2 border-gray-100 rounded-md text-gray-500 font-medium bg-gray-200 hover:bg-gray-300 transition-all duration-300" onClick={handleMedia}><img src={mediaimg} className="w-6" alt="" /> Media</button>
             <AddReelsModal refetch={refetch} />
           </div>
         </div>

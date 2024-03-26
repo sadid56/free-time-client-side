@@ -8,7 +8,7 @@ const useGetSIngleUser = () => {
   const { data: sinleUser = [] } = useQuery({
     queryKey: ["SingleUser", user?.email],
     queryFn: async () => {
-      const res = await axiosPublic.get(`users/${user?.email}`);
+      const res = await axiosPublic.get(`single-user?email=${user?.email}`);
       return res.data;
     },
   });

@@ -12,7 +12,8 @@ import useGetBookmark from "../../hooks/useGetBookmark";
 import { BsFillBookmarkCheckFill } from "react-icons/bs";
 import { FcLike } from "react-icons/fc";
 import useGetSIngleUser from "../../hooks/useGetSIngleUser";
-import PostShare from "../../Components/PostShare/PostShare";
+import { format } from "timeago.js";
+import ReelsShare from "../../Components/reelsShare/ReelsShare";
 
 const Reel = ({ reel, refetch }) => {
   const { name, title, time, auther_image, reels, _id, comments, likes } = reel;
@@ -141,7 +142,7 @@ const Reel = ({ reel, refetch }) => {
           )}
           <ReelComment refetch={refetch} id={_id} comments={comments} />
 
-          <PostShare url={reels} />
+          <ReelsShare url={reels} />
           {isSaved ? (
             <button onClick={handleAddSave} className="text-xl text-pink-500">
               <BsFillBookmarkCheckFill />
@@ -155,7 +156,7 @@ const Reel = ({ reel, refetch }) => {
       </div>
       <div className="flex flex-col justify-start gap-1  absolute bottom-0 bg-[rgba(0,0,0,0.5)] w-full z-20 left-1">
         <h3 className="text-xl font-medium  text-white">{title}</h3>
-        <p className="text-sm text-gray-200">{time?.slice(0, 10)}</p>
+        <p className="text-sm text-gray-200">{format(time)}</p>
       </div>
     </div>
   );

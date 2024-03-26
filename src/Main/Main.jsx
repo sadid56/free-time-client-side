@@ -20,7 +20,7 @@ const Main = () => {
         </div>
         <div className="md:w-[44%] pt-14 md:pt-0">
           {/* Main Content */}
-          <div className="overflow-y-auto">
+          <div className="overflow-y-auto bg-gray-200 min-h-screen">
             <Outlet />
           </div>
         </div>

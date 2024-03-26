@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { FaRegCommentDots } from "react-icons/fa";
+import { format } from "timeago.js";
 // import EmojiPicker from "emoji-picker-react";
 
 const PostCommentModal = ({ comments, id, refetch }) => {
@@ -68,7 +69,7 @@ const PostCommentModal = ({ comments, id, refetch }) => {
                     </div>
                     <div>
                     <h3 className=" font-semibold">{comment?.name}</h3>
-                  <p className="font-medium text-sm"><small>{comment?.date?.slice(0, 10)}</small></p>
+                  <p className="font-medium text-sm"><small>{format(comment?.date)}</small></p>
                     </div>
                   </div>
                   <p className="bg-gray-100 text-slate-900 font-medium w-fit rounded py-3 px-5 border ml-10">

@@ -9,7 +9,10 @@ export default {
     extend: {
       colors:{
         primary: "#3974bb"
-      }
+      },
+      fontFamily: {
+      'sans-italic': ['Helvetica Italic', 'Arial Italic', 'sans-serif'],
+      },
     },
   },
   plugins: [require("daisyui")],

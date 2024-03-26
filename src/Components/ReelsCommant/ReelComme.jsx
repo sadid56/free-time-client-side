@@ -8,6 +8,7 @@ import useAuth from "../../hooks/useAuth";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { FaRegCommentDots } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
+import { format } from "timeago.js";
 
 const ReelComment = ({ comments, id, refetch }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -83,7 +84,7 @@ const ReelComment = ({ comments, id, refetch }) => {
                           {comment?.name}
                         </h3>
                         <p className="text-sm">
-                          <small>{comment?.date?.slice(0, 10)}</small>
+                          <small>{format(comment?.date)}</small>
                         </p>
                       </div>
                     </div>

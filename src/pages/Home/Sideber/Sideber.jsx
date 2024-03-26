@@ -25,14 +25,8 @@ const data = [
     name: "Reels",
   },
   {
-    id: 3,
-    path: "/reels",
-    icon: freindimg,
-    name: "Freinds",
-  },
-  {
     id: 4,
-    path: "/reels",
+    path: "/notification",
     icon: notificationimg,
     name: "Notification",
   },
@@ -41,6 +35,12 @@ const data = [
     path: "/save-post",
     icon: bookmarkimg,
     name: "Bookmark",
+  },
+  {
+    id: 3,
+    path: "/add-conversation",
+    icon: freindimg,
+    name: "Add Conversation",
   },
 ];
 // style={{boxShadow:"0px 0px 20px gray"}}
@@ -58,7 +58,7 @@ const Sideber = () => {
   return (
     <div className="bg-white flex flex-col p-5 justify-between  z-30 rounded-md my-2 h-[97vh] ml-3 py-5">
       <div className="">
-        <h2 className="text-3xl font-bold pl-3 mb-5">Free <span className="text-primary">Time</span></h2>
+        <h2 className="text-3xl font-bold pl-3 mb-5 italic">Free <span className="text-primary">Time</span></h2>
         <div className="hover:bg-gray-200 p-2 rounded-md">
           <Link to="/profile">
             <div className="flex items-center gap-2">

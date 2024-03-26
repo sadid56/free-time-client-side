@@ -5,6 +5,7 @@ import { IoMdSend } from "react-icons/io";
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { format } from "timeago.js";
 // import EmojiPicker from "emoji-picker-react";
 
 const CommentsModal = ({ comments, id, refetch }) => {
@@ -67,7 +68,7 @@ const CommentsModal = ({ comments, id, refetch }) => {
                     </div>
                     <div>
                     <h3 className="text-xl font-semibold">{comment?.name}</h3>
-                  <p className="text-sm">{comment?.date?.slice(0, 10)}</p>
+                  <p className="text-sm">{format(comment?.date)}</p>
                     </div>
                   </div>
                   <p className="bg-gray-100 text-slate-900 font-medium w-fit rounded-md py-3 px-5">
