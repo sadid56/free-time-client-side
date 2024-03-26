@@ -2,12 +2,15 @@ import "./navber.css";
 import { Link, NavLink } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
-import { FaBookmark, FaHome, FaUserCircle } from "react-icons/fa";
-import { SiYoutubeshorts } from "react-icons/si";
 import logo from "../../assets/icon/logo.png";
-import { IoMdSettings } from "react-icons/io";
-import { TbLogout2 } from "react-icons/tb";
-import { MdMessage, MdNotifications } from "react-icons/md";
+import feedsIcon from "../../assets/icon/home.png"
+import reelsIcon from "../../assets/icon/reels.png"
+import chatsIcon from "../../assets/icon/chats.png"
+import notificationIcon from "../../assets/icon/notification.png"
+import userIcon from "../../assets/icon/user.png"
+import bookmarkIcon from "../../assets/icon/bookmark.png"
+import settingIcon from "../../assets/icon/setting.png"
+import logoutIcon from "../../assets/icon/logout.png"
 
 const Navber = () => {
   const { user, logOut } = useAuth();
@@ -30,22 +33,22 @@ const Navber = () => {
       <ul className={`flex items-center gap-8 md:gap-28 `}>
         <li>
           <NavLink to="/" className="text-2xl">
-            <FaHome />
+            <img src={feedsIcon} className="w-7" alt="" />
           </NavLink>
         </li>
         <li>
           <NavLink to="/reels" className="text-2xl">
-            <SiYoutubeshorts />
+          <img src={reelsIcon} className="w-7" alt="" />
           </NavLink>
         </li>
         <li className="block md:hidden">
           <NavLink to="/chat" className="text-2xl">
-            <MdMessage/>
+          <img src={chatsIcon} className="w-7" alt="" />
           </NavLink>
         </li>
-        <li className="block md:hidden">
+        <li className="">
           <NavLink to="/notification" className="text-2xl">
-            <MdNotifications/>
+          <img src={notificationIcon} className="w-7" alt="" />
           </NavLink>
         </li>
 
@@ -66,25 +69,32 @@ const Navber = () => {
             <Link
               to={"/profile"}
               className=" text-xl font-medium flex items-center">
-             <FaUserCircle /> Profile
+             <img src={userIcon} className="w-6" alt="" /> Profile
             </Link>
           </li>
           <li>
             <Link
               to={"/save-post"}
               className=" text-xl font-medium flex items-center">
-             <FaBookmark /> Bookmark
+             <img src={bookmarkIcon} className="w-6" alt="" />Bookmark
+            </Link>
+          </li>
+          <li>
+            <Link
+              to={"/add-conversation"}
+              className=" text-xl font-medium flex items-center">
+             <img src={chatsIcon} className="w-6" alt="" /> Add Chats
             </Link>
           </li>
           <li>
           <Link
               to={"/setting"}
               className=" text-xl font-medium">
-              <IoMdSettings /> Setting
+              <img src={settingIcon} className="w-6" alt="" /> Setting
             </Link>
           </li>
           <button className="btn border shadow-md text-xl" onClick={handleLogOut}>
-            <TbLogout2/> Log Out
+          <img src={logoutIcon} className="w-6" alt="" /> Log Out
           </button>
         </ul>
       </div>

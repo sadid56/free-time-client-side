@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
-import { MdOutlineCloudUpload } from "react-icons/md";
+import { MdClose, MdOutlineCloudUpload } from "react-icons/md";
 import axios from "axios";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
@@ -120,7 +120,7 @@ const AddPostModal = ({ refetch, name, isMedia, setIsMedia }) => {
           <form method="dialog">
             {/* if there is a button in form, it will close the modal */}
             <button className="btn btn-sm btn-circle text-xl btn-ghost absolute right-2 top-2">
-              ✕
+              <MdClose/>
             </button>
           </form>
           <div>

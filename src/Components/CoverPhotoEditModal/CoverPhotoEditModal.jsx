@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-import { useForm } from "react-hook-form";
 import { FaCamera } from "react-icons/fa";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import toast from "react-hot-toast";
@@ -8,13 +7,14 @@ import { useState } from "react";
 import { MdOutlineCloudUpload } from "react-icons/md";
 
 const CoverPhotoEditModal = ({profile, refetch}) => {
-  const { register, handleSubmit, reset } = useForm();
   const axiosPublic = useAxiosPublic();
   const [loading, setLoading] = useState(false)
-  const onSubmit = async (data) => {
+  const [selectedFileName, setSelectedFileName] = useState(null);
+  const handleSubmit = async (e) => {
+    e.preventDefault()
     try {
       setLoading(true)
-      const fileImage = data?.file[0];
+      const fileImage = selectedFileName;
       const formData = new FormData();
       formData.append("image", fileImage);
       const { data: imageData } = await axios.post(
@@ -30,11 +30,11 @@ const CoverPhotoEditModal = ({profile, refetch}) => {
         // console.log(res.data);
         if (res.data?.acknowledged) {
           toast.success("Cover Photo Update Successfully !");
-          reset();
           const modal = document.getElementById("cover_photoUpdate");
           modal.close();
           refetch();
           setLoading(false)
+          setSelectedFileName(null)
         }
       }
     } catch (err) {
@@ -61,7 +61,7 @@ const CoverPhotoEditModal = ({profile, refetch}) => {
           </form>
           <div>
             <div className="divider">Update Cover Photo</div>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit}>
               <div className="form-control">
                 <div className="flex items-center justify-center w-full mt-5">
                 <label
@@ -72,25 +72,31 @@ const CoverPhotoEditModal = ({profile, refetch}) => {
                       <span className="font-semibold">Click to upload</span>{" "}
                       Photo
                     </p>
-                    {/* <p className="font-medium text-gray-500">
-                      {selectedFileName}
-                    </p> */}
+                
                     <p className="text-xs text-gray-500 dark:text-gray-400">
                       SVG, PNG, JPG
                     </p>
+                    {selectedFileName ? (
+                      <div className="font-medium text-gray-400 text-center">
+                        {selectedFileName?.name.slice(0,30)} <br /> {selectedFileName?.type}{" "}
+                        / {(selectedFileName?.size / 1024 / 1024).toFixed(2)} MB
+                      </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
                   <input
-                    accept="image/svg+xml,image/png,image/jpeg"
-                    id="dropzone-file"
-                    type="file"
-                    name="image"
-                    className="hidden"
-                    {...register("file")}
+                     accept="image/png,image/jpeg,image/jpg,video/mp4"
+                     id="dropzone-file"
+                     type="file"
+                     name="image"
+                     className="hidden"
+                     onChange={(e) => setSelectedFileName(e.target.files[0])}
                   />
                 </label>
               </div>
               </div>
-              <button type="submit" className="text-xl flex items-center  justify-center w-full gap-2 text-white bg-primary py-2 px-4 rounded-md hover:bg-[#0b122b] transform-all duration-300 mt-5">Update Now {loading && <span className="loading loading-spinner text-white"></span>}</button>
+              <button disabled={!selectedFileName} type="submit" className={`${selectedFileName === null ?"disabled bg-gray-400" : "bg-primary  hover:bg-blue-600 "} text-xl flex items-center  justify-center w-full gap-2 text-white  py-2 px-4 rounded-md transform-all duration-300 mt-5`}>Update Now {loading && <span className="loading loading-spinner text-white"></span>}</button>
             </form>
           </div>
         </div>

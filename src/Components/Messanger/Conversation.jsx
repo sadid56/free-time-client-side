@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
+import useChats from "../../hooks/useChats";
 
 const Conversation = ({
   data,
@@ -10,6 +11,7 @@ const Conversation = ({
   setCurrentChat,
 }) => {
   const axiosPublic = useAxiosPublic();
+  const [chats] = useChats()
   // get conversation  data with id
   const userId = data?.members.find((id) => id !== currentUser);
   const { data: conversationData, isLoading } = useQuery({
@@ -28,7 +30,7 @@ const Conversation = ({
     );
   }
   return (
-   <div onClick={() => setCurrentChat(data)} className="flex flex-col items-center">
+   <div onClick={() => setCurrentChat(data)} className={`flex flex-col items-center ${chats?.length <= 3 ? "w-full" : "w-[100px]"}`}>
      <div  className={`avatar border-2 rounded-full border-primary ${
         online ? "online" : "offline"
       } cursor-pointer`}>
@@ -36,7 +38,7 @@ const Conversation = ({
         <img src={conversationData?.photo} alt="no photo"/>
       </div>
     </div>
-    <h4>{conversationData?.name}</h4>
+    <h4 className="text-center text-[10px] md:text-[14px] ">{conversationData?.name ? conversationData.name.charAt(0).toUpperCase() + conversationData.name.slice(1).toLowerCase() : ''}</h4>
    </div>
   );
 };

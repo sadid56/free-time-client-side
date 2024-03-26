@@ -177,7 +177,7 @@ const Messangers = () => {
   return (
     <section>
       {/* conversation */}
-      <div className="h-20 overflow-x-auto items-center px-2 flex gap-3 bg-gray-200 rounded-md">
+      <div className="h-24 overflow-y-hidden overflow-x-auto items-center px-2 flex gap-3 bg-gray-200 rounded-md">
         {chats ? (
           <>
             {chats?.map((chat) => (

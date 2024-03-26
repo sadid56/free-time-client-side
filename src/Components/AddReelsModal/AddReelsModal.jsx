@@ -12,12 +12,14 @@ const AddReelsModal = ({ refetch }) => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [loading, setLoading] = useState(false);
-  
+  const [selectedFileName, setSelectedFileName] = useState(null);
   const onSubmit = async (data) => {
-    // console.log(data);
+    if(data?.title?.length >= 20){
+      return toast.error("Provite me short title.")
+    }
     try {
       setLoading(true);
-      const fileImage = data?.video[0];
+      const fileImage = selectedFileName;
       const formData = new FormData();
       formData.append("file", fileImage);
       formData.append("upload_preset", "video_presed");
@@ -40,24 +42,16 @@ const AddReelsModal = ({ refetch }) => {
       };
 
       const response = await axiosSecure.post("/reels", postInfo);
-      if (response?.data?.acknowledged) {
-        const notificationsInfo = {
-          name: user?.displayName,
-          email: user?.email,
-          date: new Date(),
-          post_type: "reels",
-        };
-        const res = await axiosSecure.post("/notification", notificationsInfo);
-        if (res?.data?.acknowledged) {
+        if (response?.data?.acknowledged) {
           toast.success("Reels Upload successfull !");
+          setSelectedFileName(null)
           reset();
           const modal = document.getElementById("reels_modal_id");
           modal.close();
           refetch();
           setLoading(false);
         }
-      }
-    } catch (err) {
+      } catch (err) {
       console.log("reels err-->", err.message);
     }
   };
@@ -106,26 +100,34 @@ const AddReelsModal = ({ refetch }) => {
                     <p className="text-xs text-gray-500 dark:text-gray-400">
                       short video
                     </p>
+                    {selectedFileName ? (
+                      <div className="font-medium text-gray-400 text-center">
+                        {selectedFileName?.name.slice(0,25)} <br /> {selectedFileName?.type}{" "}
+                        / {(selectedFileName?.size / 1024 / 1024).toFixed(2)} MB
+                      </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
                   <input
-                    accept="video/*"
-                    id="dropzone-file"
-                    type="file"
-                    name="video"
-                    className="hidden"
-                    {...register("video")}
+                     accept="video/mp4"
+                     id="dropzone-file"
+                     type="file"
+                     name="video"
+                     className="hidden"
+                     onChange={(e) => setSelectedFileName(e.target.files[0])}
                   />
                 </label>
               </div>
               {loading ? (
-                <button className="text-xl btn btn-disabled flex items-center justify-center w-full gap-2 text-black bg-primary py-2 px-4 rounded-md hover:bg-[#0f1634] transform-all duration-300 mt-5">
+                <button disabled={!selectedFileName} className="text-xl btn btn-disabled flex items-center justify-center w-full gap-2 text-black bg-primary py-2 px-4 rounded-md hover:bg-[#0f1634] transform-all duration-300 mt-5">
                   Pending
                   {loading && (
                     <span className="loading loading-dots loading-md"></span>
                   )}
                 </button>
               ) : (
-                <button
+                <button disabled={!selectedFileName}
                   type="submit"
                   className="text-xl flex items-center justify-center w-full gap-2 text-white bg-primary py-2 px-4 rounded-md hover:bg-[#0f1634] transform-all duration-300 mt-5">
                   Post Now

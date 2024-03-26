@@ -42,6 +42,11 @@ const NameChnageModal = () => {
         className={
           "max-w-2xl mx-auto mt-20 bg-white p-10 rounded-md shadow-2xl"
         }>
+          <div className="flex justify-end">
+          <button onClick={closeModal} className=" mt-5 btn btn-circle text-xl">
+          <MdClose />
+        </button>
+          </div>
         <div className="divider">Change Your Name</div>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
           <div className="relative h-11 w-full min-w-[200px]">
@@ -79,9 +84,7 @@ const NameChnageModal = () => {
             )}
           </button>
         </form>
-        <button onClick={closeModal} className=" mt-5 btn btn-circle text-xl">
-          <MdClose />
-        </button>
+        
       </Modal>
     </div>
   );
