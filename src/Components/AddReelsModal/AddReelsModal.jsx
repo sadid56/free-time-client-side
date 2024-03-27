@@ -24,7 +24,7 @@ const AddReelsModal = ({ refetch }) => {
       formData.append("file", fileImage);
       formData.append("upload_preset", "video_presed");
       const { data: imageData } = await axios.post(
-        "https://api.cloudinary.com/v1_1/dvphwrb7p/video/upload",
+        `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_clowdinary_secret_key}/video/upload`,
         formData
       );
       // console.log(imageData);

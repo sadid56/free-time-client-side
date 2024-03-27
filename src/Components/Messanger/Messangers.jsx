@@ -24,9 +24,10 @@ const Messangers = () => {
   const [anotherUser, setAnotherUser] = useState(null);
   const [users] = useGetAllUser();
   const messageContainerRef = useRef(null);
+  const url = import.meta.env.VITE_socket_url;
   // connect socket server
   useEffect(() => {
-    socket = io("http://localhost:5000");
+    socket = io(url);
     socket?.emit("setup", sinleUser);
     socket?.on("connect", () => {
       if (sinleUser) {
@@ -45,7 +46,7 @@ const Messangers = () => {
       // Clean up socket connection
       socket?.disconnect();
     };
-  }, [sinleUser]);
+  }, [sinleUser, url]);
   // get message from socket
   useEffect(() => {
     socket?.on("getMessage", (data) => {
@@ -66,7 +67,6 @@ const Messangers = () => {
       text: newMessage,
       chatId: currentChat?._id,
     };
-    console.log(message);
     if (newMessage && currentChat) {
       // send message socket
       const receiverId = currentChat?.members.find(
@@ -80,7 +80,7 @@ const Messangers = () => {
 
       try {
         //send message database
-        const { data } = await axiosMessanger.post("message", message);
+        const { data } = await axiosMessanger.post("/message", message);
         console.log(data);
         setMessages((prevMessages) => [...prevMessages, data]);
         setNewMessage("");
@@ -105,7 +105,7 @@ const Messangers = () => {
     queryFn: async () => {
       if (currentChat) {
         const response = await axiosMessanger.get(
-          `message/${currentChat?._id}`
+          `/message/${currentChat?._id}`
         );
         setMessages(response.data);
         return response.data;
@@ -144,7 +144,7 @@ const Messangers = () => {
       if (result.isConfirmed) {
         try {
           const response = await axiosMessanger.delete(
-            `chat/${currentChat?._id}`
+            `/chat/${currentChat?._id}`
           );
           if (response?.data) {
             Swal.fire({
@@ -178,7 +178,7 @@ const Messangers = () => {
     <section>
       {/* conversation */}
       <div className="h-24 overflow-y-hidden overflow-x-auto items-center px-2 flex gap-3 bg-gray-200 rounded-md">
-        {chats ? (
+        {chats?.length === 0 ? <h2 className="text-primary font-medium ml-10">Please add a freind!</h2> : (
           <>
             {chats?.map((chat) => (
               <div key={chat?._id}>
@@ -192,8 +192,6 @@ const Messangers = () => {
               </div>
             ))}
           </>
-        ) : (
-          <h2 className="text-xl">Please add a freind!</h2>
         )}
       </div>
       <hr />

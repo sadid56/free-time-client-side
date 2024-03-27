@@ -16,7 +16,18 @@ import PostShare from "../../Components/PostShare/PostShare";
 import { format } from "timeago.js";
 
 const Feed = ({ feed, refetch }) => {
-  const {name, article, time, likes, comments,_id,auther_image,image,video,feelings,} = feed;
+  const {
+    name,
+    article,
+    time,
+    likes,
+    comments,
+    _id,
+    auther_image,
+    image,
+    video,
+    feelings,
+  } = feed;
   const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure();
   const [liked, setLiked] = useState(false);
@@ -125,7 +136,7 @@ const Feed = ({ feed, refetch }) => {
                 )}
               </span>
             </h3>
-            <p className="text-sm text-gray-500">{format(time)}</p>
+            <p className="text-sm text-gray-500 -mt-1">{format(time)}</p>
           </div>
         </div>
       </div>
@@ -170,9 +181,7 @@ const Feed = ({ feed, refetch }) => {
             </button>
           )}
           <PostCommentModal comments={comments} refetch={refetch} id={_id} />
-          {
-            image || video ? <PostShare url={image || video}/> : ""
-          }
+          {image || video ? <PostShare url={image || video} /> : ""}
         </div>
         {isSaved ? (
           <button onClick={handleAddSave} className="text-xl text-pink-500">

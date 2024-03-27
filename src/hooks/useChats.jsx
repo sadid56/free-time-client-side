@@ -7,7 +7,7 @@ const useChats = () => {
     const [sinleUser] = useGetSIngleUser();
     const { data: chats =[], refetch:chatsRefetch} = useQuery({
         queryKey: ["chatsData", sinleUser?._id],
-        queryFn: () => axiosMessanger.get(`chat/${sinleUser?._id}`).then((response) => response.data),
+        queryFn: () => axiosMessanger.get(`/chat/${sinleUser?._id}`).then((response) => response.data),
       });
       return [chats, chatsRefetch]
 };

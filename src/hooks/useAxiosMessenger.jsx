@@ -1,7 +1,7 @@
 import axios from "axios";
-
+const url = import.meta.env.VITE_socket_url;
 const axiosMessanger  = axios.create({
-    baseURL: 'http://localhost:5000/'
+    baseURL: url
 })
 //http://localhost:9000/
 const useAxiosMessanger = () => {

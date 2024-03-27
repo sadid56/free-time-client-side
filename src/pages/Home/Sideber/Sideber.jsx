@@ -9,8 +9,8 @@ import notificationimg from "../../../assets/icon/notification.png";
 import bookmarkimg from "../../../assets/icon/bookmark.png";
 import setingimg from "../../../assets/icon/setting.png";
 import logoutimg from "../../../assets/icon/logout.png";
-
-
+import LoadingBar from "react-top-loading-bar";
+import { useEffect, useState } from "react";
 const data = [
   {
     id: 1,
@@ -46,6 +46,7 @@ const data = [
 // style={{boxShadow:"0px 0px 20px gray"}}
 const Sideber = () => {
   const { user, logOut } = useAuth();
+  const [progress, setProgress] = useState(0);
   const handleLogOut = () => {
     logOut()
       .then(() => {
@@ -55,10 +56,31 @@ const Sideber = () => {
         toast.error(err.message);
       });
   };
+
+  // click to show top progress bar
+  const handleClick = () => {
+    setProgress(60);
+    setTimeout(() => {
+      setProgress(100);
+    }, 2000);
+  };
+
+  useEffect(() => {
+    return () => setProgress(0);
+  }, []);
+
   return (
     <div className="bg-white flex flex-col p-5 justify-between  z-30 rounded-md my-2 h-[97vh] ml-3 py-5">
+      <LoadingBar
+        color="#3974bb"
+        height={4}
+        progress={progress}
+        onLoaderFinished={() => setProgress(0)}
+      />
       <div className="">
-        <h2 className="text-3xl font-bold pl-3 mb-5 italic">Free <span className="text-primary">Time</span></h2>
+        <h2 className="text-3xl font-bold pl-3 mb-5 italic">
+          Free <span className="text-primary">Time</span>
+        </h2>
         <div className="hover:bg-gray-200 p-2 rounded-md">
           <Link to="/profile">
             <div className="flex items-center gap-2">
@@ -73,11 +95,12 @@ const Sideber = () => {
         </div>
         <ul id="sid" className="flex flex-col gap-3  text-xl mt-2">
           {data.map((item) => (
-            <li key={item.id}>
+            <li onClick={handleClick} key={item.id}>
               <NavLink
                 to={item.path}
                 className="flex items-center gap-2 hover:bg-gray-200 rounded-md p-2">
-                <img src={item?.icon} className="w-7" alt="" /> <span className="font-medium text-gray-600">{item.name}</span>
+                <img src={item?.icon} className="w-7" alt="" />{" "}
+                <span className="font-medium text-gray-600">{item.name}</span>
               </NavLink>
             </li>
           ))}
@@ -85,7 +108,7 @@ const Sideber = () => {
       </div>
       <hr />
       <ul>
-        <li>
+        <li onClick={handleClick}>
           <NavLink
             to="/setting"
             className="flex items-center gap-2 hover:bg-gray-200 rounded-md p-2 text-xl">

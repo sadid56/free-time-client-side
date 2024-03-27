@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { createContext, useEffect, useState } from "react";
 import auth from "../firebase/firebase.config";
-import { GoogleAuthProvider, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
+import { GoogleAuthProvider, createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 
 
 export const AuthContext = createContext(null)
@@ -43,6 +43,19 @@ const AuthProvider = ({children}) => {
         return signInWithPopup(auth, googleProvider)
     }
 
+    // password reset
+    const passReset = (email)=>{
+        return sendPasswordResetEmail(auth, email)
+    }
+
+    // Email verification
+	const verifyEmail = () => {
+		const currentUser = auth.currentUser;
+		if (currentUser) {
+			return sendEmailVerification(currentUser);
+		}
+	};
+
     useEffect(()=>{
         const unSubscribe = onAuthStateChanged(auth, currentUser =>{
             setUser(currentUser)
@@ -60,7 +73,9 @@ const AuthProvider = ({children}) => {
         profileUpdate,
         signIn,
         logOut,
-        googleLogin
+        googleLogin,
+        passReset,
+        verifyEmail
     }
     return ( 
         <AuthContext.Provider value={authInfo}>

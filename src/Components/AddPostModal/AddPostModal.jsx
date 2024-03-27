@@ -58,7 +58,7 @@ const AddPostModal = ({ refetch, name, isMedia, setIsMedia }) => {
         const formData = new FormData();
         formData.append("image", selectedFileName);
         const { data: imageData } = await axios.post(
-          "https://api.imgbb.com/1/upload?key=ee9960786c60a08168b8606c5d54ae38",
+          `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_imgbb_API_key}`,
           formData
         );
         postInfo.image = imageData?.data?.display_url;
@@ -77,7 +77,7 @@ const AddPostModal = ({ refetch, name, isMedia, setIsMedia }) => {
         formData.append("file", selectedFileName);
         formData.append("upload_preset", "video_presed");
         const { data: videoData } = await axios.post(
-          "https://api.cloudinary.com/v1_1/dvphwrb7p/video/upload",
+          `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_clowdinary_secret_key}/video/upload`,
           formData
         );
         postInfo.video = videoData?.secure_url;
@@ -120,14 +120,11 @@ const AddPostModal = ({ refetch, name, isMedia, setIsMedia }) => {
           <form method="dialog">
             {/* if there is a button in form, it will close the modal */}
             <button className="btn btn-sm btn-circle text-xl btn-ghost absolute right-2 top-2">
-              <MdClose/>
+              <MdClose />
             </button>
           </form>
           <div>
             <div className="divider">Create Post</div>
-            {/* <div className="flex w-full justify-end">
-                <button onClick={()=>setIsMedia(!isMedial)} className="bg-primary text-xl text-white p-2 rounded-md my-2">Media</button>
-              </div> */}
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="form-control w-full">
                 <label className="label">
