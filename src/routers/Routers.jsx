@@ -25,26 +25,26 @@ const Routers = createBrowserRouter([
         element: <Home />,
       },
       {
-        path:"/save-post",
-        element: <SavePost/>
+        path: "/save-post",
+        element: <SavePost />,
       },
       {
-        path:'/add-conversation',
-        element:<Friends/>
-      },
-      {
-        path: "/chat",
-        element: <Chat/>
+        path: "/add-conversation",
+        element: <Friends />,
       },
       {
         path: "/notification",
-        element: <Notification/>
-      }
+        element: <Notification />,
+      },
     ],
   },
   {
-    path:'/setting',
-    element: <PrivateRoute><Setting/></PrivateRoute>
+    path: "/setting",
+    element: (
+      <PrivateRoute>
+        <Setting />
+      </PrivateRoute>
+    ),
   },
   {
     path: "/profile",
@@ -69,7 +69,11 @@ const Routers = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
-  }
+  },
+  {
+    path: "/chat",
+    element: <Chat />,
+  },
 ]);
 
 export default Routers;

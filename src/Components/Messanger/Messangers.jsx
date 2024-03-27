@@ -12,6 +12,7 @@ import useAxiosMessanger from "../../hooks/useAxiosMessenger";
 import "./messanger.css";
 import { MdDelete } from "react-icons/md";
 import Swal from "sweetalert2";
+import Navber from "../../shared/Navber/Navber";
 let socket;
 const Messangers = () => {
   const [newMessage, setNewMessage] = useState("");
@@ -176,9 +177,12 @@ const Messangers = () => {
   }, [messages]);
   return (
     <section>
+     <div className="md:hidden block fixed z-50">
+     <Navber/>
+     </div>
       {/* conversation */}
-      <div className="h-24 overflow-y-hidden overflow-x-auto items-center px-2 flex gap-3 bg-gray-200 rounded-md">
-        {chats?.length === 0 ? <h2 className="text-primary font-medium ml-10">Please add a freind!</h2> : (
+      <div className={`h-20 md:h-24 ${chats?.length === 0 ? "" : "flex overflow-y-hidden overflow-x-auto items-center"}  px-2 gap-3 bg-gray-200 rounded-md mt-14 md:mt-0`}>
+        {chats?.length === 0 ? <h2 className="text-primary font-medium mt-2 text-center">Please add a freind!</h2> : (
           <>
             {chats?.map((chat) => (
               <div key={chat?._id}>
@@ -197,12 +201,12 @@ const Messangers = () => {
       <hr />
       {/* chatbox */}
       {currentChat ? (
-        <div className=" mt-4 ">
+        <div className="relative md:mt-4 ">
           {/* messages */}
           <div
             style={{ scrollBehavior: "smooth" }}
             ref={messageContainerRef}
-            className=" bg-gray-200 rounded-md message-container relative">
+            className=" bg-gray-200 rounded-md h-[calc(100vh-200px)] md:h-[60vh] overflow-y-auto relative">
             {/* user name inf */}
             <div className="sticky top-0 w-full  flex justify-between items-center p-2 bg-primary">
               <div className="flex items-center gap-1">
@@ -245,7 +249,7 @@ const Messangers = () => {
           <hr className="my-3" />
           {/* send box */}
 
-          <div class=" flex">
+          <div class="fixed md:relative bottom-1 w-full flex px-2">
             <input
               id="user-input"
               type="text"
