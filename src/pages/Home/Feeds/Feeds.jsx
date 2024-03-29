@@ -59,7 +59,7 @@ const Feeds = () => {
 
         <form
           onSubmit={handleSearchSubmit}
-          className="bg-white shadow-md rounded-md mt-2 sticky top-0 z-10 transition-all duration-300">
+          className="bg-white shadow-md rounded-md my-2 sticky top-14 md:top-0 z-10 transition-all duration-300">
           <div className="relative">
             <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
               <IoSearch className="text-gray-400"/>

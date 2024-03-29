@@ -16,7 +16,7 @@ import PostShare from "../../Components/PostShare/PostShare";
 import { format } from "timeago.js";
 
 const Feed = ({ feed, refetch }) => {
-  console.log(feed);
+  // console.log(feed);
   const {
     name = "",
     article = "",
