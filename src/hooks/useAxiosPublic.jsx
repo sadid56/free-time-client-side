@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosPublic  = axios.create({
-    baseURL: 'http://localhost:9000/'
+    baseURL: 'https://free-time-server-side.vercel.app/'
 })
 //http://localhost:9000/
 const useAxiosPublic = () => {
