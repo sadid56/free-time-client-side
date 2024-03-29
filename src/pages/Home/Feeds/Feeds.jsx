@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 import Feed from "../../../shared/Feed/Feed";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
@@ -6,34 +7,29 @@ import AddPostModal from "../../../Components/AddPostModal/AddPostModal";
 import AddReelsModal from "../../../Components/AddReelsModal/AddReelsModal";
 import { useState } from "react";
 import mediaimg from "../../../assets/icon/media.png";
-import "./feeds.css"
+import { IoSearch } from "react-icons/io5";
+import "./feeds.css";
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
+import toast from "react-hot-toast";
 
 const Feeds = () => {
   const axiosSecure = useAxiosSecure();
+  const axiosPublic = useAxiosPublic()
   const [isMedia, setIsMedia] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const [feeds, setFeeds] = useState([])
   const { user } = useAuth();
   // get data
-  const { data: news = [], refetch, isLoading } = useQuery({
+  const {refetch,isLoading,
+  } = useQuery({
     queryKey: ["feeds"],
     queryFn: async () => {
       const res = await axiosSecure.get("/feeds");
-      return res.data;
+      
+      return setFeeds(res?.data);
     },
   });
-// console.log(news);
-  //skeliton loading 
-
-  if(isLoading){
-    return <div className="loader">
-    <div className="wrapper">
-      <div className="circle"></div>
-      <div className="line-1"></div>
-      <div className="line-2"></div>
-      <div className="line-3"></div>
-      <div className="line-4"></div>
-    </div>
-  </div>
-  }
+  // console.log(news);
 
   const handleMedia = () => {
     setIsMedia(true);
@@ -41,9 +37,51 @@ const Feeds = () => {
     modal.showModal();
   };
 
+  // search field change handler
+  const handleSearchChange = (e) => {
+    setSearchValue(e.target.value);
+  };
+
+  // search field submit handler
+  const handleSearchSubmit = async(e) => {
+    e.preventDefault();
+    try{
+      const res = await axiosPublic.get(`search?q=${searchValue}`)
+    setFeeds(res?.data)
+        setSearchValue("")
+    }catch(err){
+      toast.error(err.message)
+    }
+  };
+
   return (
-    <div className=" w-full">
-      <div className="">
+    <div className=" w-full relative">
+
+        <form
+          onSubmit={handleSearchSubmit}
+          className="bg-white shadow-md rounded-md mt-2 sticky top-0 z-10 transition-all duration-300">
+          <div className="relative">
+            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+              <IoSearch className="text-gray-400"/>
+            </div>
+            <input
+              type="search"
+              name="search"
+              id="default-search"
+              className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-200 rounded-md bg-white outline-none"
+              placeholder="Search name & article..."
+              required
+              value={searchValue}
+              onChange={handleSearchChange}
+            />
+            <button
+              type="submit"
+              className="text-white absolute end-2.5 bottom-2.5 bg-primary hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 ">
+              Search
+            </button>
+          </div>
+        </form>
+
         <div className="p-5 mb-2 md:my-2 rounded-md shadow-md space-y-4 border bg-white">
           <div className="flex items-center gap-2 ">
             <div className="avatar">
@@ -57,123 +95,46 @@ const Feeds = () => {
           </div>
           <hr />
           <div className="flex items-center gap-3 md:gap-5 justify-center">
-            <AddPostModal isMedia={isMedia} setIsMedia={setIsMedia} name={"Post"} refetch={refetch} />
-            <button className="flex  items-center gap-2 py-2 px-3 md:px-8 text-sm  md:text-xl  border-2 border-gray-100 rounded-md text-gray-500 font-medium bg-gray-200 hover:bg-gray-300 transition-all duration-300" onClick={handleMedia}><img src={mediaimg} className="w-6" alt="" /> Media</button>
+            <AddPostModal
+              isMedia={isMedia}
+              setIsMedia={setIsMedia}
+              name={"Post"}
+              refetch={refetch}
+            />
+            <button
+              className="flex  items-center gap-2 py-2 px-3 md:px-8 text-sm  md:text-xl  border-2 border-gray-100 rounded-md text-gray-500 font-medium bg-gray-200 hover:bg-gray-300 transition-all duration-300"
+              onClick={handleMedia}>
+              <img src={mediaimg} className="w-6" alt="" /> Media
+            </button>
             <AddReelsModal refetch={refetch} />
           </div>
         </div>
-        {news?.length === 0 ? (
+        {
+          isLoading ? <div className="loader">
+          <div className="wrapper">
+            <div className="circle"></div>
+            <div className="line-1"></div>
+            <div className="line-2"></div>
+            <div className="line-3"></div>
+            <div className="line-4"></div>
+          </div>
+        </div> : <>{feeds?.length === 0 ? (
           <p className="text-center text-red-600 font-medium mt-20">
             No Post !
           </p>
         ) : (
           <div className="grid grid-cols-1 gap-2 rounded-md">
-            {news.map((feed) => (
+            {feeds.map((feed) => (
               <Feed key={feed._id} feed={feed} refetch={refetch}></Feed>
             ))}
           </div>
-        )}
+        )}</>
+        }
       </div>
-    </div>
+
   );
 };
 
 export default Feeds;
 
-{
-  /* <div>
-import Feed from "../../../shared/Feed/Feed";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import useAuth from "../../../hooks/useAuth";
-import AddPostModal from "../../../Components/AddPostModal/AddPostModal";
-import AddReelsModal from "../../../Components/AddReelsModal/AddReelsModal";
-import AddVideoModal from "../../../Components/AddVideoModal/AddVideoModal";
-import AddverticeContent from "../../../shared/addverticContent/AddverticeContent";
-import InfiniteScroll from "react-infinite-scroll-component";
 
-const Feeds = () => {
-  // const axiosSecure = useAxiosSecure();
-  const { user } = useAuth();
-  const getArticles = async ({ pageParam = 0 }) => {
-    const res = await fetch(
-      `https://free-time-server-side.vercel.app/feeds?limit=10&offset=${pageParam}`
-    );
-    const data = await res.json();
-
-    return { ...data, prevOffset: pageParam };
-  };
-  const { data, refetch, fetchNextPage, hasNextPage } = useInfiniteQuery({
-    queryKey: ["feeds"],
-    queryFn: getArticles,
-    getNextPageParam: (lastPage) => {
-      if (lastPage.prevOffset + 10 > lastPage.articlesCount) {
-        return false;
-      }
-      return lastPage.prevOffset + 10;
-    },
-  });
-
-  console.log(data?.pages);
-
-  const articles = data?.pages?.reduce((acc, page) => {
-    console.log(acc);
-    console.log(page);
-    if (page && page.email) {
-      return [...acc, ...page.email];
-    }
-    return acc;
-  }, []);
-
-  console.log(articles);
-
-  return (
-    <div className="flex w-full gap-3">
-      <div className="md:w-[65%]">
-        <div className="p-5 my-3 rounded-md shadow-md space-y-4 border">
-          <div className="flex items-center gap-2">
-            <div className="avatar">
-              <div className="w-10 rounded-full">
-                <img src={user?.photoURL} alt="User Avatar" />
-              </div>
-            </div>
-            <h2 className="px-4 py-2 rounded-full bg-gray-200 font-semibold text-slate-500 w-full">
-              Hey {user?.displayName}, share your feelings ?
-            </h2>
-          </div>
-          <hr />
-          <div className="flex items-center gap-5 justify-center">
-            <AddPostModal refetch={refetch} />
-            <AddReelsModal refetch={refetch} />
-            <AddVideoModal refetch={refetch} />
-          </div>
-        </div>
-        {data?.length === 0 ? (
-          <p className="text-center text-red-600 font-medium mt-20">
-            No Post !
-          </p>
-        ) : (
-          <InfiniteScroll
-            dataLength={articles ? articles.length : 0}
-            next={() => fetchNextPage()}
-            hasMore={hasNextPage}
-            loader={<div>Loading...</div>}>
-            <div className="grid grid-cols-1 gap-2">
-              {articles?.map((feed) => (
-                <Feed key={feed._id} feed={feed} refetch={refetch} />
-              ))}
-            </div>
-          </InfiniteScroll>
-        )}
-      </div>
-      <div className="hidden md:block w-[35%]  mt-3">
-        <AddverticeContent />
-      </div>
-    </div>
-  );
-};
-
-export default Feeds;
-
-</div> */
-}

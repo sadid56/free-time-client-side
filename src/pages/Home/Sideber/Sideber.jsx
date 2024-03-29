@@ -78,7 +78,7 @@ const Sideber = () => {
         onLoaderFinished={() => setProgress(0)}
       />
       <div className="">
-        <h2 className="text-3xl font-bold pl-3 mb-5 italic">
+        <h2 className="text-3xl font-bold ml-3 mb-5 italic border-b w-fit border-primary">
           Free <span className="text-primary">Time</span>
         </h2>
         <div className="hover:bg-gray-200 p-2 rounded-md">

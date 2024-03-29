@@ -16,18 +16,22 @@ import PostShare from "../../Components/PostShare/PostShare";
 import { format } from "timeago.js";
 
 const Feed = ({ feed, refetch }) => {
+  console.log(feed);
   const {
-    name,
-    article,
-    time,
-    likes,
-    comments,
-    _id,
-    auther_image,
-    image,
-    video,
-    feelings,
-  } = feed;
+    name = "",
+    article = "",
+    time = "",
+    likes = 0,
+    comments = [],
+    _id = "",
+    auther_image = "",
+    image = "",
+    video = "",
+    feelings = "",
+  } = feed || {};
+
+
+
   const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure();
   const [liked, setLiked] = useState(false);

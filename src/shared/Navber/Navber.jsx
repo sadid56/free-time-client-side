@@ -3,14 +3,14 @@ import { Link, NavLink } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
 import logo from "../../assets/icon/logo.png";
-import feedsIcon from "../../assets/icon/home.png"
-import reelsIcon from "../../assets/icon/reels.png"
+import { SiYoutubeshorts } from "react-icons/si";
 import chatsIcon from "../../assets/icon/chats.png"
-import notificationIcon from "../../assets/icon/notification.png"
 import userIcon from "../../assets/icon/user.png"
 import bookmarkIcon from "../../assets/icon/bookmark.png"
 import settingIcon from "../../assets/icon/setting.png"
 import logoutIcon from "../../assets/icon/logout.png"
+import { IoIosNotifications, IoMdHome } from "react-icons/io";
+import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 
 const Navber = () => {
   const { user, logOut } = useAuth();
@@ -33,22 +33,22 @@ const Navber = () => {
       <ul className={`flex items-center gap-8 md:gap-28 `}>
         <li>
           <NavLink to="/" className="text-2xl">
-            <img src={feedsIcon} className="w-7" alt="" />
+          <IoMdHome />
           </NavLink>
         </li>
         <li>
           <NavLink to="/reels" className="text-2xl">
-          <img src={reelsIcon} className="w-7" alt="" />
+          <SiYoutubeshorts />
           </NavLink>
         </li>
         <li className="block md:hidden">
           <NavLink to="/chat" className="text-2xl">
-          <img src={chatsIcon} className="w-7" alt="" />
+          <IoChatbubbleEllipsesOutline />
           </NavLink>
         </li>
         <li className="">
           <NavLink to="/notification" className="text-2xl">
-          <img src={notificationIcon} className="w-7" alt="" />
+          <IoIosNotifications />
           </NavLink>
         </li>
 

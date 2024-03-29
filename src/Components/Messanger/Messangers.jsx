@@ -13,6 +13,7 @@ import "./messanger.css";
 import { MdDelete } from "react-icons/md";
 import Swal from "sweetalert2";
 import Navber from "../../shared/Navber/Navber";
+import { IoIosSend } from "react-icons/io";
 let socket;
 const Messangers = () => {
   const [newMessage, setNewMessage] = useState("");
@@ -90,7 +91,7 @@ const Messangers = () => {
         toast.error("Failed to send message. Please try again later.");
       }
     } else {
-      toast.error("Can't send empty message!");
+      toast.error("Please type any message!");
     }
   };
   // Event listener for Enter key press
@@ -181,7 +182,7 @@ const Messangers = () => {
      <Navber/>
      </div>
       {/* conversation */}
-      <div className={`h-20 md:h-24 ${chats?.length === 0 ? "" : "flex overflow-y-hidden overflow-x-auto items-center"}  px-2 gap-3 bg-gray-200 rounded-md mt-14 md:mt-0`}>
+      <div className={`h-20 md:h-24 ${chats?.length === 0 ? "" : "flex overflow-y-hidden overflow-x-auto items-center"}  px-2 gap-3 bg-gray-200 rounded-md mt-14 md:mt-0 shadow-md`}>
         {chats?.length === 0 ? <h2 className="text-primary font-medium mt-2 text-center">Please add a freind!</h2> : (
           <>
             {chats?.map((chat) => (
@@ -263,7 +264,7 @@ const Messangers = () => {
               onClick={handleSend}
               id="send-button"
               class="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600 transition duration-300">
-              Send
+             <IoIosSend  className="text-2xl" />
             </button>
           </div>
         </div>
