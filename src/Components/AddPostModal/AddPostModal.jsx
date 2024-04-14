@@ -58,7 +58,9 @@ const AddPostModal = ({ refetch, name, isMedia, setIsMedia }) => {
         const formData = new FormData();
         formData.append("image", selectedFileName);
         const { data: imageData } = await axios.post(
-          `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_imgbb_API_key}`,
+          `https://api.imgbb.com/1/upload?key=${
+            import.meta.env.VITE_imgbb_API_key
+          }`,
           formData
         );
         postInfo.image = imageData?.data?.display_url;
@@ -77,7 +79,9 @@ const AddPostModal = ({ refetch, name, isMedia, setIsMedia }) => {
         formData.append("file", selectedFileName);
         formData.append("upload_preset", "video_presed");
         const { data: videoData } = await axios.post(
-          `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_clowdinary_secret_key}/video/upload`,
+          `https://api.cloudinary.com/v1_1/${
+            import.meta.env.VITE_clowdinary_secret_key
+          }/video/upload`,
           formData
         );
         postInfo.video = videoData?.secure_url;

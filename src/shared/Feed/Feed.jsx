@@ -19,6 +19,7 @@ const Feed = ({ feed, refetch }) => {
   // console.log(feed);
   const {
     name = "",
+    email,
     article = "",
     time = "",
     likes = 0,
@@ -61,6 +62,14 @@ const Feed = ({ feed, refetch }) => {
         localStorage.setItem(`liked_${_id}`, "true");
         setLiked(true);
         setLikeCount((prevLikeCount) => prevLikeCount + 1);
+        const postInfo = {
+          email:email,
+          NotifyName: sinleUser?.name,
+          type: "liked your post",
+          date: new Date()
+        };
+        await axiosPublic.post('notification', postInfo)
+
       } else {
         //dislike
         await axiosPublic.post(`/feeds/Dislikes/${_id}`, { userId });
@@ -184,7 +193,7 @@ const Feed = ({ feed, refetch }) => {
               <FaRegHeart /> {likeCount}
             </button>
           )}
-          <PostCommentModal comments={comments} refetch={refetch} id={_id} />
+          <PostCommentModal comments={comments} email={email} refetch={refetch} id={_id} />
           {image || video ? <PostShare url={image || video} /> : ""}
         </div>
         {isSaved ? (

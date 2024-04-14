@@ -12,7 +12,7 @@ import useGetSIngleUser from "../../hooks/useGetSIngleUser";
 import PostShare from "../PostShare/PostShare";
 import { FcLike } from "react-icons/fc";
 const ProfileReel = ({ reel, refetch }) => {
-  const { name, title, time, likes, comments, _id, auther_image, reels } = reel;
+  const { name, title, time, likes, comments, _id, auther_image, reels, email } = reel;
   const axiosPublic = useAxiosPublic();
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes);
@@ -37,6 +37,13 @@ const ProfileReel = ({ reel, refetch }) => {
         localStorage.setItem(`reels_liked_${_id}`, "true");
         setLiked(true);
         setLikeCount((prevLikeCount) => prevLikeCount + 1);
+        const postInfo = {
+          email:email,
+          NotifyName: sinleUser?.name,
+          type: "liked your reel",
+          date: new Date()
+        };
+        await axiosPublic.post('notification', postInfo)
       } else {
         //dislike
         await axiosPublic.post(`/reels/Dislikes/${_id}`, { userId });

@@ -9,11 +9,13 @@ import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { FaRegCommentDots } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
 import { format } from "timeago.js";
+import useGetSIngleUser from "../../hooks/useGetSIngleUser";
 
-const ReelComment = ({ comments, id, refetch }) => {
+const ReelComment = ({ comments, id, refetch , email}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { register, handleSubmit, reset } = useForm();
   const axiosPublic = useAxiosPublic();
+  const [sinleUser] = useGetSIngleUser()
   const { user } = useAuth();
 
   const openModal = (e) => {
@@ -33,10 +35,19 @@ const ReelComment = ({ comments, id, refetch }) => {
       date: new Date(),
     };
 
+    const postInfo = {
+      email:email,
+      NotifyName: sinleUser?.name,
+      type: "liked your post",
+      date: new Date()
+    };
+   
+
     try {
       await axiosPublic.post(`/reels/comment/${id}`, commentInfo);
       reset();
       refetch();
+      await axiosPublic.post('notification', postInfo)
     } catch (err) {
       console.log("comment post err-->", err);
     }

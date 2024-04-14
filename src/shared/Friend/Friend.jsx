@@ -41,7 +41,7 @@ const Friend = ({ friend , chatsRefetch}) => {
   };
 
   return (
-    <div className=" shadow-xl border p-5 rounded-md bg-white">
+    <div className=" shadow-xl border p-5 rounded-md bg-white overflow-hidden">
       <div className="avatar flex justify-center">
         <div className="w-14 rounded-full">
           <img src={photo} />
@@ -50,7 +50,7 @@ const Friend = ({ friend , chatsRefetch}) => {
       <h2 className="text-xl font-semibold text-slate-900 text-center">{name}</h2>
       <h2 className="font-semibold text-slate-600 text-center mb-2">{email}</h2>
       <div className="flex justify-center">
-        <button onClick={handleSendFreind} className="flex items-center gap-2 hover:bg-blue-700 text-[18px] font-medium bg-primary px-4 py-2 rounded-md text-white">Add Chat <IoPersonAddSharp /></button>
+        <button onClick={handleSendFreind} className="flex items-center gap-2 hover:bg-blue-700 text-[18px] font-medium bg-primary px-4 py-2 rounded-md text-white">Connect<IoPersonAddSharp /></button>
       </div>
     </div>
   );

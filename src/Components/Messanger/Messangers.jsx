@@ -14,6 +14,8 @@ import { MdDelete } from "react-icons/md";
 import Swal from "sweetalert2";
 import Navber from "../../shared/Navber/Navber";
 import { IoIosSend } from "react-icons/io";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import notificationurl from "../../assets/notification.wav"
 let socket;
 const Messangers = () => {
   const [newMessage, setNewMessage] = useState("");
@@ -21,11 +23,13 @@ const Messangers = () => {
   const [currentChat, setCurrentChat] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const axiosMessanger = useAxiosMessanger();
+  const axiosSecure = useAxiosSecure();
   const [chats, chatsRefetch] = useChats();
   const [sinleUser] = useGetSIngleUser();
   const [anotherUser, setAnotherUser] = useState(null);
   const [users] = useGetAllUser();
   const messageContainerRef = useRef(null);
+  const notificationSoundRef = useRef(new Audio(notificationurl));
   const url = import.meta.env.VITE_socket_url;
   // connect socket server
   useEffect(() => {
@@ -51,12 +55,18 @@ const Messangers = () => {
   }, [sinleUser, url]);
   // get message from socket
   useEffect(() => {
-    socket?.on("getMessage", (data) => {
+    socket?.on("getMessage", async (data) => {
+      const senderUser = users.filter((user) => user?._id === data?.senderId);
       if (currentChat) {
         setMessages([...messages, data]);
+        notificationSoundRef.current.play();
+        toast.success(`${senderUser[0].name} Send a message`, {
+          position: "bottom-left",
+          duration: 3000,
+        });
       }
     });
-  }, [messages, currentChat]);
+  }, [messages, currentChat, axiosSecure, users]);
 
   const handleChange = (event) => {
     setNewMessage(event.target.value);
@@ -83,7 +93,6 @@ const Messangers = () => {
       try {
         //send message database
         const { data } = await axiosMessanger.post("/message", message);
-        console.log(data);
         setMessages((prevMessages) => [...prevMessages, data]);
         setNewMessage("");
       } catch (error) {
@@ -102,7 +111,7 @@ const Messangers = () => {
     }
   };
   // get message in database
-  const { refetch, isLoading: messageLoading } = useQuery({
+  const {isLoading: messageLoading } = useQuery({
     queryKey: ["messageData", currentChat?._id],
     queryFn: async () => {
       if (currentChat) {
@@ -115,10 +124,7 @@ const Messangers = () => {
       return [];
     },
   });
-  // refetch the message
-  useEffect(() => {
-    refetch();
-  }, [currentChat, refetch]);
+
 
   // find another user
   useEffect(() => {
@@ -155,7 +161,7 @@ const Messangers = () => {
               icon: "success",
             });
             chatsRefetch();
-            setCurrentChat(null)
+            setCurrentChat(null);
           }
         } catch (error) {
           console.error("Failed to delete conversation:", error.message);
@@ -178,12 +184,21 @@ const Messangers = () => {
   }, [messages]);
   return (
     <section>
-     <div className="md:hidden block fixed z-50">
-     <Navber/>
-     </div>
+      <div className="md:hidden block fixed z-50">
+        <Navber />
+      </div>
       {/* conversation */}
-      <div className={`h-20 md:h-24 ${chats?.length === 0 ? "" : "flex overflow-y-hidden overflow-x-auto items-center"}  px-2 gap-3 bg-gray-200 rounded-md mt-14 md:mt-0 shadow-md`}>
-        {chats?.length === 0 ? <h2 className="text-primary font-medium mt-2 text-center">Please add a freind!</h2> : (
+      <div
+        className={`h-20 md:h-24 ${
+          chats?.length === 0
+            ? ""
+            : "flex overflow-y-hidden overflow-x-auto items-center"
+        }  px-2 gap-3 bg-gray-200 rounded-md mt-14 md:mt-0 shadow-md`}>
+        {chats?.length === 0 ? (
+          <h2 className="text-primary font-medium mt-2 text-center">
+            Please add a freind!
+          </h2>
+        ) : (
           <>
             {chats?.map((chat) => (
               <div key={chat?._id}>
@@ -231,7 +246,9 @@ const Messangers = () => {
             ) : (
               <div className="flex flex-col justify-end px-2">
                 {messages?.length === 0 ? (
-                  <p className="text-primary text-center mt-24 font-medium">No Message !</p>
+                  <p className="text-primary text-center mt-24 font-medium">
+                    No Message !
+                  </p>
                 ) : (
                   <>
                     {messages?.map((message, i) => (
@@ -246,7 +263,6 @@ const Messangers = () => {
               </div>
             )}
           </div>
-
           <hr className="my-3" />
           {/* send box */}
 
@@ -264,7 +280,7 @@ const Messangers = () => {
               onClick={handleSend}
               id="send-button"
               class="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600 transition duration-300">
-             <IoIosSend  className="text-2xl" />
+              <IoIosSend className="text-2xl" />
             </button>
           </div>
         </div>

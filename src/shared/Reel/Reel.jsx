@@ -16,7 +16,7 @@ import { format } from "timeago.js";
 import ReelsShare from "../../Components/reelsShare/ReelsShare";
 
 const Reel = ({ reel, refetch }) => {
-  const { name, title, time, auther_image, reels, _id, comments, likes } = reel;
+  const { name, title, time, auther_image, reels, _id, comments, likes, email } = reel;
   const [likeCount, setLikeCount] = useState(likes);
   const [liked, setLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
@@ -45,6 +45,13 @@ const Reel = ({ reel, refetch }) => {
         localStorage.setItem(`reels_liked_${_id}`, "true");
         setLiked(true);
         setLikeCount((prevLikeCount) => prevLikeCount + 1);
+        const postInfo = {
+          email:email,
+          NotifyName: sinleUser?.name,
+          type: "liked your reel",
+          date: new Date()
+        };
+        await axiosPublic.post('notification', postInfo)
       } else {
         //dislike
         await axiosPublic.post(`/reels/Dislikes/${_id}`, { userId });
@@ -140,7 +147,7 @@ const Reel = ({ reel, refetch }) => {
               <FaRegHeart /> {likeCount}
             </button>
           )}
-          <ReelComment refetch={refetch} id={_id} comments={comments} />
+          <ReelComment refetch={refetch} id={_id} comments={comments} email={email}/>
 
           <ReelsShare url={reels} />
           {isSaved ? (

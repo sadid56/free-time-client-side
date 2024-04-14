@@ -34,19 +34,20 @@ const data = [
     id: 5,
     path: "/save-post",
     icon: bookmarkimg,
-    name: "Bookmark",
+    name: "Saved",
   },
   {
     id: 3,
     path: "/add-conversation",
     icon: freindimg,
-    name: "Add Conversation",
+    name: "Add Chat",
   },
 ];
 // style={{boxShadow:"0px 0px 20px gray"}}
 const Sideber = () => {
   const { user, logOut } = useAuth();
   const [progress, setProgress] = useState(0);
+  // console.log(notifications);
   const handleLogOut = () => {
     logOut()
       .then(() => {
@@ -101,6 +102,7 @@ const Sideber = () => {
                 className="flex items-center gap-2 hover:bg-gray-200 rounded-md p-2">
                 <img src={item?.icon} className="w-7" alt="" />{" "}
                 <span className="font-medium text-gray-600">{item.name}</span>
+                
               </NavLink>
             </li>
           ))}

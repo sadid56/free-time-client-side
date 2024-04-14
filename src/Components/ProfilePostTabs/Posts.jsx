@@ -15,7 +15,7 @@ import { FaRegHeart } from "react-icons/fa";
 import PostShare from "../PostShare/PostShare";
 
 const Posts = ({ post, refetch }) => {
-  const { name, article, time, likes, comments, _id, auther_image, image, video, feelings } =
+  const { name, article, time, likes, comments, _id, auther_image, image, video, feelings, email } =
     post;
   const [likeCount, setLikeCount] = useState(likes);
   const axiosPublic = useAxiosPublic();
@@ -40,6 +40,13 @@ const Posts = ({ post, refetch }) => {
         localStorage.setItem(`liked_${_id}`, "true");
         setLiked(true);
         setLikeCount((prevLikeCount) => prevLikeCount + 1);
+        const postInfo = {
+          email:email,
+          NotifyName: sinleUser?.name,
+          type: "liked your post",
+          date: new Date()
+        };
+        await axiosPublic.post('notification', postInfo)
       } else {
         //dislike
         await axiosPublic.post(`/feeds/Dislikes/${_id}`, { userId });
