@@ -11,10 +11,12 @@ import settingIcon from "../../assets/icon/setting.png"
 import logoutIcon from "../../assets/icon/logout.png"
 import { IoIosNotifications, IoMdHome } from "react-icons/io";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
+import useNotification from "../../hooks/useNotification";
 
 const Navber = () => {
   const { user, logOut } = useAuth();
-
+  const [nofitications] = useNotification()
+  const notiReduce = nofitications.reduce((prev , current) => prev + current?.count, 0)
   const handleLogOut = () => {
     logOut()
       .then(() => {
@@ -47,8 +49,9 @@ const Navber = () => {
           </NavLink>
         </li>
         <li className="">
-          <NavLink to="/notification" className="text-2xl">
+          <NavLink to="/notification" className="text-2xl flex">
           <IoIosNotifications />
+          <div className="badge -ml-1">{notiReduce}</div>
           </NavLink>
         </li>
 

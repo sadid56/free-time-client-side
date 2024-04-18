@@ -5,16 +5,14 @@ import useAuth from "./useAuth";
 const useNotification = () => {
     const axiosPublic = useAxiosPublic()
     const {user} = useAuth()
-    console.log(user?.email);
-    const {data:nofitications = [], refetch:notifyRefetch, isLoading} = useQuery({
+    const {data:nofitications = [], refetch, isLoading} = useQuery({
         queryKey: ["notifications", user?.email],
         queryFn: async()=>{
             const res = await axiosPublic.get(`notification?email=${user?.email}`);
-            console.log(res.data);
             return res.data
         }
     })
-    return [nofitications, notifyRefetch, isLoading]
+    return [nofitications, refetch, isLoading]
 };
 
 export default useNotification;

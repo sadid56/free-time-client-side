@@ -11,6 +11,7 @@ import setingimg from "../../../assets/icon/setting.png";
 import logoutimg from "../../../assets/icon/logout.png";
 import LoadingBar from "react-top-loading-bar";
 import { useEffect, useState } from "react";
+import useNotification from "../../../hooks/useNotification";
 const data = [
   {
     id: 1,
@@ -47,6 +48,8 @@ const data = [
 const Sideber = () => {
   const { user, logOut } = useAuth();
   const [progress, setProgress] = useState(0);
+  const [nofitications] = useNotification()
+  const notiReduce = nofitications.reduce((prev , current) => prev + current?.count, 0)
   // console.log(notifications);
   const handleLogOut = () => {
     logOut()
@@ -102,7 +105,7 @@ const Sideber = () => {
                 className="flex items-center gap-2 hover:bg-gray-200 rounded-md p-2">
                 <img src={item?.icon} className="w-7" alt="" />{" "}
                 <span className="font-medium text-gray-600">{item.name}</span>
-                
+                <div className={`badge badge-primary ${item?.name === "Notification" ? "block" : "hidden"}`}>{notiReduce}</div>
               </NavLink>
             </li>
           ))}

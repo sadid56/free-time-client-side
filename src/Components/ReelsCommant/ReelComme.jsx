@@ -38,8 +38,11 @@ const ReelComment = ({ comments, id, refetch , email}) => {
     const postInfo = {
       email:email,
       NotifyName: sinleUser?.name,
-      type: "liked your post",
-      date: new Date()
+      type: "Comment your reel",
+      date: new Date(),
+      count:1,
+      prevId: id,
+      status: "Unread"
     };
    
 

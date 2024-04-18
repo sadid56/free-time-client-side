@@ -30,9 +30,6 @@ const Feed = ({ feed, refetch }) => {
     video = "",
     feelings = "",
   } = feed || {};
-
-
-
   const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure();
   const [liked, setLiked] = useState(false);
@@ -65,8 +62,11 @@ const Feed = ({ feed, refetch }) => {
         const postInfo = {
           email:email,
           NotifyName: sinleUser?.name,
-          type: "liked your post",
-          date: new Date()
+          type: "Liked your post",
+          date: new Date(),
+          count:1,
+          prevId: _id,
+          status: "Unread"
         };
         await axiosPublic.post('notification', postInfo)
 
@@ -194,7 +194,7 @@ const Feed = ({ feed, refetch }) => {
             </button>
           )}
           <PostCommentModal comments={comments} email={email} refetch={refetch} id={_id} />
-          {image || video ? <PostShare url={image || video} /> : ""}
+          <PostShare url={`https://free-time-56230.web.app/feeds/${_id}`} /> 
         </div>
         {isSaved ? (
           <button onClick={handleAddSave} className="text-xl text-pink-500">

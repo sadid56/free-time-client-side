@@ -36,8 +36,11 @@ const PostCommentModal = ({ comments, id, refetch, email }) => {
     const postInfo = {
       email:email,
       NotifyName: sinleUser?.name,
-      type: "comment your post",
-      date: new Date()
+      type: "Comment your post",
+      date: new Date(),
+      count:1,
+      prevId: id,
+      status: "Unread"
     };
 
     try {

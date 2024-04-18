@@ -43,8 +43,11 @@ const Posts = ({ post, refetch }) => {
         const postInfo = {
           email:email,
           NotifyName: sinleUser?.name,
-          type: "liked your post",
-          date: new Date()
+          type: "Liked your post",
+          date: new Date(),
+          count:1,
+          prevId: _id,
+          status: "Unread"
         };
         await axiosPublic.post('notification', postInfo)
       } else {

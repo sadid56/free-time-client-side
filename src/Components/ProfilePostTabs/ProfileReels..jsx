@@ -40,8 +40,11 @@ const ProfileReel = ({ reel, refetch }) => {
         const postInfo = {
           email:email,
           NotifyName: sinleUser?.name,
-          type: "liked your reel",
-          date: new Date()
+          type: "Liked your reel",
+          date: new Date(),
+          count:1,
+          prevId: _id,
+          status: "Unread"
         };
         await axiosPublic.post('notification', postInfo)
       } else {

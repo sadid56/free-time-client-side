@@ -10,7 +10,8 @@ import SavePost from "../pages/Home/SavePost/SavePost";
 import Friends from "../pages/Home/Friends/Friends";
 import Setting from "../pages/Setting/Setting";
 import Chat from "../pages/Home/chat/Chat";
-import Notification from "../pages/Home/notification/Notification";
+import DynamicFeeds from "../pages/Home/DynamicFeeds/DynamicFeeds";
+import Notifications from "../pages/Home/notification/Notifications";
 const Routers = createBrowserRouter([
   {
     path: "/",
@@ -34,8 +35,13 @@ const Routers = createBrowserRouter([
       },
       {
         path: "/notification",
-        element: <Notification />,
+        element: <Notifications/>,
       },
+      {
+        path:"/feeds/:id",
+        element:<DynamicFeeds/>,
+        loader: ({params})=> fetch(`http://localhost:9000/feed/${params.id}`)
+      }
     ],
   },
   {

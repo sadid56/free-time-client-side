@@ -1,13 +1,14 @@
+/* eslint-disable react/prop-types */
 import { MdClose } from "react-icons/md";
-import useNotification from "../../../hooks/useNotification";
-import SectionHelmet from "../../../shared/SectionHelmet/SectionHelmet";
-import { format } from "timeago.js";
 import Swal from "sweetalert2";
+import { format } from "timeago.js";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
-const Notification = () => {
-  const [nofitications, notifyRefetch, isLoading] = useNotification();
+import { useNavigate } from "react-router-dom";
+
+const Notification = ({ notification, refetch }) => {
+  const { _id, NotifyName, type, date, prevId, status } = notification;
   const axiosPublic = useAxiosPublic();
-  // delete notification
+  const navigate = useNavigate();
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -20,46 +21,47 @@ const Notification = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         const res = await axiosPublic.delete(`notification/${id}`);
-        if (res.dataacknowledged) {
+        if (res.data?.acknowledged) {
           Swal.fire({
             title: "Deleted!",
-            text: "Your file has been deleted.",
+            text: "Your notification has been deleted.",
             icon: "success",
           });
-          notifyRefetch();
+          refetch();
         }
       }
     });
   };
-  if (isLoading) {
-    return <p className="text-center">Loadind...</p>;
-  }
+  const handleNotification = async () => {
+    navigate(`/feeds/${prevId}`);
+    const PatchData = {
+      count: 0,
+      status: "Read",
+    };
+    await axiosPublic.patch(`notification/${_id}`, PatchData);
+    refetch();
+  };
   return (
-    <div className="mt-2">
-      <SectionHelmet title={"Free Time | Notification"} />
-      <div className="space-y-2">
-       {
-        nofitications?.length === 0 ? <p className="text-center mt-5 text-primary">No Notification!</p> : <> {nofitications?.map((notification) => (
-          <div
-            className="w-full bg-white py-3 px-5 rounded-md flex items-center justify-between shadow-md"
-            key={notification?._id}>
-            <div>
-              <h2 className="font-medium">
-                {notification?.NotifyName} {notification?.type}
-              </h2>{" "}
-              <p>
-                <small>{format(notification?.date)}</small>
-              </p>
-            </div>
-            <button
-              onClick={() => handleDelete(notification?._id)}
-              className="btn btn-circle btn-sm text-xl">
-              <MdClose />
-            </button>
-          </div>
-        ))}</>
-       }
+    <div className="w-full bg-white py-3 px-5 rounded-md flex items-center justify-between shadow-md">
+      <div onClick={handleNotification} className="w-full cursor-pointer">
+        <h2
+          className={` ${
+            status === "Unread"
+              ? "text-gray-800 font-bold"
+              : "text-gray-500 font-medium "
+          }`}>
+          {NotifyName} {type}
+        </h2>{" "}
+        <p>
+          <small>{format(date)}</small>
+          <small className="ml-5 italic">{status}</small>
+        </p>
       </div>
+      <button
+        onClick={() => handleDelete(_id)}
+        className="btn btn-circle btn-sm text-xl">
+        <MdClose />
+      </button>
     </div>
   );
 };

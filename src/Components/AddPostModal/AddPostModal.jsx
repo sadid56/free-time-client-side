@@ -100,7 +100,6 @@ const AddPostModal = ({ refetch, name, isMedia, setIsMedia }) => {
       setLoading(false);
     } catch (err) {
       console.error("Error submitting post:", err);
-      toast.error("An error occurred while submitting your post.");
       setLoading(false);
     }
   };
