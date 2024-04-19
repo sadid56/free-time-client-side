@@ -16,20 +16,19 @@ import PostShare from "../../Components/PostShare/PostShare";
 import { format } from "timeago.js";
 
 const Feed = ({ feed, refetch }) => {
-  // console.log(feed);
   const {
-    name = "",
+    name,
     email,
-    article = "",
-    time = "",
-    likes = 0,
-    comments = [],
-    _id = "",
-    auther_image = "",
-    image = "",
-    video = "",
-    feelings = "",
-  } = feed || {};
+    article,
+    time,
+    likes,
+    comments,
+    _id,
+    auther_image,
+    image,
+    video,
+    feelings,
+  } = feed;
   const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure();
   const [liked, setLiked] = useState(false);
@@ -38,8 +37,8 @@ const Feed = ({ feed, refetch }) => {
   const [sinleUser] = useGetSIngleUser();
   const [ref, inView] = useInView();
   const [savePosts, bookmarkRefetch] = useGetBookmark();
+  const [isShowArticle,setIsShowArticle] = useState(true)
   const { user } = useAuth();
-
   // get like state in local storage
   useEffect(() => {
     const likedState = localStorage.getItem(`liked_${_id}`);
@@ -60,16 +59,15 @@ const Feed = ({ feed, refetch }) => {
         setLiked(true);
         setLikeCount((prevLikeCount) => prevLikeCount + 1);
         const postInfo = {
-          email:email,
+          email: email,
           NotifyName: sinleUser?.name,
           type: "Liked your post",
           date: new Date(),
-          count:1,
+          count: 1,
           prevId: _id,
-          status: "Unread"
+          status: "Unread",
         };
-        await axiosPublic.post('notification', postInfo)
-
+        await axiosPublic.post("notification", postInfo);
       } else {
         //dislike
         await axiosPublic.post(`/feeds/Dislikes/${_id}`, { userId });
@@ -153,11 +151,18 @@ const Feed = ({ feed, refetch }) => {
           </div>
         </div>
       </div>
-      <h5 className="font-medium my-5">{article}</h5>
+      <h5 className="font-medium my-5">
+        {isShowArticle ? article?.slice(0,100) : article}
+        <span onClick={()=>setIsShowArticle(!isShowArticle)} className={`link link-primary link-hover ml-1 ${article?.length <= 100 || undefined ? "hidden" : "inline"}`}>{isShowArticle ? "More..." : "Show less"}</span>
+      </h5>
 
       <div className={`${image || video ? "block" : "hidden"}`}>
         {image ? (
-          <img src={image} className="object-cover  w-full rounded-md" alt="" />
+          <img
+            src={image}
+            className="object-cover w-full rounded-md max-h-[800px]"
+            alt=""
+          />
         ) : (
           <div className="h-[350px] w-full bg-black">
             <ReactPlayer
@@ -193,8 +198,13 @@ const Feed = ({ feed, refetch }) => {
               <FaRegHeart /> {likeCount}
             </button>
           )}
-          <PostCommentModal comments={comments} email={email} refetch={refetch} id={_id} />
-          <PostShare url={`https://free-time-56230.web.app/feeds/${_id}`} /> 
+          <PostCommentModal
+            comments={comments}
+            email={email}
+            refetch={refetch}
+            id={_id}
+          />
+          <PostShare url={`https://free-time-56230.web.app/feeds/${_id}`} />
         </div>
         {isSaved ? (
           <button onClick={handleAddSave} className="text-xl text-pink-500">

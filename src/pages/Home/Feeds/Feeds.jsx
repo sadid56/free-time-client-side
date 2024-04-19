@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unknown-property */
 import Feed from "../../../shared/Feed/Feed";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
 import AddPostModal from "../../../Components/AddPostModal/AddPostModal";
@@ -11,23 +11,62 @@ import { IoSearch } from "react-icons/io5";
 import "./feeds.css";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 import toast from "react-hot-toast";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useNavigate } from "react-router-dom";
 
 const Feeds = () => {
   const axiosSecure = useAxiosSecure();
   const axiosPublic = useAxiosPublic();
   const [isMedia, setIsMedia] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const [feeds, setFeeds] = useState([]);
+  const navigate = useNavigate();
   const { user } = useAuth();
+
   // get data
-  const { refetch, isLoading } = useQuery({
+  const getNewFeeds = async ({ pageParam = 0 }) => {
+    try {
+      const response = await axiosSecure.get(
+        `/feeds?limit=10&offset=${pageParam}`
+      );
+      const data = response.data;
+      return { ...data, prevOffset: pageParam};
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      throw error;
+    }
+  };
+  
+  const { data, fetchNextPage, hasNextPage, refetch, isLoading } =
+  useInfiniteQuery({
     queryKey: ["feeds"],
-    queryFn: async () => {
-      const res = await axiosSecure.get("/feeds");
-      return setFeeds(res?.data);
+    queryFn: getNewFeeds,
+    getNextPageParam: (lastPage) => {
+      if (lastPage.prevOffset + 10 > lastPage.articlesCount) {
+        return false;
+      }
+      return lastPage.prevOffset + 10;
     },
   });
-  // console.log(news);
+
+  const feeds = data?.pages
+    .flatMap((page) => {
+      return Object.values(page).map((article) => {
+        return {
+          _id: article?._id,
+          name: article?.name,
+          auther_image: article?.auther_image,
+          email: article?.email,
+          image: article?.image,
+          article: article?.article,
+          video: article?.video,
+          time: article?.time,
+          likes: article?.likes,
+          comments: article?.comments,
+          feelings: article?.feelings,
+        };
+      });
+    })
+    .filter((article) => article.article);
 
   const handleMedia = () => {
     setIsMedia(true);
@@ -45,18 +84,19 @@ const Feeds = () => {
     e.preventDefault();
     try {
       const res = await axiosPublic.get(`search?q=${searchValue}`);
-      setFeeds(res?.data);
+      navigate("/search-value", {
+        state: { searchData: res.data},
+      });
       setSearchValue("");
     } catch (err) {
       toast.error(err.message);
     }
   };
-
   return (
     <div className=" w-full relative">
       <form
         onSubmit={handleSearchSubmit}
-        className="bg-white shadow-md rounded-md my-2 sticky top-14 md:top-0 z-10 transition-all duration-300 mx-2 md:mx-0">
+        className="bg-white shadow-md rounded-md my-2 sticky top-14 md:top-0 z-10 transition-all duration-300">
         <div className="relative">
           <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
             <IoSearch className="text-gray-400" />
@@ -106,31 +146,39 @@ const Feeds = () => {
           <AddReelsModal refetch={refetch} />
         </div>
       </div>
-      {isLoading ? (
-        <div className="loader">
-          <div className="wrapper">
-            <div className="circle"></div>
-            <div className="line-1"></div>
-            <div className="line-2"></div>
-            <div className="line-3"></div>
-            <div className="line-4"></div>
-          </div>
-        </div>
-      ) : (
-        <>
-          {feeds?.length === 0 ? (
-            <p className="text-center text-red-600 font-medium mt-20">
-              No Post !
-            </p>
-          ) : (
-            <div className="grid grid-cols-1 gap-2 rounded-md">
-              {feeds.map((feed) => (
-                <Feed key={feed._id} feed={feed} refetch={refetch}></Feed>
-              ))}
+
+      <div>
+        {isLoading ? (
+          <div className="loader">
+            <div className="wrapper">
+              <div className="circle"></div>
+              <div className="line-1"></div>
+              <div className="line-2"></div>
+              <div className="line-3"></div>
+              <div className="line-4"></div>
             </div>
-          )}
-        </>
-      )}
+          </div>
+        ) : (
+          <>
+            {feeds?.length === 0 ? (
+              <p className="text-center mt-2">No post!</p>
+            ) : (
+              <InfiniteScroll
+                dataLength={feeds ? feeds.length : 0}
+                next={() => fetchNextPage()}
+                hasMore={hasNextPage}
+                >
+                <div className="space-y-3">
+                  {feeds &&
+                    feeds.map((feed, idx) => (
+                      <Feed key={idx} feed={feed} refetch={refetch} />
+                    ))}
+                </div>
+              </InfiniteScroll>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 };

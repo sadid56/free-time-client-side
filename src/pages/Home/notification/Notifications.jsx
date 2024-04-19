@@ -4,7 +4,7 @@ import Notification from "./Notification";
 const Notifications = () => {
   const [nofitications, refetch, isLoading] = useNotification();
   if (isLoading) {
-    return <p className="text-center">Loadind...</p>;
+    return <p className="text-center">Loading...</p>;
   }
   return (
     <div className="mt-2 mx-2">

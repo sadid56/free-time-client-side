@@ -12,6 +12,7 @@ import Setting from "../pages/Setting/Setting";
 import Chat from "../pages/Home/chat/Chat";
 import DynamicFeeds from "../pages/Home/DynamicFeeds/DynamicFeeds";
 import Notifications from "../pages/Home/notification/Notifications";
+import SearchFeed from "../pages/Home/SearchFeed/SearchFeed";
 const Routers = createBrowserRouter([
   {
     path: "/",
@@ -40,7 +41,11 @@ const Routers = createBrowserRouter([
       {
         path:"/feeds/:id",
         element:<DynamicFeeds/>,
-        loader: ({params})=> fetch(`http://localhost:9000/feed/${params.id}`)
+        loader: ({params})=> fetch(`https://free-time-server-side.vercel.app/feed/${params.id}`)
+      },
+      {
+        path:"/search-value",
+        element:<SearchFeed/>
       }
     ],
   },

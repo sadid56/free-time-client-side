@@ -97,9 +97,9 @@ const Sideber = () => {
             </div>
           </Link>
         </div>
-        <ul id="sid" className="flex flex-col gap-3  text-xl mt-2">
+        <ul  className="flex flex-col gap-3  text-xl mt-2">
           {data.map((item) => (
-            <li onClick={handleClick} key={item.id}>
+            <li id="sid" onClick={handleClick} key={item.id}>
               <NavLink
                 to={item.path}
                 className="flex items-center gap-2 hover:bg-gray-200 rounded-md p-2">

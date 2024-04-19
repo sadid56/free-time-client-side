@@ -61,7 +61,7 @@ const AddReelsModal = ({ refetch }) => {
         className="flex w-full items-center gap-2 py-2 px-3 md:px-4 text-sm  md:text-xl  border-2 border-gray-100 rounded-md text-gray-500 font-medium hover:bg-gray-300 transition-all duration-300 bg-gray-200"
         onClick={() => document.getElementById("reels_modal_id").showModal()}>
         <img src={reelsImg} className="w-6" alt="" />
-        Add Reels
+        Reels
       </button>
       <dialog id="reels_modal_id" className="modal">
         <div className="modal-box">

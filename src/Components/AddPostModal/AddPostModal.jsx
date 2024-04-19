@@ -185,7 +185,7 @@ const AddPostModal = ({ refetch, name, isMedia, setIsMedia }) => {
                     </p>
                     {selectedFileName ? (
                       <div className="font-medium text-gray-400 text-center">
-                        {selectedFileName?.name} <br /> {selectedFileName?.type}{" "}
+                        {selectedFileName?.name.slice(0,50)} <br /> {selectedFileName?.type}{" "}
                         / {(selectedFileName?.size / 1024 / 1024).toFixed(2)} MB
                       </div>
                     ) : (
